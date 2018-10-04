@@ -38,3 +38,12 @@ __國立政治大學統計所碩二__
   * xxxxxxyyyyyy
 </div>
 
+
+#### __Firsr R Code___
+
+```{r}
+x = 1
+cat(x)
+
+```
+
