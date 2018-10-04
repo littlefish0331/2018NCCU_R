@@ -1,6 +1,6 @@
 ---
 title: "Quick R Introduction"
-author: "Test"
+author: "Test2"
 output:
   ioslides_presentation:
     css: css/dsp.css
@@ -15,6 +15,7 @@ __國立政治大學統計所碩二__
 #### __Experience__
 <p>
   * 2018暑期資料工作坊SQL講師
+  * 中油黑客松 - 統研8+9
   
 </div>
 
@@ -24,6 +25,7 @@ __國立政治大學統計所碩二__
 #### __Skills__
 <p>
   * R
+  * SQL
 </div>
 
 <div style='float:left;width:40%;'>
@@ -31,7 +33,8 @@ __國立政治大學統計所碩二__
 
 #### __Contact me__
 <p>
-  * [Github](https://github.com/xxxxxx)
-  * xxxxxx@gmail.com
+  * [Github](https://github.com/yyyyyyy)
+  * yyyyyy@gmail.com
+  * xxxxxxyyyyyy
 </div>
 
