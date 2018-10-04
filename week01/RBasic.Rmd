@@ -1,0 +1,37 @@
+---
+title: "Quick R Introduction"
+author: "Test"
+output:
+  ioslides_presentation:
+    css: css/dsp.css
+    self_contained: no
+    widescreen: yes
+---
+
+## About me
+<div style='float:left;width:60%;'>
+__國立政治大學統計所碩二__
+
+#### __Experience__
+<p>
+  * 2018暑期資料工作坊SQL講師
+  
+</div>
+
+<div style='float:left;width:40%;'>
+<br>
+
+#### __Skills__
+<p>
+  * R
+</div>
+
+<div style='float:left;width:40%;'>
+<br>
+
+#### __Contact me__
+<p>
+  * [Github](https://github.com/xxxxxx)
+  * xxxxxx@gmail.com
+</div>
+
