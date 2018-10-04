@@ -40,10 +40,17 @@ __國立政治大學統計所碩二__
 
 
 #### __Firsr R Code___
+#### __Firsr R Code__
 
 ```{r}
 x = 1
 cat(x)
 
+```
+
+#### __Library__
+
+```{r}
+library(dplyr)
 ```
 
