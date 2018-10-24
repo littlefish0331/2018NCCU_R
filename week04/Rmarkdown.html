@@ -80,7 +80,7 @@
 
   </style>
 
-  <link rel="stylesheet" href="css/styles.css" type="text/css" />
+  <link rel="stylesheet" href="css/dsp.css" type="text/css" />
 
 </head>
 
@@ -279,7 +279,7 @@
 <li>for example :
 
 <ul>
-<li>這是DSP推出的第 4 門課程</li>
+<li>這是集訓班推出的第 4 門課程</li>
 <li>熵指標的公式為\(-\sum{p_i \log{p_i}}\) ，表示系統的亂度</li>
 <li><a href='http://oiltang.com/2014/05/04/markdown-and-mathjax/' title=''>markdown 公式輸入參考</a></li>
 </ul></li>
@@ -345,7 +345,301 @@
 <li><strong>粗體：bold</strong><br/></li>
 <li><em>斜體：italics</em><br/></li>
 <li>刪除線：<del>我是豬</del></li>
-</ul></article></slide>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Attach pictures</h2></hgroup><article  id="attach-pictures">
+
+<ul>
+<li>貼上照片</li>
+<li><p><a href='http://www.w3schools.com/tags/tag_img.asp' title=''>img</a>: inserting images into an HTML document.</p>
+
+<p>Much easier for adjusting width and height.</p>
+
+<pre class = 'prettyprint lang-html'>&lt;img  src=&quot;img/me.png&quot; width=&quot;80&quot;&gt;
+&lt;img  src=&quot;img/me.png&quot; height=&quot;100&quot; width=&quot;500&quot;&gt;</pre>
+
+<center>
+
+<img  src="img/me.png" width="80">
+
+</center>
+
+<center>
+
+<img  src="img/me.png" height="100" width="500">
+
+</center></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>先來簡單的複製貼上！</h2></hgroup><article >
+
+<ul>
+<li>利用<code>+</code>、<code>*</code>、<code>-</code>，列點文字</li>
+<li>嵌入圖片： <code>image: ![](path/to/smallorb.png)</code></li>
+<li>嵌入連結：<code>[木下柚香](https://www.youtube.com/watch?v=ArPaid2Iuck&amp;t=49s)</code></li>
+<li><p>嵌入表格：</p>
+
+<pre >     標題一     |    標題二     
+  -------------| ------------- 
+      123      |    456        
+      789      |    0.0        </pre></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Exercise - 1</h2></hgroup><article  id="exercise---1">
+
+<p style="color:#003E3E;">
+
+請大家以下面的文字為樣板，打出一篇簡短的自我介紹：
+
+</p>
+
+<p>大家好，我是<strong>Glen</strong><code>(1.使用粗體)</code>，目前就讀於國立政治大學，家裡共有：</p>
+
+<p><code>(2.請列點)</code></p>
+
+<ul>
+<li>我爸<br/></li>
+<li>我媽<br/></li>
+<li>我<br/></li>
+<li>我哥哥<br/></li>
+</ul>
+
+<p>有四個成員，我是男生，我長這樣： <code>(3.請放照片)</code> <img src="img/me.png" width="50px"></p>
+
+<p><code>(4.請放你的臉書連結)</code> 想要和我做朋有的人可以加我<a href='https://www.facebook.com/ChenChunYen0619' title=''>臉書</a></p>
+
+</article></slide><slide class=""><hgroup><h2>Answer - 1</h2></hgroup><article  id="answer---1">
+
+<pre >大家好，我是**Glen**(1.使用粗體)，目前就讀於國立政治大學，家裡共有：\
+
++ 我爸 \
++ 我媽 \
++ 我 \
++ 我哥哥 \
+
+有四個成員，我是男生，我長這樣：![](你的圖片路徑) 
+
+想要和我做朋有的人可以加我[臉書](臉書路徑)
+</pre>
+
+</article></slide><slide class=""><hgroup><h2>補充</h2></hgroup><article >
+
+<ul>
+<li>連結網站</li>
+<li><a href='http://www.w3schools.com/tags/tag_iframe.asp' title=''>iframe</a>: displaying a web page within a web page</li>
+</ul>
+
+<pre class = 'prettyprint lang-html'>&lt;iframe src=&quot;https://dsp.im/&quot; height=400 width=800&gt;&lt;/iframe&gt;</pre>
+
+<iframe src="https://dsp.im/" height="400" width="800">
+
+</iframe>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>R Code Chunks</h2></hgroup><article  id="r-code-chunks-1">
+
+</article></slide><slide class=""><hgroup><h2>Overview</h2></hgroup><article  id="overview-1">
+
+<ul>
+<li>在 R Code Chunk 中，code可以被執行</li>
+<li>code會被<code>{r}及</code>包圍</li>
+<li>快捷鍵（for windows、mac）：alt/option + control/command + i</li>
+<li>將下列文字複製貼上並Knit：</li>
+</ul>
+
+<pre class="markdown"><code>&#96;&#96;&#96;{r}
+summary(cars$dist)
+&#96;&#96;&#96;
+</code></pre>
+
+<pre class = 'prettyprint lang-r'>summary(cars$dist)</pre>
+
+<pre >   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   2.00   26.00   36.00   42.98   56.00  120.00 </pre>
+
+</article></slide><slide class=""><hgroup><h2>命名 R code chunks</h2></hgroup><article  id="-r-code-chunks">
+
+<pre class="markdown"><code>
+&#96;&#96;&#96;{r plot}
+summary(cars)
+plot(cars)
+&#96;&#96;&#96;
+</code></pre>
+
+<center>
+
+<img src="img/chunk_name_1.png" width="500px">
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>Basic Chunk Options - 1</h2></hgroup><article  id="basic-chunk-options---1">
+
+<ul>
+<li><code>echo</code>(TRUE): whether to include R source code in the output file</li>
+<li><code>eval</code>(TRUE): whether to evaluate the code chunk</li>
+<li><code>message</code>(TRUE): whether to preserve messages emitted by message()</li>
+<li><code>include</code>(TRUE): if include=FALSE, nothing will be written into the output document, but the code is still evaluated and plot files are generated</li>
+<li><code>warning</code>(TRUE): whether to preserve warnings in the output</li>
+<li><code>comment</code>(&ldquo;##&rdquo;): set to comment notation</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Basic Chunk Options - 2</h2></hgroup><article  id="basic-chunk-options---2">
+
+<h3>常用</h3>
+
+<ul>
+<li><code>defult</code>：show code and output</li>
+<li><code>echo = FALSE</code> ：only show output</li>
+<li><code>eval = FALSE</code> ：only show code</li>
+<li><code>include = FALSE</code> ： run code and don’t show output</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Basic Chunk Options - 3</h2></hgroup><article  id="basic-chunk-options---3">
+
+<p>利用每個chunk右上的設定鍵</p>
+
+<center>
+
+<img src="img/RMDchunksetting.png" width="700px">
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>執行部分chunk</h2></hgroup><article  id="chunk">
+
+<p>在編輯 RMarkdown 的過程中，想要測試 chunk 中的 code 是否成功，但又不想要每次檢查都 knit，不僅花費太多不必要的時間也浪費系統資源</p>
+
+<ul>
+<li>將游標點選在想要測試的 chunk 中任何一個位置</li>
+<li>chunks 選單中，點選 Run Current Chunk</li>
+<li>快捷鍵：Alt + Ctrl + C</li>
+</ul>
+
+<center>
+
+<img src="img/RMDruncurrent.png" width="500px">
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>Exercise - 2.1</h2></hgroup><article  id="exercise---2.1">
+
+<center>
+
+<p style="color:#0000C6;font-size:32px;">
+
+請大家利用 iris 的資料依照不同的品種，
+
+</p>
+
+</center>
+
+<center>
+
+<p style="color:#0000C6;font-size:32px;">
+
+畫出 Sepal.Length 及 Petal.Length 的 scatter plot
+
+</p>
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>Answer - 2.1</h2></hgroup><article  id="answer---2.1">
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% 
+  ggplot(aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
+  geom_point(shape=1, size=2) # shape控制圖示；size控制點的大小</pre>
+
+<p><img src="Rmarkdown_files/figure-html/unnamed-chunk-3-1.png" width="768" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Exercise - 2.2</h2></hgroup><article  id="exercise---2.2">
+
+<center>
+
+<p style="color:#0000C6;font-size:32px;">
+
+請大家在 Rmarkdown 中產出將剛剛的 scatter plot
+
+</p>
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>Answer - 2.2</h2></hgroup><article  id="answer---2.2">
+
+<h3>第一個chunk</h3>
+
+<pre class="markdown"><code>
+&#96;&#96;&#96;{r, echo=TRUE, message=TRUE, warning=TRUE}
+library(dplyr)
+library(ggplot2)
+&#96;&#96;&#96;
+</code></pre>
+
+<h3>第二個chunk</h3>
+
+<pre class="markdown"><code>
+&#96;&#96;&#96;{r}
+iris %>% 
+  ggplot(aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
+  geom_point(shape=1, size=2) 
+&#96;&#96;&#96;
+</code></pre>
+
+</article></slide><slide class=""><hgroup><h2>Exercise - 3</h2></hgroup><article  id="exercise---3">
+
+<p>利用R Markdown 製作《一周天氣預報》書面報告。</p>
+
+<ul>
+<li><a href='http://www.cwb.gov.tw/V7/forecast/taiwan/Taipei_City.htm' title=''>原始出處</a></li>
+<li><a href='https://pongponglin.github.io/2017NCCU_R/data/weatherbig5.csv' title=''>範例資料下載</a></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>原始網頁</h2></hgroup><article >
+
+<center>
+
+<img  src="img/RMDexercise3.1.png" width="800">
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>Rmarkdown 呈現</h2></hgroup><article  id="rmarkdown-">
+
+<a href='https://pongponglin.github.io/2017NCCU_R/RMDsample.html' title=''>範例連結</a>
+
+<center>
+
+<img  src="img/exam_q1_1.png" width="750">
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>Exercise - 3.1</h2></hgroup><article  id="exercise---3.1">
+
+<p>利用R Markdown 製作《一周天氣預報》書面報告。</p>
+
+<ul>
+<li>計算05/23日當日的最高溫與最低溫度</li>
+</ul>
+
+<h3><strong>Hint：</strong></h3>
+
+<ol>
+<li>下載weatherbig5.csv到自己的電腦上</li>
+<li>在R chunk中，利用read.csv()讀取檔案進行分析<br/>MAC : read.csv(,fileEncoding=&ldquo;big5&rdquo;)</li>
+<li>找出05/23當日最高溫 max()</li>
+<li>找出05/23當日最低溫 min()</li>
+<li>use inline R chunk -</li>
+</ol>
+
+</article></slide><slide class=""><hgroup><h2>Answer - 3.1</h2></hgroup><article  id="answer---3.1">
+
+<p>利用R Markdown 製作《一周天氣預報》書面報告。</p>
+
+<ul>
+<li>計算05/23日當日的最高溫與最低溫度</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># Hint for Windows：
+dat &lt;- read.csv(&quot;data/weatherbig5.csv&quot;) 
+max(dat[1:2, 4:5])
+min(dat[1:2, 4:5])
+# 預測高溫約`r max(dat[1:2,4:5])`度，低溫約`r min(dat[1:2,4:5])`度</pre></article></slide>
 
 
   <slide class="backdrop"></slide>
