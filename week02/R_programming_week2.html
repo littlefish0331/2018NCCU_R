@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>R programming</title>
+    <meta charset="utf-8">
+    <meta name="author" content="YiChun Tsai" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# R programming
+## Week2
+### YiChun Tsai
+### 2018/10/15 (updated: 2018-10-16)
+
+---
+
+
+
+
+# 內容大綱
+
+- 學習R語言的流程控制
+
+- 學習R語言的資料整理
+
+- 確立R語言的資料爬析概念
+
+---
+class: inverse, center, middle
+
+# Get Started
+
+---
+
+# 資料處理流程
+
+- 資料採集
+
+- 資料清洗處理
+
+- 統計及分析
+
+- 視覺呈現
+
+- 報告產出
+
+---
+class: inverse, center, middle
+
+# Ch1:條件判斷語句-if
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷1
+
+- 要求R在指定條件之下執行相對的指令
+- 使用if來判斷
+- 如果 **if** ...就...
+- 將欲執行的相對指令放在大括號**`{ }`**
+
+
+```r
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+# cat是什麼？ "?cat()"
+x &lt;- 3
+if ( x &gt; 2 ) {
+  cat ( x, "is larger than 2")
+}
+```
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷2
+
+- 與"條件判斷1"為ㄧ樣的功能
+- 若條件符合時欲執行的指令只有一行，則可以省略`{ }`
+
+
+```r
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+x &lt;- 5
+if ( x &gt; 2 ) cat ( x, "is larger than 2")
+```
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷3
+
+- 如果...就執行指令Ａ，否則執行指令Ｂ
+- 加入 `else` 來執行B指令
+
+
+```r
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+x &lt;- 7
+if ( x &gt; 6.5 ) {
+  cat ( x, "is larger than 6.5")
+}else{
+  cat ( x, "is smaller than 6.5")
+}
+```
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷4
+
+- 如果...就執行指令Ａ，否則執行指令Ｂ
+- 使用 `ifelse` 函數來執行指令
+
+
+```r
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+y &lt;- 1
+ifelse(y &gt; 2, "larger than 2", "smaller than 2")
+z &lt;- 1:5
+ifelse(z &gt; 2, "larger than 2", "smaller than 2")
+```
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷5
+
+- 如果符合條件Ａ，則執行指令a ; 或如果符合條件B，則執行指令b，否則執行指令c
+- 使用 `if,else is,...,else` 函數來執行指令
+
+
+```r
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+y &lt;- 2
+if(y &gt; 2){
+  cat(y, "is larger than 2")
+}else if(y &lt; 2){
+  cat(y, "is smaller than 2")
+}else{
+  cat(y, "is equal to 2")
+}
+```
+
+---
+class: inverse, center, middle
+
+# Ch2:循環語句-for
+
+---
+
+# Ch2:循環語句-for
+
+### 循環語句1
+
+- `for(){}` 可以用來執行某段程式碼
+- `for()`的小括弧內放入欲改變的參數，`{}`內則放入欲重複執行的程式碼
+
+
+```r
+x &lt;- 0
+for (i in 1:10) {
+  x &lt;- x+i
+  print(x)
+}
+
+y &lt;- 0
+for (i in 1:10) {
+  y &lt;- y+(2*i-1)
+  print(y)
+}
+```
+---
+
+# Ch2:循環語句-for 
+
+### 循環語句2
+
+- 循環語句加上條件判斷
+
+
+```r
+#迴圈每跑一次會印出一個值
+x &lt;- 0
+for(i in 1:10){
+  if(i %% 2 !=0) { # x是否為奇數
+    x &lt;- x + i 
+    print(x)
+  }
+}
+#迴圈跑完最後一次再印出最後得到的賦值
+y &lt;- 0
+for(i in 1:10){
+  if(i %% 2 !=0) { # x是否為奇數
+    y &lt;- y + i 
+  }
+}
+y
+```
+
+
+---
+
+# Ch2:循環語句-for 
+
+### 循環語句3
+
+- 雙重循環語句
+- 使用在多個參數間有相互組合時。ex.參數I的參數值i=1,...,i,時會分別對應到參數J的j個參數值1,...,j
+- `\t` = tab鍵, `\n` = 換行
+
+
+```r
+x &lt;- 0
+for(i in 1:3){
+  for(j in 1:3){
+    cat(paste0(i, "*", j,  "=", i*j, ",\t"))
+  }
+  cat("\n")
+}
+```
+---
+
+# Ch2:循環語句-for 
+
+### 簡易練習
+
+- 利用雙重循環語句畫出如下的兩個圖案
+- 聖誕樹的難度加高（三個循環語句）
+
+
+
+```
+## *
+## **
+## ***
+## ****
+## *****
+```
+
+```
+##      *
+##     ***
+##    *****
+##   *******
+##  *********
+```
+---
+
+# Ch2:循環語句-for 
+
+### 簡易練習(解答1)
+
+
+```r
+for (i in 1:5) {
+  for (j in 1:i){
+    cat("*")
+  }
+  cat("\n")
+}
+```
+
+```
+## *
+## **
+## ***
+## ****
+## *****
+```
+
+---
+
+# Ch2:循環語句-for 
+
+### 簡易練習(解答2)
+
+
+```r
+for (i in 1:5){
+  for (j in 5:i){
+    cat(" ")
+  }
+  for (k in 1:(2*i-1)){
+    cat("*")
+  }
+  cat("\n")
+}
+```
+
+```
+##      *
+##     ***
+##    *****
+##   *******
+##  *********
+```
+---
+class: inverse, center, middle
+
+# Ch3:自訂函數-function
+
+---
+
+# Ch3:自訂函數-function
+
+### 自訂函數1(`function`)
+
+- 函數是R語言的基石，有利重複使用
+- 通過多個函數的組裝，可以完成更複雜的任務
+- 函數在子環境中執行，不對外產生影響
+- 當有需要經常做這件事的時候，可以考慮寫成一個函式
+- `function(){}`的小括弧內放入會改變的參數，大括弧內放入函式。
+- 像是公式的概念，每次使用只需將指定值帶入參數就能得到相對應的結果。
+
+
+```r
+myfun &lt;- function(x){
+  # 函式內容
+}
+```
+---
+
+# Ch3:自訂函數-function
+
+### 自訂函數2
+
+- 條件判斷
+
+
+```r
+#令函數名稱為myif
+myif &lt;- function(x){ # 這個function有一個變數x
+  
+   if(x &gt; 2){
+    cat(x, "is larger than 2")
+  }else if(x &lt; 2){
+    cat(x, "is smaller than 2")
+  }else{
+    cat(x, "is equal to 2")
+  }  
+  
+}
+myif(1); myif(2); myif(3)
+```
+---
+
+# Ch3:自訂函數-function
+
+### 自訂函數3
+
+- 循環語句
+- 令x ＝ `$$\sqrt{(x*\pi)+1+2+3+4+5}$$`
+
+
+```r
+#令函數名稱為myif
+myfun &lt;- function(x){ # 這個function有一個變數x
+  x &lt;- pi*x
+  for (i in 1:5) {
+    x &lt;- x+i
+  }
+  x &lt;- sqrt(x)
+  return(x)
+  }
+myfun(8)
+```
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習
+
+- 請先下載 movies.zip
+
+- 下載下來的檔案解壓縮後有21個檔案
+
+- 一口氣讀入全部的檔案 (Hint: dir + for loop + list)
+
+- 將檔案合併 (Hint: do.call + rbind)
+
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習(1)
+
+
+```r
+# 展示movies資料夾下所有的檔案
+# dir是什麼？輸入：?dir
+#fname &lt;- dir("data/movies/")
+#fname
+```
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習(2)
+
+
+```r
+# 展示movies資料夾下所有的檔案
+# 看一下fname的資料類型，class(fname)
+fname &lt;- dir("data/movies/")
+# 練習讀一個csv檔 (movies-1995.csv)
+path &lt;- paste("data/movies/", fname[1], sep="")
+#mov95 &lt;- read.csv(path)
+#head(mov95)
+```
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習(3)
+
+
+```r
+# 展示movies資料夾下所有的檔案
+#fname &lt;- dir("data/movies/")
+# 練習讀多個csv檔
+##mov &lt;- list() # 預設一個名為 mov 的list容器
+# for(i in 1:length(fname)){
+#   path &lt;- paste("data/movies/", fname[i], sep="")
+#   mov[[i]] &lt;- read.csv(path)
+# }
+# head(mov[[1]])
+```
+
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習(4)
+
+
+```r
+# # 將list用列合併(rbind)整合成data.frame
+# # do.call是什麼？輸入：?do.call
+# # df的資料類型？
+# df &lt;- do.call(rbind, mov)
+# head(df)
+```
+
+---
+
+# Ch3:自訂函數-function
+
+### 小挑戰
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+---
+
+# Ch3:自訂函數-function
+
+### 小挑戰(解答)
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+
+```r
+# matches &lt;- gregexpr("movies-199[5-9]+.csv", fname)
+# tmp &lt;- regmatches(fname, matches)
+# fname90 &lt;- unlist(tmp)
+# mov90 &lt;- list() # 預設一個名為 mov 的list容器
+# for(i in 1:length(fname90)){
+#   path &lt;- paste("data/movies/", fname90[i], sep="")
+#   mov90[[i]] &lt;- read.csv(path)
+# }
+# df90 &lt;- do.call(rbind, mov90)
+# # tail(df90) # 最後6筆
+```
+---
+
+# Ch3:自訂函數-function
+
+### 練習寫一個一次讀多個檔的函數
+
+
+```r
+# myRead &lt;- function(fname, path0="data/movies/"){
+#   mov &lt;- list()
+#   for(i in 1:length(fname)){
+#     path &lt;- paste(path0, fname[i], sep="")
+#     mov[[i]] &lt;- read.csv(path)
+#   }
+#   do.call(rbind, mov)
+# }
+# df &lt;- myRead(fname90, path0="data/movies/")
+# head(df)
+```
+
+---
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,530 @@
+---
+title: "R programming"
+subtitle: "Week2"
+author: "YiChun Tsai"
+date: "2018/10/15 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+# 內容大綱
+
+- 學習R語言的流程控制
+
+- 學習R語言的資料整理
+
+- 確立R語言的資料爬析概念
+
+---
+class: inverse, center, middle
+
+# Get Started
+
+---
+
+# 資料處理流程
+
+- 資料採集
+
+- 資料清洗處理
+
+- 統計及分析
+
+- 視覺呈現
+
+- 報告產出
+
+---
+class: inverse, center, middle
+
+# Ch1:條件判斷語句-if
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷1
+
+- 要求R在指定條件之下執行相對的指令
+- 使用if來判斷
+- 如果 **if** ...就...
+- 將欲執行的相對指令放在大括號**`{ }`**
+
+```{r eval=FALSE, tidy=FALSE}
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+# cat是什麼？ "?cat()"
+x <- 3
+if ( x > 2 ) {
+  cat ( x, "is larger than 2")
+}
+```
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷2
+
+- 與"條件判斷1"為ㄧ樣的功能
+- 若條件符合時欲執行的指令只有一行，則可以省略`{ }`
+
+```{r eval=FALSE, tidy=FALSE}
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+x <- 5
+if ( x > 2 ) cat ( x, "is larger than 2")
+```
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷3
+
+- 如果...就執行指令Ａ，否則執行指令Ｂ
+- 加入 `else` 來執行B指令
+
+```{r eval=FALSE, tidy=FALSE}
+# 目標：Truth是否在x中？ 如果是，就印出指定結果。
+x <- c("what","is","truth")
+if("Truth" %in% x) {
+   cat("Truth is found")
+} else {
+   cat("Truth is not found")
+}
+```
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷4
+
+- 如果...就執行指令Ａ，否則執行指令Ｂ
+- 使用 `ifelse` 函數來執行指令
+
+```{r eval=FALSE, tidy=FALSE}
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+x <- c("what","is","truth")
+ifelse("Truth" %in% x,"Truth is found","Truth is not found")
+z <- 1:5
+ifelse(4 %in% z, "is included in x", "isn't included in x")
+```
+
+---
+
+# Ch1:條件判斷語句-if
+
+### 條件判斷5
+
+- 如果符合條件Ａ，則執行指令a ; 或如果符合條件B，則執行指令b，否則執行指令c
+- 使用 `if,else is,...,else` 函數來執行指令
+
+```{r eval=FALSE, tidy=FALSE}
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+y <- 2
+if(y > 2){
+  cat(y, "is larger than 2")
+}else if(y < 2){
+  cat(y, "is smaller than 2")
+}else{
+  cat(y, "is equal to 2")
+}
+```
+
+---
+class: inverse, center, middle
+
+# Ch2:循環語句-for
+
+---
+
+# Ch2:循環語句-for
+
+### 循環語句1
+
+- `for(){}` 可以用來執行某段程式碼
+- `for()`的小括弧內放入欲改變的參數，`{}`內則放入欲重複執行的程式碼
+
+```{r eval=FALSE, tidy=FALSE}
+x <- 0
+for (i in 1:10) {
+  x <- x+i
+  print(x)
+}
+
+y <- 0
+for (i in 1:10) {
+  y <- y+(2*i-1)
+  print(y)
+}
+```
+---
+
+# Ch2:循環語句-for 
+
+### 循環語句2
+
+- 循環語句加上條件判斷
+
+```{r eval=FALSE, tidy=FALSE}
+#迴圈每跑一次會印出一個值
+x <- 0
+for(i in 1:10){
+  if(i %% 2 !=0) { # x是否為奇數
+    x <- x + i 
+    print(x)
+  }
+}
+#迴圈跑完最後一次再印出最後得到的賦值
+y <- 0
+for(i in 1:10){
+  if(i %% 2 !=0) { # x是否為奇數
+    y <- y + i 
+  }
+}
+y
+
+```
+
+```{r eval=FALSE, tidy=FALSE, echo=FALSE}
+#迴圈跑完最後一次再印出最後得到的賦值
+y <- 0
+for(i in 1:10){
+  if(i %% 2 !=0) { # x是否為奇數
+    y <- y + i 
+  }
+}
+y
+```
+---
+
+# Ch2:循環語句-for 
+
+### 循環語句3
+
+- 雙重循環語句
+- 使用在多個參數間有相互組合時。ex.參數I的參數值i=1,...,i,時會分別對應到參數J的j個參數值1,...,j
+- `\t` = tab鍵, `\n` = 換行
+
+```{r eval=FALSE, tidy=FALSE}
+x <- 0
+for(i in 1:3){
+  for(j in 1:3){
+    cat(paste0(i, "*", j,  "=", i*j, ",\t"))
+  }
+  cat("\n")
+}
+```
+---
+
+# Ch2:循環語句-for 
+
+### 簡易練習
+
+- 利用雙重循環語句畫出如下的兩個圖案
+- 聖誕樹的難度加高（三個循環語句）
+
+
+```{r eval=TRUE, tidy=TRUE, echo=FALSE}
+for (i in 1:5) {
+  for (j in 1:i){
+    cat("*")
+  }
+  cat("\n")
+}
+
+for (i in 1:5){
+  for (j in 5:i){
+    cat(" ")
+  }
+  for (k in 1:(2*i-1)){
+    cat("*")
+  }
+  cat("\n")
+}
+
+```
+---
+
+# Ch2:循環語句-for 
+
+### 簡易練習(解答1)
+
+```{r eval=TRUE, tidy=TRUE}
+for (i in 1:5) {
+  for (j in 1:i){
+    cat("*")
+  }
+  cat("\n")
+}
+```
+
+---
+
+# Ch2:循環語句-for 
+
+### 簡易練習(解答2)
+
+```{r eval=TRUE, tidy=TRUE}
+for (i in 1:5){
+  for (j in 5:i){
+    cat(" ")
+  }
+  for (k in 1:(2*i-1)){
+    cat("*")
+  }
+  cat("\n")
+}
+```
+---
+class: inverse, center, middle
+
+# Ch3:自訂函數-function
+
+---
+
+# Ch3:自訂函數-function
+
+### 自訂函數1(`function`)
+
+- 函數是R語言的基石，有利重複使用
+- 通過多個函數的組裝，可以完成更複雜的任務
+- 函數在子環境中執行，不對外產生影響
+- 當有需要經常做這件事的時候，可以考慮寫成一個函式
+- `function(){}`的小括弧內放入會改變的參數，大括弧內放入函式。
+- 像是公式的概念，每次使用只需將指定值帶入參數就能得到相對應的結果。
+
+```{r eval=FALSE, tidy=FALSE}
+myfun <- function(x){
+  # 函式內容
+}
+```
+---
+
+# Ch3:自訂函數-function
+
+### 自訂函數2
+
+- 條件判斷
+
+```{r eval=FALSE, tidy=FALSE}
+#令函數名稱為myif
+myif <- function(x){ # 這個function有一個變數x
+  
+   if(x > 2){
+    cat(x, "is larger than 2")
+  }else if(x < 2){
+    cat(x, "is smaller than 2")
+  }else{
+    cat(x, "is equal to 2")
+  }  
+  
+}
+myif(1); myif(2); myif(3)
+```
+---
+
+# Ch3:自訂函數-function
+
+### 自訂函數3
+
+- 循環語句
+- 令x ＝ $$\sqrt{(x*\pi)+1+2+3+4+5}$$
+
+```{r eval=FALSE, tidy=FALSE}
+#令函數名稱為myif
+myfun <- function(x){ # 這個function有一個變數x
+  x <- pi*x
+  for (i in 1:5) {
+    x <- x+i
+  }
+  x <- sqrt(x)
+  return(x)
+  }
+myfun(8)
+```
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習
+
+- 請先下載 movies.zip
+
+- 下載下來的檔案解壓縮後有21個檔案
+
+- 一口氣讀入全部的檔案 (Hint: dir + for loop + list)
+
+- 將檔案合併 (Hint: do.call + rbind)
+
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習(1)
+
+```{r eval=FALSE, tidy=FALSE}
+# 展示movies資料夾下所有的檔案
+# dir是什麼？輸入：?dir
+#fname <- dir("data/movies/")
+#fname
+```
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習(2)
+
+```{r eval=TRUE, tidy=TRUE}
+# 展示movies資料夾下所有的檔案
+# 看一下fname的資料類型，class(fname)
+fname <- dir("data/movies/")
+# 練習讀一個csv檔 (movies-1995.csv)
+path <- paste("data/movies/", fname[1], sep="")
+#mov95 <- read.csv(path)
+#head(mov95)
+```
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習(3)
+
+```{r eval=TRUE, tidy=TRUE}
+# 展示movies資料夾下所有的檔案
+#fname <- dir("data/movies/")
+# 練習讀多個csv檔
+##mov <- list() # 預設一個名為 mov 的list容器
+# for(i in 1:length(fname)){
+#   path <- paste("data/movies/", fname[i], sep="")
+#   mov[[i]] <- read.csv(path)
+# }
+# head(mov[[1]])
+```
+
+---
+
+# Ch3:自訂函數-function
+
+### 進階練習(4)
+
+```{r eval=TRUE, tidy=TRUE}
+# # 將list用列合併(rbind)整合成data.frame
+# # do.call是什麼？輸入：?do.call
+# # df的資料類型？
+# df <- do.call(rbind, mov)
+# head(df)
+```
+
+---
+
+# Ch3:自訂函數-function
+
+### 小挑戰
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+---
+
+# Ch3:自訂函數-function
+
+### 小挑戰(解答)
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+```{r eval=TRUE, tidy=TRUE}
+# matches <- gregexpr("movies-199[5-9]+.csv", fname)
+# tmp <- regmatches(fname, matches)
+# fname90 <- unlist(tmp)
+# mov90 <- list() # 預設一個名為 mov 的list容器
+# for(i in 1:length(fname90)){
+#   path <- paste("data/movies/", fname90[i], sep="")
+#   mov90[[i]] <- read.csv(path)
+# }
+# df90 <- do.call(rbind, mov90)
+# # tail(df90) # 最後6筆
+```
+---
+
+# Ch3:自訂函數-function
+
+### 練習寫一個一次讀多個檔的函數
+
+```{r eval=TRUE, tidy=TRUE}
+# myRead <- function(fname, path0="data/movies/"){
+#   mov <- list()
+#   for(i in 1:length(fname)){
+#     path <- paste(path0, fname[i], sep="")
+#     mov[[i]] <- read.csv(path)
+#   }
+#   do.call(rbind, mov)
+# }
+# df <- myRead(fname90, path0="data/movies/")
+# head(df)
+```
+
+---
+class: inverse, center, middle
+
+# Ch4:Pipeline Coding Style
+
+---
+
+# Ch3:Pipeline Coding Style
+
+### 套件：Magrittr
+
+- 以層層放入的方式讓程式碼更簡潔易讀
+- 基本運算子包含：` %>% `,`%<>%`,`%T>%`,`%$%`等等
+
+```{r eval=TRUE, tidy=TRUE}
+library('magrittr')
+```
+---
+
+# Ch3:Pipeline Coding Style
+
+### `%>%`
+
+- `magrittr`套件中最常被使用到的運算子
+- 可以將很多層的函數運算拆開，便於閱讀(否則可能有很多層括弧)
+- 預設為將左側產生出來的結果放入右側函數的第一個參數位置
+  如：x %>% f(y, z), rather than f(x, y, z)
+- 或可用.指定左邊產生的結果要放入右邊哪個參數
+  如：y %>% f(x, ., z), rather than f(x, y, z)
+
+```{r eval=TRUE, tidy=TRUE}
+#install.packages("magrittr")
+library(magrittr)
+library(dplyr)
+iris %>% View
+group_by(iris,Species)%>%
+  summarise(Counts=mean(Sepal.Width))
+```
+
+# Ch3:Pipeline Coding Style
+
+### `%<>%`
+
+- 具有`%>%`的功能，並能再將右方的運算結果傳回並儲存至左方
+
+```{r eval=TRUE, tidy=TRUE}
+#install.packages("magrittr")
+
+```
+
+
+- 
