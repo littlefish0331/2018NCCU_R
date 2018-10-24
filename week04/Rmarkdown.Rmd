@@ -1,0 +1,478 @@
+---
+title: "Rmarkdown"
+author: "Chun-Yen Chen"
+date: "2018/10/16"
+output:
+  ioslides_presentation:
+    css: css/dsp.css
+    # logo: assets/img/Taiwan-R-logo.png
+    widescreen: yes
+    self_contained: false
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+setwd("~/Documents/2018NCCU_R/week04/")
+suppressPackageStartupMessages({
+  library(knitr) 
+  library(magrittr)
+  library(dplyr)
+  library(ggplot2)
+  library(xtable)
+  library(data.table)
+  library(DT)
+})
+opts_chunk$set(echo = TRUE, cache = FALSE, comment="")
+fit100 <- function(fname) sprintf('<img src="img/%s" style="vertical-align : middle" />', fname)
+fit50 <- function(fname) sprintf('<img src="img/%s" class="fit50" />', fname)
+fig <- function(fname, size=100) 
+  sprintf('<img src="img/%s" style="max-width:%d%%;max-height:%d%%;" />', fname, size, size)
+fig2 <- function(path, size = 100) {
+  sprintf("<img src='img/%s' style='width: %d%%'></img>", path, size)
+}
+sys_name <- Sys.info()["sysname"] %>% tolower
+sys_encode <- c("utf8", "utf8", "big5")[pmatch(sys_name, c("linux", "darwin", "windows"))]
+sessionInfo() %>% capture.output %>% cat(file = "sessionInfo.log", sep = "\n")
+thm <- theme(text=element_text(size=18))
+las2 <- theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+
+##  複習第一週
+* 建立 R 的使用環境
+* 熟悉 R 語言基礎操作
+    * 敘述句、數列
+    * 查詢說明檔
+* 了解 R 語言的物件的結構
+    * 變數型態：logical、numeric、character、factor
+    * 資料存放容器：list、data.frame
+
+##  複習第二週
+*  R 語言的流程控制
+    * if、else
+    * for loop
+    * 自訂 function
+*  R 語言的資料整理
+    * 讀檔
+    * dplyr
+*  R 語言的資料爬析概念
+
+##  複習第三週
+* 資料視覺化（ggplot2）
+    * 基本語法
+    * 各式圖形畫法
+    * 參數調整
+
+##  資料分析流程
+- 資料採集
+- 資料清洗處理
+- 統計及分析
+- 視覺呈現
+
+> - <p style="color:#750000;font-size:36px;">報告產出</p>
+
+## 資料分析 in R 
+
+<center>
+`r fig("ResearchPipeline.png", 84)`   
+<small>https://www.coursera.org/course/repdata</small>
+</center>
+
+## What is Markdown？
+- 啟發自2004年純文字電子郵件
+- 好寫、好讀
+- 可以純文字發布
+- [Markdown](http://daringfireball.net/projects/markdown/basics)
+    - Light weight markup language
+    - Remove HTML tag for higher readibility.
+    - Inline HTML is avaliable.
+    - HTML5 Introduction ([w3schools.com](https://www.w3schools.com/html/html5_intro.asp))
+
+## What is RMarkdown？
+- 可以在 Markdown 內嵌 R code
+- 一次呈現執行程式碼後的結果及文字說明
+- 不用再把圖、表複製到其他文件編輯器中
+- Rmd -> md -> html (docx, pdf)
+
+## Why we need R Markdown？
+
+- 時間久了會忘記code的意思
+- 要寫說明文件給同學、同事、教授、主管
+- 教授很有想法，想嘗試新方法 <br> (~~FK！又要重跑一份~~)
+- 老闆說要改流程 <br> (~~MD!之前貼到簡報上的圖又要重貼一份~~)
+
+> - **專案報告要呈現，code改了，但是文件無法同時修改！** <br> 
+
+
+## Why we need R Markdown？
+- 製作reproducible的報告、投影片
+- 想寫數學式子好展現自己的專業 $e=mc^2$
+- 只有一份source code，不需要額外複製圖片到報告中
+- 需求更改時，可以動態改變報告內容
+- 增加資料分析演算法的可讀性
+- IDE? RStudio提供支援
+
+## 前置作業 - 安裝
+- 最新版的RStudio已經包含R Markdown功能
+- 你也可以透過以下指令安裝R Markdown套件：
+
+```{r eval=FALSE, echo=TRUE}
+install.packages("rmarkdown")
+```
+
+# R Markdown 快速導覽
+
+
+
+## 打開你第一個RMarkdown
+
+`Document`
+<center>
+<img src="img/openRMD.png" width="600px">
+</center>
+
+## Overview
+
+<center>
+`r fig("RmdOverview_1.png", 80)` 
+</center>
+
+## Markdown
+
+<center>
+`r fig("markdownOverview.png")`  
+</center>
+
+## R Code Chunks
+
+<center>
+<img src="img/markdownChunk_1.png" width="800px">
+</center>
+
+
+## Inline R Code and Equations
+
+- 利用 \`r\` 在markdown中插入R程式
+- 插入 LaTeX 公式的方法：   
+    * 行內`$ equation $`   
+    * 段落 `$$ equation $$`
+- for example :
+    - 這是集訓班推出的第 `r  3+1` 門課程
+    - 熵指標的公式為$-\sum{p_i \log{p_i}}$ ，表示系統的亂度
+    - [markdown 公式輸入參考](http://oiltang.com/2014/05/04/markdown-and-mathjax/)
+    
+`r fig("InlineEx.png", 80)`  
+
+## Rendering Output
+- RStudio: "Knit" command (Ctrl+Shift+K)
+- Command line: rmarkdown::render function
+
+```{r eval=FALSE, echo=TRUE}
+rmarkdown::render("input.Rmd")
+```
+
+# Markdown Basics
+
+## Markdown Quick Reference
+
+在RStudio中，也可以找到RMarkdown的作弊小文件！
+
+<center>
+<img src="img/MdRef_1.png" width="800px">
+</center>
+
+## 標題！
+
+### Headers
+- 字體大小：使用井字號
+    - `# Header 1`
+    - `## Header 2`
+    - `### Header 3`
+    - `#### Header 4`
+    - `##### Header 5`
+    - `###### Header 6`
+
+
+## 字體！
+
+- 我是正常文字
+- 粗體：使用`**bold**` 或 `__bold__` 
+- 斜體：使用 `*italics*` 或 `_italics_`
+- 刪除線：使用`~~我是豬~~`
+
+<p style="color:#0000C6;">結果：</p>
+- 我是正常文字\
+- **粗體：bold** \
+- *斜體：italics* \
+- 刪除線：~~我是豬~~
+
+
+
+## Attach pictures
+- 貼上照片
+- [img](http://www.w3schools.com/tags/tag_img.asp): inserting images into an HTML document.
+    
+    Much easier for adjusting width and height.
+```html
+<img  src="img/me.png" width="80">
+<img  src="img/me.png" height="100" width="500">
+```
+<center><img  src="img/me.png" width="80"></center>  
+<center><img  src="img/me.png" height="100" width="500"></center>  
+
+## 先來簡單的複製貼上！
+- 利用`+`、`*`、`-`，列點文字
+- 嵌入圖片： `image: ![](path/to/smallorb.png) `
+- 嵌入連結：`[木下柚香](https://www.youtube.com/watch?v=ArPaid2Iuck&t=49s)`
+- 嵌入表格：
+  ```{}
+       標題一     |    標題二     
+    -------------| ------------- 
+        123      |    456        
+        789      |    0.0        
+    ```
+
+## Exercise - 1
+<p style="color:#003E3E;">請大家以下面的文字為樣板，打出一篇簡短的自我介紹：</p>
+
+大家好，我是**Glen**`(1.使用粗體)`，目前就讀於國立政治大學，家裡共有：
+
+`(2.請列點)`
+
+- 我爸\
+- 我媽\
+- 我\
+- 我哥哥\
+
+有四個成員，我是男生，我長這樣：
+`(3.請放照片)`
+<img src="img/me.png" width="50px">
+
+`(4.請放你的臉書連結)`
+想要和我做朋有的人可以加我[臉書](https://www.facebook.com/ChenChunYen0619)
+
+
+## Answer - 1
+
+```
+大家好，我是**Glen**(1.使用粗體)，目前就讀於國立政治大學，家裡共有：\
+
++ 我爸 \
++ 我媽 \
++ 我 \
++ 我哥哥 \
+
+有四個成員，我是男生，我長這樣：![](你的圖片路徑) 
+
+想要和我做朋有的人可以加我[臉書](臉書路徑)
+
+```
+
+## 補充
+- 連結網站
+- [iframe](http://www.w3schools.com/tags/tag_iframe.asp): displaying a web page within a web page
+
+```html
+<iframe src="https://dsp.im/" height=400 width=800></iframe>
+```
+<iframe src="https://dsp.im/" height=400 width=800></iframe>
+
+
+
+# R Code Chunks
+
+## Overview
+- 在 R Code Chunk 中，code可以被執行
+- code會被```{r}及```包圍
+- 快捷鍵（for windows、mac）：alt/option + control/command + i
+- 將下列文字複製貼上並Knit：
+
+<pre class="markdown"><code>&#96;&#96;&#96;{r}
+summary(cars$dist)
+&#96;&#96;&#96;
+</code></pre>
+
+```{r plot}
+summary(cars$dist)
+```
+
+## 命名 R code chunks 
+
+<pre class="markdown"><code>
+&#96;&#96;&#96;{r plot}
+summary(cars)
+plot(cars)
+&#96;&#96;&#96;
+</code></pre>
+
+<center>
+<img src="img/chunk_name_1.png" width="500px">
+</center>
+
+## Basic Chunk Options - 1
+
+- `echo`(TRUE): whether to include R source code in the output file
+- `eval`(TRUE): whether to evaluate the code chunk
+- `message`(TRUE): whether to preserve messages emitted by message()
+- `include`(TRUE): if include=FALSE, nothing will be written into the output document, but the code is still evaluated and plot files are generated
+- `warning`(TRUE): whether to preserve warnings in the output 
+- `comment`("##"): set to comment notation 
+
+## Basic Chunk Options - 2
+### 常用
+- `defult`：show code and output 
+- `echo = FALSE` ：only show output
+- `eval = FALSE` ：only show code
+- `include = FALSE` ： run code and don't show output
+
+## Basic Chunk Options - 3
+
+利用每個chunk右上的設定鍵
+
+<center>
+<img src="img/RMDchunksetting.png" width="700px">
+</center>
+
+## 執行部分chunk
+在編輯 RMarkdown 的過程中，想要測試 chunk 中的 code 是否成功，但又不想要每次檢查都 knit，不僅花費太多不必要的時間也浪費系統資源
+
+- 將游標點選在想要測試的 chunk 中任何一個位置
+- chunks 選單中，點選 Run Current Chunk 
+- 快捷鍵：Alt + Ctrl + C
+
+<center>
+<img src="img/RMDruncurrent.png" width="500px">
+</center>
+
+
+## Exercise - 2.1
+
+<center><p style="color:#0000C6;font-size:32px;"> 請大家利用 iris 的資料依照不同的品種，</p></center>
+<center><p style="color:#0000C6;font-size:32px;"> 畫出 Sepal.Length 及 Petal.Length 的 scatter plot</p></center>
+
+
+## Answer - 2.1
+
+```{r, fig.align='center', fig.height=4, fig.width=8, message=FALSE, warning=FALSE}
+iris %>% 
+  ggplot(aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
+  geom_point(shape=1, size=2) # shape控制圖示；size控制點的大小
+
+```
+
+## Exercise - 2.2
+
+<center><p style="color:#0000C6;font-size:32px;"> 請大家在 Rmarkdown 中產出將剛剛的 scatter plot </p></center>
+
+## Answer - 2.2
+
+### 第一個chunk
+<pre class="markdown"><code>
+&#96;&#96;&#96;{r, echo=TRUE, message=TRUE, warning=TRUE}
+library(dplyr)
+library(ggplot2)
+&#96;&#96;&#96;
+</code></pre>
+
+### 第二個chunk
+<pre class="markdown"><code>
+&#96;&#96;&#96;{r}
+iris %>% 
+  ggplot(aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
+  geom_point(shape=1, size=2) 
+&#96;&#96;&#96;
+</code></pre>
+
+## Exercise - 3
+
+利用R Markdown 製作《一周天氣預報》書面報告。
+
+- [原始出處](http://www.cwb.gov.tw/V7/forecast/taiwan/Taipei_City.htm)
+- [範例資料下載](https://pongponglin.github.io/2017NCCU_R/data/weatherbig5.csv)
+
+## 原始網頁  
+
+<center><img  src="img/RMDexercise3.1.png" width="800"></center>  
+
+## Rmarkdown 呈現
+[範例連結](https://pongponglin.github.io/2017NCCU_R/RMDsample.html)
+<center><img  src="img/exam_q1_1.png" width="750"></center>  
+
+## Exercise - 3.1
+
+利用R Markdown 製作《一周天氣預報》書面報告。
+
+- 計算05/23日當日的最高溫與最低溫度
+
+### **Hint：**
+1. 下載weatherbig5.csv到自己的電腦上
+2. 在R chunk中，利用read.csv()讀取檔案進行分析\
+MAC : read.csv(,fileEncoding="big5")
+3. 找出05/23當日最高溫 max()
+4. 找出05/23當日最低溫 min()
+5. use inline R chunk `r max()` 
+
+## Answer - 3.1
+
+利用R Markdown 製作《一周天氣預報》書面報告。
+
+- 計算05/23日當日的最高溫與最低溫度
+
+```{r include=FALSE}
+# Hint for Linu& Mac：
+dat <- read.csv("data/weatherbig5.csv", fileEncoding="big5") 
+max(dat[1:2, 4:5])
+min(dat[1:2, 4:5])
+# 預測高溫約`r max(dat[1:2,4:5])`度，低溫約`r min(dat[1:2,4:5])`度
+```
+
+```{r eval=FALSE}
+# Hint for Windows：
+dat <- read.csv("data/weatherbig5.csv") 
+max(dat[1:2, 4:5])
+min(dat[1:2, 4:5])
+# 預測高溫約`r max(dat[1:2,4:5])`度，低溫約`r min(dat[1:2,4:5])`度
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
