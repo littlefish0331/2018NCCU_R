@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1539680143195.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2653068632",
+    "id" : "5D795F2F",
+    "lastKnownWriteTime" : 1540285145,
+    "last_content_update" : 1540285145141,
+    "path" : "~/Documents/2018NCCU_R/week04/Rmarkdown.Rmd",
+    "project_path" : "Rmarkdown.Rmd",
+    "properties" : {
+        "cursorPosition" : "375,12",
+        "scrollLine" : "363",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
