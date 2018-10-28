@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EDA with R</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'EDA with R',
+                        subtitle: 'Data Visualization with <strong>ggplot</strong>',
+                useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                      },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Pei-Rou,Lin' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="RDataVisualization_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="RDataVisualization_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="RDataVisualization_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="css\dsp.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018.12.3</p>
+          </hgroup>
+  </slide>
+
+<!--Rmarkdown的註解-->
+
+<!--輸出為投影片-->
+
+<slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>課程綱要</h2></hgroup><article >
+
+</article></slide><slide class=""><hgroup><h2>Agenda</h2></hgroup><article  id="agenda">
+
+<!--
+投影片分兩欄 https://stackoverflow.com/questions/50378349/force-column-break-in-rmarkdown-ioslides-columns-2-layout
+-->
+
+<div style="float: left; width: 40%;">
+<ul>
+<li>EDA
+
+<ul>
+<li>基本統計量</li>
+<li>Data Visualization</li>
+</ul></li>
+<li>套件
+
+<ul>
+<li><code>ggplot2</code></li>
+<li><code>plotly</code></li>
+<li><code>highcharter</code></li>
+</ul></li>
+</ul></div>
+
+<div style="float: right; width: 60%;">
+<ul>
+<li>介紹
+
+<ul>
+<li>套件基本架構</li>
+<li>起手式(基本語法)</li>
+<li>應用(各種圖形的呈現)
+
+<ul>
+<li><code>Bar</code></li>
+<li><code>Line</code></li>
+<li><code>Histogram</code></li>
+<li><code>Boxplot</code></li>
+<li><code>point</code></li>
+</ul></li>
+<li>進階技巧</li>
+</ul></li>
+</ul></div>
+
+</article></slide><slide class=""><hgroup><h2>EDA</h2></hgroup><article  id="eda">
+
+<ul>
+<li>基本統計量
+
+<ul>
+<li>整體概況 : 平均數、變異數</li>
+<li>離群值</li>
+</ul></li>
+<li>Data Visualization
+
+<ul>
+<li>功能 : 清晰有效地傳達與溝通訊息</li>
+<li>目的 : 教學、研究、宣傳</li>
+<li>進階 : 美學、功能兼顧</li>
+<li>分析 : 統計圖形、訊息可視化</li>
+</ul></li>
+</ul>
+
+<!--
+註解 : 
+「資料視覺化」
+- 可以在不簡化資訊情況下，降低複雜資料的理解門檻
+- 幫助我們以較簡單的方式，去理解高維度(複雜)的資料。
+
+## plot type
+<div style="float: left; width: 40%;">
+- **備註:放各種類型的範例圖**
+<!--![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/barplot.png)
+![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/EDA_boxplot.png)
+![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/EDA_histograms.png)
+
+</div>
+
+<div style="float: right; width: 60%;">
+![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/EDA_line.png)
+
+![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/EDA_scatterplot.jpg)
+-->
+
+</div>
+
+<!--
+圖片參考 : 
+長條圖 https://drsimonj.svbtle.com/page/3
+折線圖 http://blog.sina.cn/dpool/blog/s/blog_632721090102v1ij.html?vt=4
+散布圖 https://blogs.bgsu.edu/statgraphicssishi/2013/04/19/r-package-ggplot2/
+直方圖 https://de.switch-case.com/32423372
+盒鬚圖 http://t-redactyl.io/blog/2016/04/creating-plots-in-r-using-ggplot2-part-10-boxplots.html
+
+進階
+地圖 http://blog.manugarri.com/making-a-beautiful-map-of-spain-in-ggplot2/
+玫瑰風向圖 https://medium.com/optima-blog/using-polar-coordinates-for-better-visualization-1d337b6c9dec
+-->
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>套件基本介紹</h2></hgroup><article >
+
+</article></slide><slide class=""><hgroup><h2>ggplot2簡介</h2></hgroup><article  id="ggplot2">
+
+<ul>
+<li>R環境下的繪圖套件</li>
+<li>取自 &ldquo;The Grammar of Graphics&rdquo; (Leland Wilkinson, 2005)</li>
+<li><a href='https://github.com/cosname/ggplot2-translation/blob/master/preface.md' title=''>設計理念</a></li>
+<li>採用圖層系統
+
+<ul>
+<li>用抽象的概念來控制圖形，</br> 避免細節繁瑣</li>
+<li>圖形美觀</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>plotly 簡介</h2></hgroup><article  id="plotly-">
+
+<ul>
+<li>Plotly是一個資料視覺化的R套件，以簡單的方式，讓資料能夠產生互動的效果。</li>
+<li>提供一個合作平台，使用者能夠將自己在R中繪製的圖存上屬於自己的Plotly平台上。</li>
+<li><a href='https://plot.ly/' title=''>Plotly官方網站</a></li>
+<li>結合了各式各樣的API，包裝<code>Python</code>、<code>R</code>、<code>Malab</code>、…等等</li>
+</ul>
+
+<ul class = 'build'>
+<li>當然～ggplot2也能夠輕易地使用plotly轉換成互動式的圖表！！</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>highcharter 簡介</h2></hgroup><article  id="highcharter-">
+
+<ul>
+<li>使用<code>data.frame</code></li>
+<li>使用<code>wide format</code> (與ggplot相反!)</li>
+<li><a href='http://jkunst.com/highcharter/hchart.html' title=''>highcharter套件介紹</a></li>
+<li><a href='http://jkunst.com/highcharter/' title=''>更多highcharter圖形</a></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>套件差異</h2></hgroup><article >
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="center">Tables</th>
+<th align="center">ggplot</th>
+<th align="center">highcharter</th>
+<th align="center">plotly</th>
+</tr>
+<tr class="odd">
+<td align="center">使用時機</td>
+<td align="center"></td>
+<td align="center">互動</td>
+<td align="center">互動</td>
+</tr>
+<tr class="even">
+<td align="center">相同</td>
+<td align="center">視覺化</td>
+<td align="center">視覺化</td>
+<td align="center">視覺化</td>
+</tr>
+<tr class="odd">
+<td align="center">讀入的資料格式不同</td>
+<td align="center">長資料</td>
+<td align="center">寬資料</td>
+<td align="center">長資料</td>
+</tr>
+</table>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>ggplot</h2></hgroup><article  id="ggplot">
+
+</article></slide><slide class=""><hgroup><h2>ggplot2基本架構</h2></hgroup><article  id="ggplot2">
+
+<div style="float: left; width: 50%;">
+<ol>
+<li>準備
+
+<ul>
+<li>資料 (data)、映射 (mapping)</li>
+</ul></li>
+<li>主要
+
+<ul>
+<li>幾何對象 (<code>geom</code>etric)</li>
+<li>美學(<code>aes</code>thetic)<br/></li>
+</ul></li>
+<li>次要
+
+<ul>
+<li>座標尺度 (<code>scale</code>)</li>
+<li>統計轉換 (<code>stat</code>istics)</li>
+<li>刻面 (<code>facet</code>)</li>
+<li>座標系統 (<code>coord</code>inante)</li>
+<li>圖層 (layer)</li>
+<li>主題 (<code>theme</code>)</li>
+</ul></li>
+</ol></div>
+
+<div style="float: right; width: 50%;">
+<p><img src='plot/ggplot_idea.jpg' width=400 align='center'></img> </br> source: <a href='http://goo.gl/Odt2Rs' title=''>http://goo.gl/Odt2Rs</a></p></div>
+
+<!--參考 https://rpubs.com/skydome20/R-Note4-Plotting_System-->
+
+<!--
+主要
+- Geometric objects (幾何屬性)：包括「點、線、盒狀圖、直條圖」等…
+- Aesthetic attributes (美學表現)：包括「顏色、形狀、點的大小與線的粗細」等…
+次要
+- Facets：提供在同一張圖內做多個子圖的方法，只要使用Faceting功能設定子圖分類的依據參數即可- Stats：將資料做統計轉換。
+- Scales：修改點線的顏色、形狀、xy軸的範圍等-->
+
+<!--參考 https://molecular-service-science.com/2013/11/27/r-ggplot-tutorial-1/-->
+
+</article></slide><slide class=""><hgroup><h2>ggplot2 基本語法</h2></hgroup><article  id="ggplot2-">
+
+<pre class = 'prettyprint lang-r'>ggplot(data=..., aes(x=..., y=...)) + 
+  geom_xxx(...) +
+  stat_xxx(...) + 
+  facet_xxx(...) + ...</pre>
+
+<ul>
+<li><code>ggplot</code> 描述 data 從哪來</li>
+<li><code>aes</code> 描述圖上的元素跟 data 之類的對應關係</li>
+<li><code>geom_xxx</code> 描述要畫圖的類型及相關調整的參數</li>
+<li>常用的類型諸如：<code>geom_bar</code>, <code>geom_line</code>, <code>geom_points</code>, …</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Various functions</h2></hgroup><article  id="various-functions">
+
+<pre class = 'prettyprint lang-r'>library(ggplot2)
+# list all geom
+ls(pattern = &#39;^geom_&#39;, env = as.environment(&#39;package:ggplot2&#39;))</pre>
+
+<pre > [1] &quot;geom_abline&quot;     &quot;geom_area&quot;       &quot;geom_bar&quot;       
+ [4] &quot;geom_bin2d&quot;      &quot;geom_blank&quot;      &quot;geom_boxplot&quot;   
+ [7] &quot;geom_col&quot;        &quot;geom_contour&quot;    &quot;geom_count&quot;     
+[10] &quot;geom_crossbar&quot;   &quot;geom_curve&quot;      &quot;geom_density&quot;   
+[13] &quot;geom_density_2d&quot; &quot;geom_density2d&quot;  &quot;geom_dotplot&quot;   
+[16] &quot;geom_errorbar&quot;   &quot;geom_errorbarh&quot;  &quot;geom_freqpoly&quot;  
+[19] &quot;geom_hex&quot;        &quot;geom_histogram&quot;  &quot;geom_hline&quot;     
+[22] &quot;geom_jitter&quot;     &quot;geom_label&quot;      &quot;geom_line&quot;      
+[25] &quot;geom_linerange&quot;  &quot;geom_map&quot;        &quot;geom_path&quot;      
+[28] &quot;geom_point&quot;      &quot;geom_pointrange&quot; &quot;geom_polygon&quot;   
+[31] &quot;geom_qq&quot;         &quot;geom_qq_line&quot;    &quot;geom_quantile&quot;  
+[34] &quot;geom_raster&quot;     &quot;geom_rect&quot;       &quot;geom_ribbon&quot;    
+[37] &quot;geom_rug&quot;        &quot;geom_segment&quot;    &quot;geom_sf&quot;        
+[40] &quot;geom_smooth&quot;     &quot;geom_spoke&quot;      &quot;geom_step&quot;      
+[43] &quot;geom_text&quot;       &quot;geom_tile&quot;       &quot;geom_violin&quot;    
+[46] &quot;geom_vline&quot;     </pre>
+
+</article></slide><slide class=""><hgroup><h2><strong>注意</strong></h2></hgroup><article >
+
+<ul>
+<li>使用 <code>data.frame</code> 儲存資料 (不可以丟 matrix 物件)</li>
+<li>使用 <code>long format</code> (利用reshape2將資料轉換成 1 row = 1 observation)</li>
+</ul>
+
+<p></br></p>
+
+<center>
+
+<img src='plot/wide-long.png' title=''/>
+
+</center>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>highcharter</h2></hgroup><article  id="highcharter">
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>plotly</h2></hgroup><article  id="plotly"></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

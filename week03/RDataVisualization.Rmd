@@ -1,0 +1,219 @@
+---
+title: "EDA with R" 
+subtitle: Data Visualization with **ggplot**
+author: "Pei-Rou,Lin"
+date: '2018.12.3'
+output:
+  ioslides_presentation:
+    css: css/dsp.css
+    widescreen: yes
+    self_contained: false
+---
+<!--Rmarkdown的註解-->
+<!--輸出為投影片-->
+
+```{r ,echo=FALSE,warning=FALSE,message=F}
+options('scipen'=100,'digits'=2)
+knitr::opts_chunk$set(comment="",prompt=F,strip.white=F,
+                      warning=FALSE,message=F,echo=T,
+                      fig.align='center',fig.height=3.5)
+##----載入套件----
+library(dplyr)
+library(dygraphs)
+library(ggplot2)
+library(ggmap)
+library(data.table)
+library(devtools)
+library(plotly)
+library(xtable)
+library(tidyr)
+library(DT)
+library(RColorBrewer)
+library(dtplyr)
+```
+
+# 課程綱要
+
+## Agenda
+
+<!--
+投影片分兩欄 https://stackoverflow.com/questions/50378349/force-column-break-in-rmarkdown-ioslides-columns-2-layout
+-->
+
+<div style="float: left; width: 40%;">
+- EDA
+    * 基本統計量
+    * Data Visualization
+- 套件
+    * `ggplot2`
+    * `plotly`
+    * `highcharter`
+</div>
+
+<div style="float: right; width: 60%;">
+- 介紹
+    * 套件基本架構
+    * 起手式(基本語法)
+    * 應用(各種圖形的呈現)
+        + `Bar`
+        + `Line`
+        + `Histogram`
+        + `Boxplot`
+        + `point`
+    * 進階技巧
+</div>
+
+## EDA
+
+- 基本統計量
+    * 整體概況 : 平均數、變異數
+    * 離群值
+- Data Visualization
+    * 功能 : 清晰有效地傳達與溝通訊息
+    * 目的 : 教學、研究、宣傳
+    * 進階 : 美學、功能兼顧
+    * 分析 : 統計圖形、訊息可視化
+
+<!--
+註解 : 
+「資料視覺化」
+- 可以在不簡化資訊情況下，降低複雜資料的理解門檻
+- 幫助我們以較簡單的方式，去理解高維度(複雜)的資料。
+
+## plot type
+<div style="float: left; width: 40%;">
+- **備註:放各種類型的範例圖**
+<!--![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/barplot.png)
+![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/EDA_boxplot.png)
+![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/EDA_histograms.png)
+
+</div>
+
+<div style="float: right; width: 60%;">
+![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/EDA_line.png)
+
+![](C:/Users/ASUS/Documents/2018NCCU_R/week03/圖/EDA_scatterplot.jpg)
+-->
+</div>
+
+<!--
+圖片參考 : 
+長條圖 https://drsimonj.svbtle.com/page/3
+折線圖 http://blog.sina.cn/dpool/blog/s/blog_632721090102v1ij.html?vt=4
+散布圖 https://blogs.bgsu.edu/statgraphicssishi/2013/04/19/r-package-ggplot2/
+直方圖 https://de.switch-case.com/32423372
+盒鬚圖 http://t-redactyl.io/blog/2016/04/creating-plots-in-r-using-ggplot2-part-10-boxplots.html
+
+進階
+地圖 http://blog.manugarri.com/making-a-beautiful-map-of-spain-in-ggplot2/
+玫瑰風向圖 https://medium.com/optima-blog/using-polar-coordinates-for-better-visualization-1d337b6c9dec
+-->
+
+# 套件基本介紹
+
+## ggplot2簡介
+
+- R環境下的繪圖套件
+- 取自 “The Grammar of Graphics” (Leland Wilkinson, 2005)
+- [設計理念](https://github.com/cosname/ggplot2-translation/blob/master/preface.md)
+- 採用圖層系統
+    - 用抽象的概念來控制圖形，</br>
+      避免細節繁瑣
+    - 圖形美觀
+
+## plotly 簡介
+- Plotly是一個資料視覺化的R套件，以簡單的方式，讓資料能夠產生互動的效果。
+- 提供一個合作平台，使用者能夠將自己在R中繪製的圖存上屬於自己的Plotly平台上。
+- [Plotly官方網站](https://plot.ly/)
+- 結合了各式各樣的API，包裝`Python`、`R`、`Malab`、...等等
+
+>- 當然～ggplot2也能夠輕易地使用plotly轉換成互動式的圖表！！
+
+## highcharter 簡介
+
+- 使用`data.frame`
+- 使用`wide format` (與ggplot相反!)
+- [highcharter套件介紹](http://jkunst.com/highcharter/hchart.html)
+- [更多highcharter圖形](http://jkunst.com/highcharter/)
+
+
+## 套件差異
+
+| Tables | ggplot |  highcharter  |  plotly |
+|:------:|:------:|:-------------:|:-------:|
+|使用時機|        | 互動          |     互動|
+| 相同   |視覺化  |   視覺化      |   視覺化|
+| 讀入的資料格式不同| 長資料| 寬資料 |長資料|
+
+# ggplot
+
+## ggplot2基本架構
+<div style="float: left; width: 50%;">
+1. 準備
+    - 資料 (data)、映射 (mapping)
+2. 主要
+    - 幾何對象 (`geom`etric)
+    - 美學(`aes`thetic)  
+3. 次要
+    - 座標尺度 (`scale`)
+    - 統計轉換 (`stat`istics)
+    - 刻面 (`facet`)
+    - 座標系統 (`coord`inante)
+    - 圖層 (layer)
+    - 主題 (`theme`)
+</div>
+
+<div style="float: right; width: 50%;">
+<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/ggplot_idea.jpg' width=400 align='center'></img>
+</br>
+source: http://goo.gl/Odt2Rs
+</div>
+
+
+<!--參考 https://rpubs.com/skydome20/R-Note4-Plotting_System-->
+<!--
+主要
+- Geometric objects (幾何屬性)：包括「點、線、盒狀圖、直條圖」等…
+- Aesthetic attributes (美學表現)：包括「顏色、形狀、點的大小與線的粗細」等…
+次要
+- Facets：提供在同一張圖內做多個子圖的方法，只要使用Faceting功能設定子圖分類的依據參數即可- Stats：將資料做統計轉換。
+- Scales：修改點線的顏色、形狀、xy軸的範圍等-->
+<!--參考 https://molecular-service-science.com/2013/11/27/r-ggplot-tutorial-1/-->
+
+## ggplot2 基本語法 
+
+```{r echo=TRUE, eval=FALSE}
+ggplot(data=..., aes(x=..., y=...)) + 
+  geom_xxx(...) +
+  stat_xxx(...) + 
+  facet_xxx(...) + ...
+```
+
+- `ggplot` 描述 data 從哪來
+- `aes` 描述圖上的元素跟 data 之類的對應關係
+- `geom_xxx` 描述要畫圖的類型及相關調整的參數
+- 常用的類型諸如：`geom_bar`, `geom_line`, `geom_points`, ...
+
+## Various functions
+
+```{r}
+library(ggplot2)
+# list all geom
+ls(pattern = '^geom_', env = as.environment('package:ggplot2'))
+```
+
+
+## **注意**
+
+- 使用 `data.frame` 儲存資料 (不可以丟 matrix 物件)
+- 使用 `long format` (利用reshape2將資料轉換成 1 row = 1 observation)
+
+</br>
+
+<center>![](C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/wide-long.png)</center>
+
+# plotly
+
+# highcharter
+
+
