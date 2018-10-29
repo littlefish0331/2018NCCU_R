@@ -46,41 +46,6 @@ class: inverse, center, middle
 ---
 class: inverse, center, middle
 
-# Ch1:表格型文件的輸入與輸出
-
----
-
-# Ch1:小複習-表格型文件的輸入
-
-- 路徑位置:`getwd` `setwd`
-
-- 嘗試讀取此[檔案](https://github.com/littlefish0331/2018NCCU_R/blob/develop/week02/data/Taiwan.csv)，並命名為Taiwan
-
-- 疑難排解
-    - 確認R當下路徑位置及檔案是否存在於該路徑下
-    
-    - 確認使用適用函數讀取特定格式檔案
-    
-    - 若出現 `Error:more columns than column name`    ,調整參數`headers = TRUE`
-    - mac預設編碼為UTF-8,windows預設編碼為big-5
-    
-    - 小Tips：mac讀取big5的檔或是windows讀取UTF8檔時要調整參數`fileEncoding`
-    
----
-# Ch1:表格型文件的輸出
-
-- 指令`write.csv`將data.frame輸出成csv檔
-
-```{r eval=FALSE, tidy=FALSE}
-write.csv(df, file = "Taiwan_output.csv", row.names=FALSE )
-# ㄧ樣可以使用參數fileEncoding來決定要輸出成哪種編碼格式
-# row.names=FALSE的目的是不要增加一行為"列名稱"的變數
-# 記得檔名要加副檔名
-```
-
----
-class: inverse, center, middle
-
 # Ch1:條件判斷語句-if
 
 ---
@@ -120,7 +85,6 @@ if ( x > 2 ) cat ( x, "is larger than 2")
 
 ---
 
-
 # Ch1:條件判斷語句-if
 
 ### 條件判斷3
@@ -131,7 +95,6 @@ if ( x > 2 ) cat ( x, "is larger than 2")
 ```{r eval=FALSE, tidy=FALSE}
 # 目標：Truth是否在x中？ 如果是，就印出指定結果。
 x <- c("what","is","truth")
-
 if("Truth" %in% x) {
    cat("Truth is found")
 } else {
@@ -151,11 +114,8 @@ if("Truth" %in% x) {
 ```{r eval=FALSE, tidy=FALSE}
 # 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
 x <- c("what","is","truth")
-
 ifelse("Truth" %in% x,"Truth is found","Truth is not found")
-
 z <- 1:5
-
 ifelse(4 %in% z, "is included in x", "isn't included in x")
 ```
 
@@ -224,16 +184,6 @@ for(i in 1:10){
     print(x)
   }
 }
-```
----
-
-# Ch2:循環語句-for 
-
-### 循環語句2
-
-- 循環語句加上條件判斷
-
-```{r eval=FALSE, tidy=FALSE}
 #迴圈跑完最後一次再印出最後得到的賦值
 y <- 0
 for(i in 1:10){
@@ -243,6 +193,17 @@ for(i in 1:10){
 }
 y
 
+```
+
+```{r eval=FALSE, tidy=FALSE, echo=FALSE}
+#迴圈跑完最後一次再印出最後得到的賦值
+y <- 0
+for(i in 1:10){
+  if(i %% 2 !=0) { # x是否為奇數
+    y <- y + i 
+  }
+}
+y
 ```
 ---
 
@@ -397,7 +358,7 @@ myfun(8)
 
 ### 進階練習
 
-- 請先下載 [movies.zip](https://github.com/littlefish0331/2018NCCU_R/blob/develop/week02/data/movies.zip)
+- 請先下載 movies.zip
 
 - 下載下來的檔案解壓縮後有21個檔案
 
@@ -415,25 +376,21 @@ myfun(8)
 # dir是什麼？輸入：?dir
 # dir為一個可以自動生成目錄底下文件名稱向量的函數
 # 請自己放入movies資料夾所在的路徑
-fname <- dir("data/movies/")
+fname <- dir("/Users/YiChun/Documents/2018NCCU_R/week02/data/movies/")
 fname
 ```
 ---
-<font size="16">
 
 # Ch3:自訂函數-function
 
 ### 進階練習 - 一次讀入movies資料夾下所有的檔案(2)
-```{r echo=FALSE}
-setwd('/Users/YiChun/Documents/2018NCCU_R/week02')
-```
 
-```{r out.width='100%'}
+```{r eval=TRUE, tidy=TRUE}
 # 看一下fname的資料類型，class(fname)
-fname <- dir("data/movies/")
+fname <- dir("/Users/YiChun/Documents/2018NCCU_R/week02/data/movies/")
 # 練習讀一個csv檔 (movies-1995.csv)
-path <- paste("data/movies/", fname[1], sep="")
-#path <- paste0("data/movies/", fname[1])
+path <- paste("/Users/YiChun/Documents/2018NCCU_R/week02/data/movies/", fname[1], sep="")
+#path <- paste0("/Users/YiChun/Documents/2018NCCU_R/week02/data/movies/", fname[1])
 mov95 <- read.csv(path)
 head(mov95)
 ```
@@ -444,14 +401,15 @@ head(mov95)
 ### 進階練習 - 一次讀入movies資料夾下所有的檔案(3)
 
 ```{r eval=TRUE, tidy=TRUE}
-fname <- dir("data/movies/")
+fname <- dir("/Users/YiChun/Documents/2018NCCU_R/week02/data/movies/")
 # 練習讀多個csv檔
 mov <- list() # 預設一個名為 mov 的list容器
 for(i in 1:length(fname)){
-path <- paste0("data/movies/", fname[i])
+path <- paste0("/Users/YiChun/Documents/2018NCCU_R/week02/data/movies/", fname[i])
    mov[[i]] <- read.csv(path)
  }
 head(mov[[1]])
+head(mov[[2]])
 ```
 
 ---
@@ -460,18 +418,52 @@ head(mov[[1]])
 
 ### 進階練習 - 一次讀入movies資料夾下所有的檔案(4)
 
-- do.call為快速將複雜的list結構扁平化成dataframe的函數
-
 ```{r eval=TRUE, tidy=TRUE}
 # 將list用列合併(rbind)整合成data.frame
 # do.call是什麼？輸入：?do.call
+# do.call為快速將複雜的list結構扁平化成dataframe的函數
 # df的資料類型？
 df <- do.call(rbind, mov)
 # 與 df <- rbind(mov[[1]],mov[[2]],...,mov[[21]])相同
+# 第一個參數是想要對list執行的函數，第二個參數為該函數的參數，若有多個可以使用c(A,B,...),do.call會將list的每一層抽屜打開後去執行目標函數
 class(df)
-#head(df)
+head(df)
+
+
 ```
 
+---
+
+# Ch3:自訂函數-function
+
+### 小挑戰
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+---
+
+# Ch3:自訂函數-function
+
+### 小挑戰(解答)
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+```{r eval=TRUE, tidy=TRUE}
+# matches <- gregexpr("movies-199[5-9]+.csv", fname)
+# tmp <- regmatches(fname, matches)
+# fname90 <- unlist(tmp)
+# mov90 <- list() # 預設一個名為 mov 的list容器
+# for(i in 1:length(fname90)){
+#   path <- paste("data/movies/", fname90[i], sep="")
+#   mov90[[i]] <- read.csv(path)
+# }
+# df90 <- do.call(rbind, mov90)
+# # tail(df90) # 最後6筆
+```
 ---
 
 # Ch3:自訂函數-function
@@ -479,49 +471,16 @@ class(df)
 ### 練習寫一個一次讀多個檔的函數
 
 ```{r eval=TRUE, tidy=TRUE}
-myRead <- function(fname, path0="data/movies/"){
-  mov <- list()
-  for(i in 1:length(fname)){
-    path <- paste(path0, fname[i], sep="")
-    mov[[i]] <- read.csv(path)
-  }
-  do.call(rbind, mov)
-  }
-  df <- myRead(fname, path0="data/movies/")
-#head(df)
-```
-
----
-
-# Ch3:自訂函數-function
-
-### 作業
-
-- 只讀取1995-1999電影資料
-
-- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
-
----
-
-# Ch3:自訂函數-function
-
-### 作業(解答)
-
-- 只讀取1995-1999電影資料
-
-- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
-
-```{r eval=TRUE, tidy=TRUE}
-matches <- gregexpr("movies-199[5-9]+.csv", fname)
-tmp <- regmatches(fname, matches)
-fname90 <- unlist(tmp)
-mov90 <- list() # 預設一個名為 mov 的list容器
-for(i in 1:length(fname90)){
-  path <- paste("data/movies/", fname90[i], sep="")
-  mov90[[i]] <- read.csv(path)
-  }
- df90 <- do.call(rbind, mov90)
-# tail(df90) # 最後6筆
+# myRead <- function(fname, path0="data/movies/"){
+#   mov <- list()
+#   for(i in 1:length(fname)){
+#     path <- paste(path0, fname[i], sep="")
+#     mov[[i]] <- read.csv(path)
+#   }
+#   do.call(rbind, mov)
+# }
+# df <- myRead(fname90, path0="data/movies/")
+# head(df)
 ```
 
 ---
@@ -536,8 +495,8 @@ class: inverse, center, middle
 ### 套件：Magrittr
 
 - 以層層放入的方式讓程式碼更簡潔易讀
-- 基本運算子包含：` %>% ` , `%<>%` , `%T>%` , `%$%`等等
- 
+- 基本運算子包含：` %>% `,`%<>%`,`%T>%`,`%$%`等等
+
 ```{r eval=TRUE, tidy=TRUE}
 library('magrittr')
 ```
@@ -554,7 +513,7 @@ library('magrittr')
 - 或可用.指定左邊產生的結果要放入右邊哪個參數
   如：y %>% f(x, ., z), rather than f(x, y, z)
 
-```{r eval=TRUE, tidy=TRUE, ,warning=FALSE,message=FALSE, results = "hide"}
+```{r eval=TRUE, tidy=TRUE}
 #install.packages("magrittr")
 library(magrittr)
 library(dplyr)
@@ -562,11 +521,10 @@ iris %>% View
 group_by(iris,Species)%>%
   summarise(Counts=mean(Sepal.Width))
 ```
----
 
 # Ch3:Pipeline Coding Style
 
-### <font color=#0099ff>`%<>%`
+### `%<>%`
 
 - 具有`%>%`的功能，並能再將右方的運算結果傳回並儲存至左方
 

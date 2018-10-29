@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 # R programming
 ## Week2
 ### YiChun Tsai
-### 2018/10/15 (updated: 2018-10-16)
+### 2018/10/15 (updated: 2018-10-29)
 
 ---
 
@@ -47,6 +47,42 @@ class: inverse, center, middle
 - 視覺呈現
 
 - 報告產出
+
+---
+class: inverse, center, middle
+
+# Ch1:表格型文件的輸入與輸出
+
+---
+
+# Ch1:小複習-表格型文件的輸入
+
+- 路徑位置:`getwd` `setwd`
+
+- 嘗試讀取此[檔案](https://github.com/littlefish0331/2018NCCU_R/blob/develop/week02/data/Taiwan.csv)，並命名為Taiwan
+
+- 疑難排解
+    - 確認R當下路徑位置及檔案是否存在於該路徑下
+    
+    - 確認使用適用函數讀取特定格式檔案
+    
+    - 若出現 `Error:more columns than column name`    ,調整參數`headers = TRUE`
+    - mac預設編碼為UTF-8,windows預設編碼為big-5
+    
+    - 小Tips：mac讀取big5的檔或是windows讀取UTF8檔時要調整參數`fileEncoding`
+    
+---
+# Ch1:表格型文件的輸出
+
+- 指令`write.csv`將data.frame輸出成csv檔
+
+
+```r
+write.csv(df, file = "Taiwan_output.csv", row.names=FALSE )
+# ㄧ樣可以使用參數fileEncoding來決定要輸出成哪種編碼格式
+# row.names=FALSE的目的是不要增加一行為"列名稱"的變數
+# 記得檔名要加副檔名
+```
 
 ---
 class: inverse, center, middle
@@ -92,6 +128,7 @@ if ( x &gt; 2 ) cat ( x, "is larger than 2")
 
 ---
 
+
 # Ch1:條件判斷語句-if
 
 ### 條件判斷3
@@ -101,12 +138,13 @@ if ( x &gt; 2 ) cat ( x, "is larger than 2")
 
 
 ```r
-# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
-x &lt;- 7
-if ( x &gt; 6.5 ) {
-  cat ( x, "is larger than 6.5")
-}else{
-  cat ( x, "is smaller than 6.5")
+# 目標：Truth是否在x中？ 如果是，就印出指定結果。
+x &lt;- c("what","is","truth")
+
+if("Truth" %in% x) {
+   cat("Truth is found")
+} else {
+   cat("Truth is not found")
 }
 ```
 
@@ -122,10 +160,13 @@ if ( x &gt; 6.5 ) {
 
 ```r
 # 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
-y &lt;- 1
-ifelse(y &gt; 2, "larger than 2", "smaller than 2")
+x &lt;- c("what","is","truth")
+
+ifelse("Truth" %in% x,"Truth is found","Truth is not found")
+
 z &lt;- 1:5
-ifelse(z &gt; 2, "larger than 2", "smaller than 2")
+
+ifelse(4 %in% z, "is included in x", "isn't included in x")
 ```
 
 ---
@@ -196,6 +237,17 @@ for(i in 1:10){
     print(x)
   }
 }
+```
+---
+
+# Ch2:循環語句-for 
+
+### 循環語句2
+
+- 循環語句加上條件判斷
+
+
+```r
 #迴圈跑完最後一次再印出最後得到的賦值
 y &lt;- 0
 for(i in 1:10){
@@ -205,8 +257,6 @@ for(i in 1:10){
 }
 y
 ```
-
-
 ---
 
 # Ch2:循環語句-for 
@@ -379,7 +429,7 @@ myfun(8)
 
 ### 進階練習
 
-- 請先下載 movies.zip
+- 請先下載 [movies.zip](https://github.com/littlefish0331/2018NCCU_R/blob/develop/week02/data/movies.zip)
 
 - 下載下來的檔案解壓縮後有21個檔案
 
@@ -391,98 +441,98 @@ myfun(8)
 
 # Ch3:自訂函數-function
 
-### 進階練習(1)
+### 進階練習 - 一次讀入movies資料夾下所有的檔案(1)
 
 
 ```r
-# 展示movies資料夾下所有的檔案
 # dir是什麼？輸入：?dir
-#fname &lt;- dir("data/movies/")
-#fname
+# dir為一個可以自動生成目錄底下文件名稱向量的函數
+# 請自己放入movies資料夾所在的路徑
+fname &lt;- dir("data/movies/")
+fname
 ```
 ---
+&lt;font size="16"&gt;
 
 # Ch3:自訂函數-function
 
-### 進階練習(2)
+### 進階練習 - 一次讀入movies資料夾下所有的檔案(2)
+
 
 
 ```r
-# 展示movies資料夾下所有的檔案
 # 看一下fname的資料類型，class(fname)
 fname &lt;- dir("data/movies/")
 # 練習讀一個csv檔 (movies-1995.csv)
 path &lt;- paste("data/movies/", fname[1], sep="")
-#mov95 &lt;- read.csv(path)
-#head(mov95)
+#path &lt;- paste0("data/movies/", fname[1])
+mov95 &lt;- read.csv(path)
+head(mov95)
+```
+
+```
+##   movieId                       title year
+## 1       1                   Toy Story 1995
+## 2       2                     Jumanji 1995
+## 3       3            Grumpier Old Men 1995
+## 4       4           Waiting to Exhale 1995
+## 5       5 Father of the Bride Part II 1995
+## 6       6                        Heat 1995
 ```
 ---
 
 # Ch3:自訂函數-function
 
-### 進階練習(3)
+### 進階練習 - 一次讀入movies資料夾下所有的檔案(3)
 
 
 ```r
-# 展示movies資料夾下所有的檔案
-#fname &lt;- dir("data/movies/")
+fname &lt;- dir("data/movies/")
 # 練習讀多個csv檔
-##mov &lt;- list() # 預設一個名為 mov 的list容器
-# for(i in 1:length(fname)){
-#   path &lt;- paste("data/movies/", fname[i], sep="")
-#   mov[[i]] &lt;- read.csv(path)
-# }
-# head(mov[[1]])
+mov &lt;- list() # 預設一個名為 mov 的list容器
+for(i in 1:length(fname)){
+path &lt;- paste0("data/movies/", fname[i])
+   mov[[i]] &lt;- read.csv(path)
+ }
+head(mov[[1]])
+```
+
+```
+##   movieId                       title year
+## 1       1                   Toy Story 1995
+## 2       2                     Jumanji 1995
+## 3       3            Grumpier Old Men 1995
+## 4       4           Waiting to Exhale 1995
+## 5       5 Father of the Bride Part II 1995
+## 6       6                        Heat 1995
 ```
 
 ---
 
 # Ch3:自訂函數-function
 
-### 進階練習(4)
+### 進階練習 - 一次讀入movies資料夾下所有的檔案(4)
+
+- do.call為快速將複雜的list結構扁平化成dataframe的函數
 
 
 ```r
-# # 將list用列合併(rbind)整合成data.frame
-# # do.call是什麼？輸入：?do.call
-# # df的資料類型？
-# df &lt;- do.call(rbind, mov)
-# head(df)
+# 將list用列合併(rbind)整合成data.frame
+# do.call是什麼？輸入：?do.call
+# df的資料類型？
+df &lt;- do.call(rbind, mov)
+# 與 df &lt;- rbind(mov[[1]],mov[[2]],...,mov[[21]])相同
+class(df)
 ```
 
----
-
-# Ch3:自訂函數-function
-
-### 小挑戰
-
-- 只讀取1995-1999電影資料
-
-- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
-
----
-
-# Ch3:自訂函數-function
-
-### 小挑戰(解答)
-
-- 只讀取1995-1999電影資料
-
-- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
-
+```
+## [1] "data.frame"
+```
 
 ```r
-# matches &lt;- gregexpr("movies-199[5-9]+.csv", fname)
-# tmp &lt;- regmatches(fname, matches)
-# fname90 &lt;- unlist(tmp)
-# mov90 &lt;- list() # 預設一個名為 mov 的list容器
-# for(i in 1:length(fname90)){
-#   path &lt;- paste("data/movies/", fname90[i], sep="")
-#   mov90[[i]] &lt;- read.csv(path)
-# }
-# df90 &lt;- do.call(rbind, mov90)
-# # tail(df90) # 最後6筆
+#head(df)
 ```
+
 ---
 
 # Ch3:自訂函數-function
@@ -491,19 +541,107 @@ path &lt;- paste("data/movies/", fname[1], sep="")
 
 
 ```r
-# myRead &lt;- function(fname, path0="data/movies/"){
-#   mov &lt;- list()
-#   for(i in 1:length(fname)){
-#     path &lt;- paste(path0, fname[i], sep="")
-#     mov[[i]] &lt;- read.csv(path)
-#   }
-#   do.call(rbind, mov)
-# }
-# df &lt;- myRead(fname90, path0="data/movies/")
-# head(df)
+myRead &lt;- function(fname, path0="data/movies/"){
+  mov &lt;- list()
+  for(i in 1:length(fname)){
+    path &lt;- paste(path0, fname[i], sep="")
+    mov[[i]] &lt;- read.csv(path)
+  }
+  do.call(rbind, mov)
+  }
+  df &lt;- myRead(fname, path0="data/movies/")
+#head(df)
 ```
 
 ---
+
+# Ch3:自訂函數-function
+
+### 作業
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+---
+
+# Ch3:自訂函數-function
+
+### 作業(解答)
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+
+```r
+matches &lt;- gregexpr("movies-199[5-9]+.csv", fname)
+tmp &lt;- regmatches(fname, matches)
+fname90 &lt;- unlist(tmp)
+mov90 &lt;- list() # 預設一個名為 mov 的list容器
+for(i in 1:length(fname90)){
+  path &lt;- paste("data/movies/", fname90[i], sep="")
+  mov90[[i]] &lt;- read.csv(path)
+  }
+ df90 &lt;- do.call(rbind, mov90)
+# tail(df90) # 最後6筆
+```
+
+---
+class: inverse, center, middle
+
+# Ch4:Pipeline Coding Style
+
+---
+
+# Ch3:Pipeline Coding Style
+
+### 套件：Magrittr
+
+- 以層層放入的方式讓程式碼更簡潔易讀
+- 基本運算子包含：` %&gt;% ` , `%&lt;&gt;%` , `%T&gt;%` , `%$%`等等
+ 
+
+```r
+library('magrittr')
+```
+---
+
+# Ch3:Pipeline Coding Style
+
+### `%&gt;%`
+
+- `magrittr`套件中最常被使用到的運算子
+- 可以將很多層的函數運算拆開，便於閱讀(否則可能有很多層括弧)
+- 預設為將左側產生出來的結果放入右側函數的第一個參數位置
+  如：x %&gt;% f(y, z), rather than f(x, y, z)
+- 或可用.指定左邊產生的結果要放入右邊哪個參數
+  如：y %&gt;% f(x, ., z), rather than f(x, y, z)
+
+
+```r
+#install.packages("magrittr")
+library(magrittr)
+library(dplyr)
+iris %&gt;% View
+group_by(iris,Species)%&gt;%
+  summarise(Counts=mean(Sepal.Width))
+```
+---
+
+# Ch3:Pipeline Coding Style
+
+### &lt;font color=#0099ff&gt;`%&lt;&gt;%`
+
+- 具有`%&gt;%`的功能，並能再將右方的運算結果傳回並儲存至左方
+
+
+```r
+#install.packages("magrittr")
+```
+
+
+-
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
