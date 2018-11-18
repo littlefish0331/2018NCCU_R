@@ -1,0 +1,14 @@
+Äæ¦ì¦WºÙ,Äæ¦ì±Ô­z
+X.,PokeDex index number
+Name,Name of the Pokemon
+Type 1,Type of pokemon
+Type 2,Other Type of Pokemon
+Total,"Sum of Attack, Sp. Atk, Defense, Sp. Def, Speed and HP"
+HP,Hit Points
+Attack,Attack Strength
+Defense,Defensive Strength
+Sp. Atk,Special Attack Strength
+Sp. Def,Special Defensive Strength
+Speed,Speed
+Generation,Number of generation
+Legendary,True if Legendary Pokemon False if not (more revision on mythical vs legendary needed)
