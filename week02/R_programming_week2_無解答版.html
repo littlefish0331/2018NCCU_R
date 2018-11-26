@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>R programming</title>
+    <meta charset="utf-8">
+    <meta name="author" content="YiChun Tsai" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# R programming
+## Week2
+### YiChun Tsai
+### 2018/10/15 (updated: 2018-11-24)
+
+---
+
+
+
+
+### 內容大綱
+
+#### 學習R語言的流程控制
+
+```yaml
+使用 for, while, function 來建立一套自動化的分析流程。
+```
+ 
+#### 學習R語言的資料整理
+
+```yaml
+針對原始資料做一些基本的處理，以得到一些關於資料的基本資訊。
+包含資料變形(如上週的as.numeric,as.matrix)，或是長寬資料的轉換,
+資料篩選與排序,以及分割與合併等。
+```
+
+---
+class: inverse, center, middle
+
+# Get Started
+
+---
+
+### 資料處理流程
+
+1. 資料採集
+
+**2. 資料清洗處理**
+
+**3. 統計及分析**
+
+4. 視覺呈現
+
+5. 報告產出
+
+---
+class: inverse, center, middle
+
+### 小複習-表格型文件的輸入
+
+---
+
+### 表格型文件的輸入
+
+- **getwd** 查詢目前所在的資料夾路徑 (絕對路徑)
+- **setwd** 設定所在的資料夾路徑 
+  (Session -&gt; Set Working Directory -&gt; Choose Directory)
+
+
+```r
+getwd()
+```
+
+```
+## [1] "/Users/YiChun/Documents/2018NCCU_R/week02"
+```
+
+
+```r
+# Mac
+setwd("/Users/YiChun/Documents/2018NCCU_R/week02")
+# Windows 若複製路徑記得要改斜線！
+# D:\桌面\YiChun\Rcode
+# setwd("D:/桌面/YiChun/Rcode")
+```
+
+---
+
+### 表格型文件的輸入
+
+- 嘗試讀取此[檔案](https://drive.google.com/file/d/1dNrgPcOF962qE0DbW2ELKjk-kY7HmJFv/view?usp=sharing)，並命名為 **price**
+
+
+```r
+price &lt;- read.csv("data/price.csv",fileEncoding = 'big5')
+```
+
+![price](https://raw.githubusercontent.com/ch543ch543/project-presentation/master/price.png)
+---
+
+### 表格型文件的輸入-疑難排解a
+
+#### 路徑錯誤
+
+```yaml
+path &lt;- "wrong_file_path"
+dat &lt;- read.csv(file = path)
+```
+
+```yaml
+無法開啟檔案 'wrong_file_path' ：No such file or directoryError in 
+file(file,"rt", encoding = fileEncoding) : 無法開啟連結
+```
+- 絕對路徑：確認檔案是否存在於該路徑下
+
+- 相對路徑：利用 **getwd** 了解當下的路徑位置
+
+---
+
+### 表格型文件的輸入-疑難排解b
+
+#### 格式錯誤
+
+```yaml
+price &lt;- read.csv("data/price.csv",fileEncoding = 'big5',sep = "1")
+```
+
+```yaml
+Error in read.table(file = file, header = header, sep = sep, 
+quote = quote, : more columns than column names
+```
+
+- 確認使用適用函數讀取特定格式檔案
+
+- 利用其他編輯器確認分隔符號
+
+- 確認每列的資料的欄位是正確的
+    
+---
+
+### 表格型文件的輸入-疑難排解c
+
+#### 編碼錯誤
+
+```yaml
+price &lt;- read.csv("data/price.csv")#mac預設無法讀取big5
+price &lt;- read.csv("data/price.csv",fileEncoding = 'big5')#正確
+```
+
+```yaml
+Error in make.names(col.names, unique = TRUE) : 
+無效的多位元組字串於 '&lt;b6&gt;m&lt;c2&gt;&lt;ed&gt;&lt;a5&gt;&lt;ab&gt;&lt;b0&gt;&lt;cf&gt;'
+```
+
+- 確認檔案的編碼
+
+- mac預設編碼為UTF8,windows預設編碼為big5
+
+- 若出現 `Error:more columns than column name`, 調整參數
+  `headers = TRUE`
+
+---
+### 表格型文件的輸出
+
+指令 **write.table** 將R的資料匯出成檔案
+
+
+```r
+write.table(price, file = "price_output.csv", sep=',',row.names=FALSE,
+          fileEncoding = 'big5')
+# ㄧ樣可以使用參數fileEncoding來決定要輸出成哪種編碼格式
+# row.names=FALSE的目的是不要增加一行為"列名稱"的變數
+# 記得檔名要加副檔名
+```
+
+---
+class: inverse, center, middle
+
+# Ch1 : R語言的流程控制
+
+---
+class: inverse, center, middle
+
+# Ch1-1 : 條件判斷語句-if
+
+---
+
+### Ch1-1 : 條件判斷語句-if
+
+#### 條件判斷a
+
+- 要求 **R** 在指定條件之下執行相對的指令
+- 使用 **if** 來進行邏輯判斷
+- 將欲執行的相對指令放在大括號`{ }`
+
+
+```r
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+# cat是什麼？ "?cat()"
+x &lt;- 3
+if ( x &gt; 2 ) {
+  cat ( x, "is larger than 2")
+}
+```
+
+```
+## 3 is larger than 2
+```
+
+---
+
+### Ch1-1 : 條件判斷語句-if
+
+#### 條件判斷b
+
+- 與"條件判斷1"為ㄧ樣的功能
+- 若條件符合時欲執行的指令只有一行，則可以省略`{ }`
+
+
+```r
+# 目標：判斷 x 是否大於2？ 如果是，就印出指定結果。
+x &lt;- 5
+if ( x &gt; 2 ) cat ( x, "is larger than 2")
+```
+
+```
+## 5 is larger than 2
+```
+
+---
+
+
+### Ch1-1 : 條件判斷語句-if
+
+#### 條件判斷c
+
+- 如果...就執行指令Ａ，否則執行指令Ｂ
+- 加入 **else** 來執行Ｂ指令
+
+
+```r
+# 目標：Truth是否在x中？ 如果是，就印出指定結果。
+x &lt;- c("what","is","truth")
+
+if("Truth" %in% x) {
+   cat("Truth is found")
+} else {
+   cat("Truth is not found")
+}
+```
+
+```
+## Truth is not found
+```
+
+---
+
+### Ch1-1 : 條件判斷語句-if
+
+#### 條件判斷d
+
+- 如果...就執行指令Ａ，否則執行指令Ｂ
+- 使用 **ifelse** 函數來執行指令
+
+
+```r
+# 目標：Truth是否在x中？ 如果是，就印出指定結果。
+x &lt;- c("what","is","truth")
+# ifelse(條件,若符合條件則執行Ａ,不符合條件則執行B)
+ifelse("Truth" %in% x,"Truth is found","Truth is not found")
+```
+
+```
+## [1] "Truth is not found"
+```
+
+---
+
+### Ch1-1 : 條件判斷語句-if
+
+#### 條件判斷e
+
+- 如果符合條件a，則執行指令Ａ ; 或如果符合條件b，則執行指令Ｂ，否則執行指令Ｃ
+- 使用 **if,else if,...,else** 函數來執行指令
+
+
+```r
+# 目標：判斷 y 是大於2,小於2或等於2？
+y &lt;- 2
+if(y &gt; 2){                          # y 是否大於2
+  cat(y, "is larger than 2")        
+}else if(y &lt; 2){                    # y 是否小於2
+  cat(y, "is smaller than 2")
+}else{                              # y 等於2
+  cat(y, "is equal to 2")
+}
+```
+
+```
+## 2 is equal to 2
+```
+
+---
+
+### Ch1-1 : 條件判斷語句-if
+
+#### 條件判斷f
+
+- 在條件A且(或)條件B下執行某指令
+- 使用 `|` 或是 `&amp;`
+
+
+```r
+# 目標：Truth與is是否都在x中？ 如果是，就印出指定結果。
+x &lt;- c("what","is","truth")
+
+if("Truth" %in% x &amp; "is" %in% x) {
+   cat("Truth and is are found")
+} else {
+   cat("Both are not found")
+}
+```
+
+```
+## Both are not found
+```
+
+---
+class: inverse, center, middle
+
+# Ch1-2 : 循環語句
+
+---
+
+### Ch1-2 : 循環語句
+
+- 實際問題中會需要規律性的重複操作。
+- 主要由"循環的終止條件"以及"循環體"所組成
+
+#### 循環語句for
+
+```yaml
+for (循環條件) {  
+
+ 循環體
+ 
+}
+```
+
+
+```r
+# 目標：計算1+2+3+...+10
+x &lt;- 0
+for (i in 1:10) {# for-loop裡，i會自動依序帶入1~10的值，
+                 # 重複進行括號內的程式碼
+  x &lt;- x+i       # 循環體# 迴圈內重複進行的動作
+}
+x
+```
+
+```
+## [1] 55
+```
+
+---
+
+### Ch1-2 : 循環語句
+
+#### 循環語句for
+
+- 循環語句加上條件判斷
+
+
+```r
+# 目標：迭代的從6加到10
+y &lt;- 0
+for(i in 1:10){
+  if(i &gt; 5) { # x是否大於5
+    y &lt;- y + i 
+  }
+}
+y  # 迴圈跑完最後一次再印出最後得到的賦值
+```
+
+---
+
+### Ch1-2 : 循環語句
+
+#### while-loop
+
+
+```r
+i &lt;- 1
+x &lt;- 0
+while(i &lt; 11){   # while-loop當符合裡面的條件時，就會
+                 # 一直重複括號內的程式碼，直到不符合為止
+  x &lt;- x + i     # 迴圈內重複進行的動作
+  i &lt;- i + 1     # 手動調整i, 如果沒有這一行這個迴圈會無止境的下去...
+}
+x
+```
+
+```
+## [1] 55
+```
+
+---
+
+### Ch1-2 : 循環語句 
+
+#### 循環語句 - 雙重循環語句
+
+- 使用在有兩層循環條件時
+
+```r 
+# 目標：印出九九乘法表
+x &lt;- 0
+for(i in 1:9){    # 控制ㄧ層循環的執行次數
+   for(j in 1:9){  # 控制二層循環的執行次數
+    cat(paste0(i, "*", j,  "=", i*j, ",\t")) # \t = tab鍵
+   }
+  cat("\n") # \n = 換行
+}
+```
+
+![99](https://raw.githubusercontent.com/ch543ch543/project-presentation/master/九九.png)
+---
+
+### Ch1-2 : 循環語句
+
+#### 簡易練習
+
+- 利用雙重循環語句畫出如下的兩個圖案
+- 聖誕樹的難度加高（三個循環語句）
+
+
+
+```
+## *
+## **
+## ***
+## ****
+## *****
+```
+
+```
+##      *
+##     ***
+##    *****
+##   *******
+##  *********
+```
+
+
+---
+class: inverse, center, middle
+
+# Ch1-3 : 自訂函數-function
+
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 自訂函數a
+
+- 當有需要經常做這件事的時候，可以考慮寫成一個函式
+- 函數在子環境中執行，不對外產生影響
+- 像是公式的概念，每次使用只需將指定值帶入參數就能得到相對應的結果。
+- If you have copy-and-pasted twice, it’s time to write a function.
+
+```yaml
+自訂函數名稱 &lt;- function(參數){
+  # 函數內容
+}
+```
+
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 自訂函數b
+
+
+```r
+#令函數名稱為myif
+myif &lt;- function(x){ # 這個function有一個變數x
+  
+   if(y &gt; 2){                         # y 是否大於2
+  cat(y, "is larger than 2")        
+  }else if(y &lt; 2){                    # y 是否小於2
+  cat(y, "is smaller than 2")
+  }else{                              # y 等於2
+  cat(y, "is equal to 2")
+  }
+  
+}
+myif(3)
+```
+
+```
+## 2 is equal to 2
+```
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 自訂函數c
+
+- 循環語句
+- 令x ＝ `$$(x*y)/2$$`
+
+
+```r
+# 三角形面積公式
+myfun &lt;- function(x,y){ # 這個function有兩個參數x,y
+   
+   z &lt;- x*y/2
+  return(z)             # return結果才會被回傳
+
+   }
+myfun(8,3)
+```
+
+```
+## [1] 12
+```
+
+```r
+# z &lt;- myfun(8,3)         沒有使用return時 
+```
+
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 小練習
+
+- 寫一個計算標準差的自訂函數
+- 最後確認用此自訂函數確認"1~100"的標準差為29.01149
+
+
+```r
+sd(1:100)
+```
+
+```
+## [1] 29.01149
+```
+
+
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 進階練習
+
+- 請先下載 [movies.zip](https://drive.google.com/file/d/10XBV-ZjMVQT-ygOmAq9YUlRbh1sZIrUQ/view?usp=sharing)
+
+- 下載下來的檔案解壓縮後有21個檔案
+
+- 一口氣讀入全部的檔案 (Hint: dir + for loop + list)
+
+- 將檔案合併 (Hint: do.call + rbind)
+
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 進階練習(1)
+
+
+```r
+# dir是什麼？輸入：?dir
+# dir為一個可以自動生成目錄底下文件名稱向量的函數
+# 請自己放入movies資料夾所在的路徑
+fname &lt;- dir("data/movies/")
+head(fname)
+```
+
+```
+## [1] "movies-1995.csv" "movies-1996.csv" "movies-1997.csv" "movies-1998.csv"
+## [5] "movies-1999.csv" "movies-2000.csv"
+```
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 進階練習(2)
+
+
+
+
+```r
+# 看一下fname的資料類型，class(fname)
+fname &lt;- dir("data/movies/")
+# 練習讀一個csv檔 (movies-1995.csv)
+path &lt;- paste("data/movies/", fname[1], sep="")
+#path &lt;- paste0("data/movies/", fname[1])
+mov95 &lt;- read.csv(path)
+head(mov95)
+```
+
+```
+##   movieId                       title year
+## 1       1                   Toy Story 1995
+## 2       2                     Jumanji 1995
+## 3       3            Grumpier Old Men 1995
+## 4       4           Waiting to Exhale 1995
+## 5       5 Father of the Bride Part II 1995
+## 6       6                        Heat 1995
+```
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 進階練習(3)
+
+
+```r
+fname &lt;- dir("data/movies/")
+# 練習讀多個csv檔
+mov &lt;- list() # 預設一個名為 mov 的list容器
+for(i in 1:length(fname)){
+path &lt;- paste0("data/movies/", fname[i])
+   mov[[i]] &lt;- read.csv(path)
+ }
+head(mov[[1]])  #class(mov[1])  class(mov[[1]])
+```
+
+```
+##   movieId                       title year
+## 1       1                   Toy Story 1995
+## 2       2                     Jumanji 1995
+## 3       3            Grumpier Old Men 1995
+## 4       4           Waiting to Exhale 1995
+## 5       5 Father of the Bride Part II 1995
+## 6       6                        Heat 1995
+```
+
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 進階練習(4)
+
+- **do.call** 為快速將複雜的**list**結構扁平化成**dataframe**的函數
+
+
+```r
+# 將list用列合併(rbind)整合成data.frame
+# do.call是什麼？輸入：?do.call
+# df的資料類型？
+df &lt;- do.call(rbind, mov)
+# 與 df &lt;- rbind(mov[[1]],mov[[2]],...,mov[[21]])相同
+class(df)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+#head(df)
+```
+
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 練習寫一個一次讀多個檔的函數
+
+
+```r
+myRead &lt;- function(fname, path0="data/movies/"){
+  
+  mov &lt;- list()
+  for(i in 1:length(fname)){
+    path &lt;- paste(path0, fname[i], sep="")
+    mov[[i]] &lt;- read.csv(path)
+  }
+  do.call(rbind, mov)
+  
+}
+  df &lt;- myRead(fname, path0="data/movies/")
+#head(df)
+```
+
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 作業
+
+- 只讀取1995-1999電影資料
+
+- 提示：`gregexpr("movies-199[5-9]+.csv", fname)`
+
+
+
+---
+class: inverse, center, middle
+
+# Ch1-4：Pipeline Coding Style
+
+---
+
+### Ch1-4：Pipeline Coding Style
+
+          
+&lt;img src='https://raw.githubusercontent.com/ch543ch543/project-presentation/master/%25%3E%25.png' height=500 align = 'center' &gt;&lt;/img&gt;
+
+---
+
+### Ch1-4：Pipeline Coding Style
+
+- 套件：**magrittr**
+- 不會改變程式實際執行的動作與結果
+- 程式碼更簡潔易讀
+- 基本運算子包含：**%&gt;%** , **%&lt;&gt;%** , **%T&gt;%** , **%$%**等等
+- [參考網站](https://blog.gtwang.org/r/r-pipes-magrittr-package/)
+
+
+```r
+# install.packages('magrittr')
+library(magrittr)
+```
+
+
+---
+
+### Ch1-4：Pipeline Coding Style
+
+#### **%&gt;%**
+
+- **magrittr**套件中最常被使用到的運算子
+- 可以將很多層的函數運算拆開，便於閱讀(否則可能有很多層括弧)
+- 預設為將左側產生出來的結果放入右側函數的第一個參數位置&lt;/br&gt;
+  如：x %&gt;% f(y, z), rather than f(x, y, z)
+- 或可用 “.” 指定左邊產生的結果要放入右邊哪個參數&lt;/br&gt;
+  如：y %&gt;% f(x, ., z), rather than f(x, y, z)
+- 快捷鍵: ctrl / command + shift + M
+
+
+```r
+x &lt;- 1:10
+mean(x)    # 傳統的R運算式
+x %&gt;% mean # 由左而右順序操作
+```
+---
+
+### Ch1-4：Pipeline Coding Style
+
+#### **%&gt;%** 等價用法
+
+利用三角形面積公式說明%&gt;%算子的幾種等價用法
+
+```yaml
+tri_area &lt;- function(a, h=5) a*h/2 
+a &lt;- 10
+tri_area(a)
+a %&gt;% tri_area          # 省略括號
+a %&gt;% tri_area(h=5)     # 保留括號
+a %&gt;% tri_area(., h=5)  # 以 `.` 來表示欲傳入的變數
+```
+
+---
+
+### Ch1-4：Pipeline Coding Style
+
+#### **%&gt;%**  傳統的指令
+
+```yaml
+# 畫鳶尾花花萼長度的密度函數圖
+plot(density(sample(iris$Sepal.Length, size=10000, replace=TRUE),
+kernel="gaussian"), col="red", main="density of sepal length")
+```
+
+#### Pipe Line
+
+```yaml
+iris$Sepal.Length %&gt;% 
+    sample(size=10000, replace=TRUE) %&gt;%   
+    # 隨機從Sepal.Length抽出10000個數
+    density(kernel="gaussian") %&gt;%         # 求出密度函數
+    plot(col="red", main="density of sepal length ") # 繪圖
+```
+
+---
+class: inverse, center, middle
+
+# Ch2：R 的資料處理
+
+---
+class: inverse, center, middle
+
+# Ch2-1：資料拉皮
+
+---
+
+### Ch2-1：資料拉皮
+
+- 資料根據其呈現的方式分為 **寬資料** 或 **長資料** 
+
+- 目的：有些資料在經過資料拉皮後可以更清楚地做解釋，&lt;/br&gt;
+或是在分析或繪圖的時候，根據不同函數的需要使用長或寬資料。
+
+- **寬資料**：對同一個觀察對象的所有測量值皆放在同一列
+
+- **長資料**：各個測量值單獨成一列，並標明其是哪個變數的觀察值
+
+- 套件：**reshape2** 與 **tidyr** 
+
+---
+
+### Ch2-1 : 資料拉皮
+
+寬資料
+
+```
+##   數學 英文 國文 student
+## 1  100   80   70   patty
+## 2   80   78   99    fish
+## 3   85   95   65     yen
+```
+
+長資料
+
+```
+##   student variable value
+## 1   patty     數學   100
+## 2    fish     數學    80
+## 3     yen     數學    85
+## 4   patty     英文    80
+## 5    fish     英文    78
+## 6     yen     英文    95
+## 7   patty     國文    70
+## 8    fish     國文    99
+## 9     yen     國文    65
+```
+
+---
+### Ch2-1 : 資料拉皮 **reshape2**
+
+#### **melt** : 寬資料-&gt;長資料
+
+
+```r
+# 原資料主要觀察patty, fish, yen三位同學三個科目的成績
+library(reshape2)
+mydata&lt;-data.frame('數學' = c(100,80,85),'英文' = c(80,78,95),
+        '國文' = c(70,99,65),'student' = c('patty','fish','yen'))
+mydata.long &lt;- melt(mydata,id='student')
+#參數"id"為想要拉長的變數，通常為觀察對象。
+mydata.long
+```
+
+```
+##   student variable value
+## 1   patty     數學   100
+## 2    fish     數學    80
+## 3     yen     數學    85
+## 4   patty     英文    80
+## 5    fish     英文    78
+## 6     yen     英文    95
+## 7   patty     國文    70
+## 8    fish     國文    99
+## 9     yen     國文    65
+```
+
+---
+### Ch2-1 : 資料拉皮 **reshape2**
+
+#### **dcast** : 長資料-&gt;寬資料
+
+
+```r
+mydata.short &lt;- dcast(mydata.long, student~variable)
+#波浪前面放想要作為"觀察對象"的變數，後面則放想要對觀察對象觀察的變數
+mydata.short
+```
+
+```
+##   student 數學 英文 國文
+## 1    fish   80   78   99
+## 2   patty  100   80   70
+## 3     yen   85   95   65
+```
+
+```r
+#試試
+#mydata.short &lt;- dcast(mydata.long,variable~student)
+```
+
+---
+### Ch2-1 : 資料拉皮 **reshape2**
+
+#### 小練習：
+
+- 先下載此[檔案](https://drive.google.com/file/d/1tTWMmsi1KTNFUD5LxEdIcDspO4_Mndmz/view?usp=sharing)
+- 將此檔案變為下面的樣子
+
+![ab](https://raw.githubusercontent.com/ch543ch543/project-presentation/master/原住民.png)
+
+---
+class: inverse, center, middle
+
+# Ch2-2 : 實用套件 **dplyr** 
+
+---
+
+### Ch2-2 : **dplyr**
+
+- [Introduction of dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html)
+
+- 讓 R 使用者可以用更有彈性的方式來處理資料
+
+- 針對data.frame做設計（名稱中的d）
+
+- 設計理念
+  - 導入資料整理最重要的動作（非常類似SQL）
+  - 快
+  - 可完成大部分的統計描述工作
+---
+
+### Ch2-2 : **dplyr**主要函數簡介
+
+- `arrange` 排列
+
+- `filter` 對列做篩選 (row)
+
+- `select` 對行做篩選 (column)
+
+- `mutate` 更改欄或新增欄
+
+- `group_by` + `summarise` 分類
+---
+
+### Ch2-2 : **dplyr**主要函數
+
+#### **arrange**
+
+&lt;img src='https://raw.githubusercontent.com/ch543ch543/project-presentation/master/arrange.png'&gt;&lt;/img&gt;
+
+---
+### Ch2-2 : **dplyr**主要函數
+
+#### **arrange**
+
+
+```r
+library(dplyr)
+iris %&gt;% head
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa
+```
+
+---
+### Ch2-2 : **dplyr**主要函數
+
+#### **arrange**
+
+- 對資料重新排序
+- arrange(dataframe, 要進行排序的項目,….)
+- 排序預設是由小到大，加上desc可使用遞減排列
+
+```r
+arrange(iris, Petal.Length) %&gt;% head
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          4.6         3.6          1.0         0.2  setosa
+## 2          4.3         3.0          1.1         0.1  setosa
+## 3          5.8         4.0          1.2         0.2  setosa
+## 4          5.0         3.2          1.2         0.2  setosa
+## 5          4.7         3.2          1.3         0.2  setosa
+## 6          5.4         3.9          1.3         0.4  setosa
+```
+
+```r
+#arrange(iris, desc(Petal.Length)) %&gt;% head
+```
+
+---
+
+### Ch2-2 : **dplyr**主要函數
+
+#### **arrange**
+
+- 想要對一個以上的變數進行排序，只要依序將項目填入後方即可
+
+
+```r
+arrange(iris, desc(Petal.Length), Sepal.Length ) %&gt;% head
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 1          7.7         2.6          6.9         2.3 virginica
+## 2          7.7         3.8          6.7         2.2 virginica
+## 3          7.7         2.8          6.7         2.0 virginica
+## 4          7.6         3.0          6.6         2.1 virginica
+## 5          7.9         3.8          6.4         2.0 virginica
+## 6          7.3         2.9          6.3         1.8 virginica
+```
+
+---
+
+### Ch2-2 : **dplyr**主要函數
+
+#### **filter** - 列(row)篩選
+
+![filter](https://raw.githubusercontent.com/ch543ch543/project-presentation/master/filter.png)
+---
+
+### Ch2-2 : **dplyr**主要函數
+
+#### **filter** - 列(row)篩選
+
+- `filter`用來篩選目標`列`
+
+對列篩資料
+
+```r
+filter(iris,Sepal.Length == 7.7)
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 1          7.7         3.8          6.7         2.2 virginica
+## 2          7.7         2.6          6.9         2.3 virginica
+## 3          7.7         2.8          6.7         2.0 virginica
+## 4          7.7         3.0          6.1         2.3 virginica
+```
+
+
+```r
+filter(iris,Sepal.Length == 7.7,Sepal.Width ==2.8)
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 1          7.7         2.8          6.7           2 virginica
+```
+
+---
+### Ch2-2 : **dplyr**主要函數
+
+#### **select** - 行(column)篩選
+
+![select](https://raw.githubusercontent.com/ch543ch543/project-presentation/master/select.png)
+---
+### Ch2-2 : **dplyr**主要函數
+
+#### **select** - 行(column)篩選
+
+- `select`用來篩選目標`行`
+
+
+```r
+tmp &lt;- select(iris,c(Petal.Width, Species))
+head(tmp)
+```
+
+```
+##   Petal.Width Species
+## 1         0.2  setosa
+## 2         0.2  setosa
+## 3         0.2  setosa
+## 4         0.2  setosa
+## 5         0.2  setosa
+## 6         0.4  setosa
+```
+
+---
+### Ch2-2 : **dplyr**主要函數
+
+#### **mutate** - 新增欄位
+
+![mutate](https://raw.githubusercontent.com/ch543ch543/project-presentation/master/mutate.png)
+
+---
+### Ch2-2 : **dplyr**主要函數
+
+#### **mutate** - 新增欄位
+
+- 如果想要做不同欄位間計算後得到新的欄位該如何處理
+- 譬如 `Petal.Length` * `Petal.Width`
+
+
+```r
+tmpiris &lt;- mutate(iris, Petal.Vol = Petal.Length * Petal.Width)
+head(tmpiris)
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species Petal.Vol
+## 1          5.1         3.5          1.4         0.2  setosa      0.28
+## 2          4.9         3.0          1.4         0.2  setosa      0.28
+## 3          4.7         3.2          1.3         0.2  setosa      0.26
+## 4          4.6         3.1          1.5         0.2  setosa      0.30
+## 5          5.0         3.6          1.4         0.2  setosa      0.28
+## 6          5.4         3.9          1.7         0.4  setosa      0.68
+```
+
+---
+### Ch2-2 : **dplyr**主要函數
+
+#### **`group_by` + `summarise`** - 樞紐分析
+
+![group_by + summarise](https://raw.githubusercontent.com/ch543ch543/project-presentation/master/groupby%2Bsummarise.png)
+
+---
+### Ch2-2 : **dplyr**主要函數
+
+####**`group_by` + `summarise`** - 樞紐分析
+
+樞紐分析：將散亂的資料以分組的方式檢視或計算，幫助我們把資料轉變成有意義的資訊。
+
+####**summarise**
+
+- 得到基本統計值如平均、標準差、最大值等等
+- Sepal.Length 的 mean、Sepal.Width 的標準差、Petal.Length 的最大值
+
+```r
+#?summarise
+summarise(iris, SL.mean=mean(Sepal.Length), SW.sd=sd(Sepal.Width),
+          PL.max=max(Petal.Length),n=n())#n()用來計算數量
+```
+
+```
+##    SL.mean     SW.sd PL.max   n
+## 1 5.843333 0.4358663    6.9 150
+```
+
+---
+### Ch2-2 : **dplyr**主要函數
+
+#### **`group_by` + `summarise`** - 樞紐分析
+
+- 通常`summarise`會搭配`group_by`使用，以進行分組計算
+- 例如：想要根據物種計算一些基本統計值時
+- 一樣的，如果有多個分組條件，把變數往後加下去就會依序分組計算了
+
+
+```r
+# 計算三個物種Sepal.Length的平均以及Sepal.Width的
+group_by(iris, Species) %&gt;%
+  summarise(SL.mean=mean(Sepal.Length), SW.sd=sd(Sepal.Width))
+```
+
+```
+## # A tibble: 3 x 3
+##   Species    SL.mean SW.sd
+##   &lt;fct&gt;        &lt;dbl&gt; &lt;dbl&gt;
+## 1 setosa        5.01 0.379
+## 2 versicolor    5.94 0.314
+## 3 virginica     6.59 0.322
+```
+
+```r
+#group_by(iris, Species,....) %&gt;%
+#  summarise(SL.mean=mean(Sepal.Length), SW.sd=sd(Sepal.Width))
+```
+---
+### Ch2-2 : 其他**dplyr**常用函數
+
+- 移除重複資料：distinct(iris)
+- 隨機抽取資料：sample_n(iris, 5)
+- 抽取指定列：slice(iris, c(1,3,4,5))
+
+---
+class: inverse, center, middle
+
+# Ch2-3 : 資料合併函數
+
+---
+
+### Ch2-3 : 資料合併函數
+
+- `bind_rows`
+
+- `bind_cols`
+
+- `merge`
+
+---
+
+### Ch2-3 : 資料合併函數
+
+#### `bind_rows`
+
+- 列合併時會直接對共有行進行合併，缺值則自動生成NA
+
+
+```r
+a &lt;- data.frame(a = 1:2, b = 3:4, d = 5:6)
+b &lt;- data.frame(a = 7:8, b = 2:3, c = 3:4, d = 8:9)
+# a 和 b 共有的行為a,b,d
+bind_rows(a,b)
+```
+
+```
+##   a b d  c
+## 1 1 3 5 NA
+## 2 2 4 6 NA
+## 3 7 2 8  3
+## 4 8 3 9  4
+```
+
+```r
+# rbind()有類似的功用，但必須在欄數相同時才能使用
+```
+
+---
+
+### Ch2-3 : 資料合併函數
+
+#### `bind_cols`
+
+- 列數相同時才可以使用
+- 直接橫向合併
+
+```r
+a &lt;- data.frame(a = 1:2, b = 3:4, c = 5:6)
+b &lt;- data.frame(d = 1:2, e = 3:4, f = 3:4, g = 5:6)
+bind_cols(a,b)
+```
+
+```
+##   a b c d e f g
+## 1 1 3 5 1 3 3 5
+## 2 2 4 6 2 4 4 6
+```
+
+```r
+# 與cbind()的功能相同
+```
+
+---
+
+### Ch2-3 : 資料合併函數
+
+#### `merge`
+
+- 預設為交集
+
+
+```r
+x &lt;- cbind(c("Tom", "Joe", "Vicky"), c(27, 29, 28))
+y &lt;- cbind(c("Tom", "Joe", "Vicky"), c(178, 186, 168))
+colnames(x) &lt;- c("name", "age")
+colnames(y) &lt;- c("name", "tall")
+merge(x, y, by = "name")
+```
+
+```
+##    name age tall
+## 1   Joe  29  186
+## 2   Tom  27  178
+## 3 Vicky  28  168
+```
+
+---
+
+### Ch2-3 : 資料合併函數
+
+#### `merge`
+
+- 聯集
+
+
+```r
+x &lt;- cbind(c("Tom", "Joe", "Vicky", "Bob"), c(27, 29, 28, 25))
+y &lt;- cbind(c("Tom", "Joe", "Vicky", "Bruce"), c(178, 186, 168, 170))
+colnames(x) &lt;- c("name", "age")
+colnames(y) &lt;- c("name", "tall")
+merge(x, y, by = "name", all = T) # all 是用來詢問是否顯示所有資料，像 Bob 與 Bruce 都有一欄資料沒有，所以沒下 all = T，應該不會出現 Bob 與 Bruce 資料。
+```
+
+```
+##    name  age tall
+## 1   Bob   25 &lt;NA&gt;
+## 2   Joe   29  186
+## 3   Tom   27  178
+## 4 Vicky   28  168
+## 5 Bruce &lt;NA&gt;  170
+```
+
+---
+
+### Ch2-3 : 資料合併函數
+
+#### `merge`
+
+- 只顯示 x 有的資料
+
+
+```r
+merge(x, y, by = "name", all.x = T) # 只顯示 x 有的資料，所以 Bruce 就不會出現。
+```
+
+```
+##    name age tall
+## 1   Bob  25 &lt;NA&gt;
+## 2   Joe  29  186
+## 3   Tom  27  178
+## 4 Vicky  28  168
+```
+
+- 只顯示 y 有的資料
+
+
+```r
+merge(x, y, by = "name", all.y = T) # 只顯示 y 有的資料，所以 Bob 就不會出現。
+```
+
+```
+##    name  age tall
+## 1   Joe   29  186
+## 2   Tom   27  178
+## 3 Vicky   28  168
+## 4 Bruce &lt;NA&gt;  170
+```
+
+---
+
+### 總結
+
+流程控制以及資料整理的基本概念和函數結構都很簡單，但是在判斷使用條件時，或是在使用複合式的使用各語法前，都是需要清晰的邏輯思考才會使用。
+只有多加練習，增加資料處理的經驗，才能更彈性並符合自己需求的使用程式語言。
+
+---
+
+#### 參考資料
+
+- [Learn R in R (Swirls)](https://github.com/wush978/DataScienceAndR)
+- [Data Wrangling Cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+- [Introduction to dplyr](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html)
+- [An Introduction to reshape2](http://seananderson.ca/2013/10/19/reshape.html)
+- [Cookbook for R](http://www.cookbook-r.com/)
+
+#### 繼續學習之路
+
+- [Taiwan R User Group](http://www.meetup.com/Taiwan-R)，mailing list: Taiwan-useR-Group-list@meetup.com
+- [ptt R_Language版](https://www.ptt.cc/bbs/R_Language/index.html)
+- [R軟體使用者論壇](https://groups.google.com/forum/#!forum/taiwanruser)
+- [StackOverflow](http://stackoverflow.com/)
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
