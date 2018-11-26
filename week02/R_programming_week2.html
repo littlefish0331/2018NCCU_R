@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 # R programming
 ## Week2
 ### YiChun Tsai
-### 2018/10/15 (updated: 2018-11-24)
+### 2018/10/15 (updated: 2018-11-26)
 
 ---
 
@@ -26,7 +26,7 @@ class: center, middle, inverse, title-slide
 #### 學習R語言的流程控制
 
 ```yaml
-使用 for, while, function 來建立一套自動化的分析流程。
+使用 ifelse, for, while 等等來建立一套自動化的分析流程。
 ```
  
 #### 學習R語言的資料整理
@@ -245,7 +245,7 @@ if ( x &gt; 2 ) cat ( x, "is larger than 2")
 # 目標：Truth是否在x中？ 如果是，就印出指定結果。
 x &lt;- c("what","is","truth")
 
-if("Truth" %in% x) {
+if("truth" %in% x) {
    cat("Truth is found")
 } else {
    cat("Truth is not found")
@@ -253,7 +253,7 @@ if("Truth" %in% x) {
 ```
 
 ```
-## Truth is not found
+## Truth is found
 ```
 
 ---
@@ -270,11 +270,11 @@ if("Truth" %in% x) {
 # 目標：Truth是否在x中？ 如果是，就印出指定結果。
 x &lt;- c("what","is","truth")
 # ifelse(條件,若符合條件則執行Ａ,不符合條件則執行B)
-ifelse("Truth" %in% x,"Truth is found","Truth is not found")
+ifelse("truth" %in% x,"Truth is found","Truth is not found")
 ```
 
 ```
-## [1] "Truth is not found"
+## [1] "Truth is found"
 ```
 
 ---
@@ -317,15 +317,15 @@ if(y &gt; 2){                          # y 是否大於2
 # 目標：Truth與is是否都在x中？ 如果是，就印出指定結果。
 x &lt;- c("what","is","truth")
 
-if("Truth" %in% x &amp; "is" %in% x) {
-   cat("Truth and is are found")
+if("truth" %in% x &amp; "is" %in% x) {
+   cat("truth and is are found")
 } else {
-   cat("Both are not found")
+   cat("Not both are all found")
 }
 ```
 
 ```
-## Both are not found
+## truth and is are found
 ```
 
 ---
@@ -383,6 +383,10 @@ for(i in 1:10){
   }
 }
 y  # 迴圈跑完最後一次再印出最後得到的賦值
+```
+
+```
+## [1] 40
 ```
 
 ---
@@ -453,8 +457,56 @@ for(i in 1:9){    # 控制ㄧ層循環的執行次數
 ##   *******
 ##  *********
 ```
+---
+
+### Ch1-2 : 循環語句-for 
+
+#### 簡易練習(解答1)
+
+```r
+for (i in 1:5) {
+   for (j in 1:i){ 
+    cat("*")       
+   }
+  cat("\n")
+}
+```
 
 
+```
+## *
+## **
+## ***
+## ****
+## *****
+```
+
+---
+
+### Ch1-2 : 循環語句-for 
+
+#### 簡易練習(解答2)
+
+```r
+for (i in 1:5){
+   for (j in i:5){
+    cat(" ")
+   }
+   for (k in 1:(2*i-1)){
+    cat("*")
+   }
+  cat("\n")
+}
+```
+
+
+```
+##      *
+##     ***
+##    *****
+##   *******
+##  *********
+```
 ---
 class: inverse, center, middle
 
@@ -486,7 +538,7 @@ class: inverse, center, middle
 
 ```r
 #令函數名稱為myif
-myif &lt;- function(x){ # 這個function有一個變數x
+myif &lt;- function(y){ # 這個function有一個變數x
   
    if(y &gt; 2){                         # y 是否大於2
   cat(y, "is larger than 2")        
@@ -501,7 +553,7 @@ myif(3)
 ```
 
 ```
-## 2 is equal to 2
+## 3 is larger than 2
 ```
 ---
 
@@ -550,6 +602,36 @@ sd(1:100)
 ## [1] 29.01149
 ```
 
+---
+
+### Ch1-3 : 自訂函數-function
+
+#### 小練習-解答
+
+- 寫一個計算標準差的自訂函數
+- 最後確認用此自訂函數確認"1~100"的標準差為29.01149
+
+
+```r
+my_sd &lt;- function(x){
+    my_sum &lt;- 0
+    my_length &lt;- 0
+    sq &lt;- 0
+    for (i in x){
+        my_sum &lt;- my_sum + i
+        my_length &lt;- my_length + 1
+    }
+    for (i in x){
+      sq &lt;- sq + (i - my_sum/my_length)^2
+    }
+    return(sqrt(sq/(my_length-1)))
+}
+my_sd(1:100)
+```
+
+```
+## [1] 29.01149
+```
 
 ---
 
@@ -903,6 +985,30 @@ mydata.short
 - 將此檔案變為下面的樣子
 
 ![ab](https://raw.githubusercontent.com/ch543ch543/project-presentation/master/原住民.png)
+---
+### Ch2-1 : 資料拉皮 **reshape2**
+
+#### 小練習(解答)
+
+
+```r
+# 觀察對象變為各族
+ab &lt;- read.csv('data/aborigine.csv',fileEncoding = 'big5')
+ab1 &lt;- melt(ab,c('year','SexCate')) # 原本同一年同一性別都在同一列，將他們拆開
+ab2 &lt;- dcast(ab1,variable~year+SexCate) # 觀察對象變為各族
+head(ab2,n=3)
+```
+
+```
+##   variable 201311_1 201311_2 201412_1 201412_2 201512_1 201512_2 201612_1
+## 1   阿美族    97348   100274    98564   102040    99761   103616   101008
+## 2   泰雅族    40200    44506    40730    45158    41240    45801    41800
+## 3   排灣族    46093    48863    46707    49627    47301    50348    47890
+##   201612_2 201712_1 201712_2 201806_1 201806_2
+## 1   105118   102059   106466   102630   107221
+## 2    46443    42433    47130    42757    47552
+## 3    51061    48467    51697    48781    52091
+```
 
 ---
 class: inverse, center, middle
@@ -1028,7 +1134,6 @@ arrange(iris, desc(Petal.Length), Sepal.Length ) %&gt;% head
 
 #### **filter** - 列(row)篩選
 
-- `filter`用來篩選目標`列`
 
 對列篩資料
 
@@ -1054,6 +1159,10 @@ filter(iris,Sepal.Length == 7.7,Sepal.Width ==2.8)
 ## 1          7.7         2.8          6.7           2 virginica
 ```
 
+```r
+#filter(iris,Sepal.Length == 7.7 &amp; Sepal.Width ==2.8)
+```
+
 ---
 ### Ch2-2 : **dplyr**主要函數
 
@@ -1069,7 +1178,7 @@ filter(iris,Sepal.Length == 7.7,Sepal.Width ==2.8)
 
 
 ```r
-tmp &lt;- select(iris,c(Petal.Width, Species))
+tmp &lt;- select(iris,Petal.Width, Species) # 篩選出來的資料會是data.frame
 head(tmp)
 ```
 
@@ -1083,6 +1192,10 @@ head(tmp)
 ## 6         0.4  setosa
 ```
 
+```r
+tmp &lt;- select(iris,A = Petal.Width, B = Species) # 對變數重新命名
+```
+
 ---
 ### Ch2-2 : **dplyr**主要函數
 
@@ -1093,7 +1206,7 @@ head(tmp)
 ---
 ### Ch2-2 : **dplyr**主要函數
 
-#### **mutate** - 新增欄位
+#### **mutate** - 新增衍生與非衍生變數
 
 - 如果想要做不同欄位間計算後得到新的欄位該如何處理
 - 譬如 `Petal.Length` * `Petal.Width`
@@ -1131,10 +1244,10 @@ head(tmpiris)
 ####**summarise**
 
 - 得到基本統計值如平均、標準差、最大值等等
-- Sepal.Length 的 mean、Sepal.Width 的標準差、Petal.Length 的最大值
+
 
 ```r
-#?summarise
+# Sepal.Length 的 mean、Sepal.Width 的標準差、Petal.Length 的最大值
 summarise(iris, SL.mean=mean(Sepal.Length), SW.sd=sd(Sepal.Width),
           PL.max=max(Petal.Length),n=n())#n()用來計算數量
 ```
