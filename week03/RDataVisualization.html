@@ -231,14 +231,14 @@ https://bitbucket.org/yeyuting/2018nccu_r/src/master/week03/
 
 <div style="float: left; width: 50%;">
 - *備註:放各種類型的範例圖*
-<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/barplot.png' width=200 align='center'></img>
-<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/EDA_boxplot.png' width=200 align='center'></img>
-<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/EDA_histograms.png' width=200 align='center'></img>
+<img src='./plot/barplot.png' width=200 align='center'></img>
+<img src='./plot/EDA_boxplot.png' width=200 align='center'></img>
+<img src='./plot/EDA_histograms.png' width=200 align='center'></img>
 </div>
 
 <div style="float: right; width: 50%;">
-<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/EDA_line.png' width=200 align='center'></img>
-<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/EDA_scatterplot.jpg' width=200 align='center'></img>
+<img src='./plot/EDA_line.png' width=200 align='center'></img>
+<img src='./plot/EDA_scatterplot.jpg' width=200 align='center'></img>
 </div>
 -->
 
@@ -311,7 +311,7 @@ https://bitbucket.org/yeyuting/2018nccu_r/src/master/week03/
 </ol></div>
 
 <div style="float: right; width: 50%;">
-<p><img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/ggplot_idea.jpg' width=300 align='center'></img> </br> </br> <img src='C:/Users/ASUS/Documents/2018nccu_r/week03/plot/ggplot架構.png' width=300 align='center'></img></p></div>
+<p><img src='./plot/ggplot_idea.jpg' width=300 align='center'></img> </br> </br> <img src='./plot/ggplot架構.png' width=300 align='center'></img></p></div>
 
 <!--
 3. 次要
@@ -394,7 +394,7 @@ ls(pattern = &#39;^geom_&#39;, env = as.environment(&#39;package:ggplot2&#39;))<
 
 <center>
 
-<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/wide-long.png' title=''/>
+<img src='./plot/wide-long.png' title=''/>
 
 </center>
 
@@ -408,17 +408,27 @@ ls(pattern = &#39;^geom_&#39;, env = as.environment(&#39;package:ggplot2&#39;))<
 
 <!--install.packages(c("ggplot2","dplyr","tidyverse")),repos="http://cran.csie.ntu.edu.tw/")-->
 
-<p></br> - 載入套件</p>
+<p></br></p>
+
+<ul>
+<li>載入套件</li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>library(ggplot2)
 library(dplyr)
 library(tidyverse)
 library(reshape2)</pre>
 
-<p></br> - <strong>注意</strong>:</p>
+<p></br></p>
 
-<pre >- 換一台裝置時，可能需要先安裝套件~
-- 下載完套件一定要記得`library`才能使用喲!</pre>
+<ul>
+<li><p><strong>注意</strong>:</p>
+
+<ul>
+<li><p>換一台裝置時，可能需要先安裝套件~</p></li>
+<li><p>下載完套件一定要記得<code>library</code>才能使用喲!</p></li>
+</ul></li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>從讀檔開始(.csv)</h2></hgroup><article  id=".csv">
 
@@ -432,7 +442,7 @@ library(reshape2)</pre>
 <pre class = 'prettyprint lang-r'>############### 絕對路徑 ###############
 # 請輸入完整的檔案路徑
 transaction &lt;- read.csv(&quot;/Users/ASUS/Documents/2018nccu_r/week03/data/transaction.csv&quot;) #如果你是Mac,加上fileEncoding = &quot;big5&quot;
-titanic&lt;-read.csv(&quot;C:/Users/ASUS/Documents/2018nccu_r/week03/data/train.csv&quot;)
+titanic&lt;-read.csv(&quot;./data/train.csv&quot;)
 
 ############### 相對路徑 ###############
 getwd() #知道目前自己所在的路徑
@@ -996,12 +1006,18 @@ district       n
 <div style="float: left; width: 50%;">
 <pre class = 'prettyprint lang-r'>count_class &lt;- titanic %&gt;% 
   filter(Survived==&quot;1&quot;) %&gt;% 
-  group_by(Pclass) %&gt;% 
+  # 抓出生存者
+  group_by(Pclass) %&gt;%
+  # 以艙等分組
   summarise(n= n()) %&gt;% 
+  # 以分組計算各別數量
   as.data.frame()</pre></div>
 
 <div style="float: right; width: 50%;">
-<p>Pclass n 1 1 136 2 2 87 3 3 119</p></div>
+<pre >  Pclass   n
+1      1 136
+2      2  87
+3      3 119</pre></div>
 
 <!--
 ##
@@ -1215,7 +1231,7 @@ ggplot(count_city_use , aes(x = city, y = rate, fill = use_type)) +
 </article></slide><slide class=""><hgroup><h2>Grouping：reorder (類別堆疊)</h2></hgroup><article  id="groupingreorder-">
 
 <ul>
-<li>stack類別堆疊(標準)</li>
+<li>stack類別堆疊</li>
 <li><code>aes(...,fill = reorder(分組變數,y變數))</code> : 分組顏色可依y的值排序</li>
 </ul>
 
@@ -1282,13 +1298,23 @@ ggplot(count_city_use , aes(x = city, y = rate, fill = reorder(use_type,rate))) 
 </ul>
 
 <ul class = 'build'>
-<li><code>group_by</code>、 <code>summarise</code> <!--
-- **ex : 看鐵達尼號的資料不同性別的生存和非生存的人數**
-- 標題、x,y座標軸名稱</br>
-x : 性別、y:比例、分組:生存(1:是、0:否)
-- 堆疊方式
---></li>
+<li><code>group_by</code>、 <code>summarise</code></li>
 </ul>
+
+<ul class = 'build'>
+<li>hint : 資料繪圖</li>
+</ul>
+
+<ul class = 'build'>
+<li>注意 : <code>fill = factor(Survived)</code></li>
+</ul>
+
+<!--
+- **ex : 看鐵達尼號的資料不同性別的生存和非生存的人數**
+    - 標題、x,y座標軸名稱</br>
+          x : 性別、y:比例、分組:生存(1:是、0:否)
+    - 堆疊方式
+-->
 
 </article></slide><slide class=""><hgroup><h2>參考解答</h2></hgroup><article  id="-2">
 
@@ -1499,8 +1525,6 @@ count_month_taipei &lt;-
 </table></div>
 
 <div style="float: right; width: 50%;">
-
-
 <table class = 'rmdtable'>
 <tr class="header">
 <th align="left"></th>
@@ -1580,13 +1604,7 @@ count_month_taipei &lt;-
 <td align="left">12</td>
 <td align="right">5224</td>
 </tr>
-<tr class="odd">
-<td align="left">&lt;/div</td>
-<td align="left">&gt;</td>
-<td align="left"></td>
-<td align="right"></td>
-</tr>
-</table>
+</table></div>
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-5">
 
@@ -1745,10 +1763,26 @@ http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-8">
 
 <div style="float: left; width: 50%;">
-<p></br> </br> <img src="Figs/unnamed-chunk-68-1.png" width="480" style="display: block; margin: auto;" /></p></div>
+<p></br></p>
+
+<ul>
+<li>隱藏離群值，沒更改y的座標軸</li>
+</ul>
+
+<p></br></p>
+
+<p><img src="Figs/unnamed-chunk-68-1.png" width="480" style="display: block; margin: auto;" /></p></div>
 
 <div style="float: right; width: 50%;">
-<p></br> </br> <img src="Figs/unnamed-chunk-69-1.png" width="480" style="display: block; margin: auto;" /></p></div>
+<p></br></p>
+
+<ul>
+<li>隱藏離群值，有更改y的座標軸</li>
+</ul>
+
+<p></br></p>
+
+<p><img src="Figs/unnamed-chunk-69-1.png" width="480" style="display: block; margin: auto;" /></p></div>
 
 </article></slide><slide class=""><hgroup><h2>小挑戰</h2></hgroup><article  id="-3">
 
@@ -1770,6 +1804,13 @@ http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>參考解答</h2></hgroup><article  id="-5">
+
+<pre class = 'prettyprint lang-r'>titanic %&gt;% filter(Embarked %in% c(&quot;C&quot;,&quot;Q&quot;,&quot;S&quot;)) %&gt;% 
+  ggplot(aes(x = Embarked, y = Fare, fill = factor(Pclass))) +
+  geom_boxplot(outlier.shape=NA) +
+  labs(&quot;各船艙和各登船港口的票價&quot;,x = &quot;登船港口&quot; , y = &quot;票價&quot;)+
+  coord_cartesian(ylim=c(0,175))+
+  scale_fill_manual(name=&quot;艙等&quot;,values=c(&quot;#006BA6&quot;, &quot;#FFBC42&quot;, &quot;#D81159&quot;))</pre>
 
 <p><img src="Figs/unnamed-chunk-70-1.png" width="480" style="display: block; margin: auto;" /></p>
 
@@ -1831,8 +1872,10 @@ http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
 
 <ul>
 <li><p><code>geom_abline(slope,intercept = y截距)</code></p></li>
-<li><p><code>geom_vline(yintercept = y截距)</code></p></li>
-<li><p><code>geom_hline(xintercept = x截距)</code></p></li>
+<li><p><code>geom_vline(xintercept = x截距)</code></p></li>
+<li><p><code>geom_hline(yintercept = y截距)</code></p></li>
+<li><p>x截距:和x軸相交的x座標</p></li>
+<li><p>y截距:和y軸相交的y座標</p></li>
 </ul></li>
 </ul>
 
@@ -1852,7 +1895,7 @@ norm %&gt;%
 
 <pre class = 'prettyprint lang-r'>ggplot(iris , aes(x = Sepal.Length, y = Petal.Length)) + 
   geom_point() +
-  stat_smooth(method=lm, level=.95) # add se=FALSE to disable CI</pre>
+  stat_smooth(method=lm, level=.95) # 可以加se=FALSE,則不顯示信賴區間</pre>
 
 <p><img src="Figs/unnamed-chunk-75-1.png" width="624" style="display: block; margin: auto;" /></p>
 
@@ -1908,15 +1951,26 @@ ggsave(&quot;plot.pdf&quot;, width = 4, height = 4) #pdf,png,jpeg</pre>
 <ul>
 <li>Plotly是一個資料視覺化的R套件，以簡單的方式，讓資料能夠產生互動的效果。</li>
 <li>提供一個合作平台，使用者能夠將自己在R中繪製的圖存上屬於自己的Plotly平台上。</li>
-<li><a href='https://plot.ly/' title=''>Plotly官方網站</a></li>
 <li>結合了各式各樣的API，包裝<code>Python</code>、<code>R</code>、<code>Matlab</code>、…等等</li>
 </ul>
 
 <ul class = 'build'>
-<li>當然~ggplot2也能夠輕易地使用plotly轉換成互動式的圖表!! &lt;!– ## 基本架構</li>
+<li>當然~ggplot2也能夠輕易地使用plotly轉換成互動式的圖表!!</li>
 </ul>
 
-<p>–&gt;</p>
+</article></slide><slide class=""><hgroup><h2>想知道更多~</h2></hgroup><article >
+
+<ul>
+<li><a href='https://plot.ly/' title=''>Plotly 官網</a></li>
+<li><a href='https://plotly-book.cpsievert.me/index.html' title=''>Plotly for R - 推薦</a></li>
+<li><a href='https://plot.ly/r/#fundamentals' title=''>plotly.R Library - 推薦</a></li>
+<li><a href='https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf' title=''>plotly cheat sheet</a></li>
+</ul>
+
+<!--
+## 基本架構
+
+-->
 
 </article></slide><slide class=""><hgroup><h2>畫圖前的準備</h2></hgroup><article  id="-1">
 
@@ -1970,7 +2024,7 @@ ggplotly(temp)</pre>
   labs(title=&quot;交易房屋的屋齡狀況&quot;,x=&quot;屋齡&quot;,y=&quot;數量&quot;)
 ggplotly(temp)</pre>
 
-<p>preserve04e440d43392b75c</p>
+<p>preserve958a1df0462519d5</p>
 
 </article></slide><slide class=""><hgroup><h2>histogram - <code>plot_ly</code></h2></hgroup><article  id="histogram---plot_ly">
 
@@ -1980,7 +2034,7 @@ ggplotly(temp)</pre>
 
 <pre class = 'prettyprint lang-r'>transaction %&gt;% plot_ly(x = ~age, type = &quot;histogram&quot;)</pre>
 
-<p>preserve460c90e303cf2476</p>
+<p>preserve3ad00d202debe0a8</p>
 
 </article></slide><slide class=""><hgroup><h2>boxplot - <code>ggplotly</code></h2></hgroup><article  id="boxplot---ggplotly">
 
@@ -1993,7 +2047,7 @@ ggplotly(temp)</pre>
   labs(title=&quot;各縣市每平方公尺價格&quot;,x = &quot;縣市&quot; , y = &quot;每平方公尺價格(元)&quot;)
 ggplotly(temp)</pre>
 
-<p>preserve45dbccecb4d05cf4</p>
+<p>preserve9d26a5d630f40036</p>
 
 </article></slide><slide class=""><hgroup><h2>boxplot - <code>plot_ly</code></h2></hgroup><article  id="boxplot---plot_ly">
 
@@ -2001,7 +2055,11 @@ ggplotly(temp)</pre>
 <li>ex:<strong>呈現各縣市每平方公尺價格</strong></li>
 </ul>
 
-<p>preserveddb21d32c29afbf2</p>
+<pre class = 'prettyprint lang-r'>transaction %&gt;% plot_ly(x = ~price_unit, y = ~use_type) %&gt;% 
+  add_boxplot(color = ~use_type) %&gt;%
+  layout(yaxis = list(title = &quot;&quot;), margin = list(l = 100))</pre>
+
+<p>preservea67ba4cd24f7fc12</p>
 
 </article></slide><slide class=""><hgroup><h2>boxplot - <code>plot_ly</code></h2></hgroup><article  id="boxplot---plot_ly-1">
 
@@ -2010,7 +2068,11 @@ ggplotly(temp)</pre>
 <li><p><code>y = ~interaction(use_type,city)</code></p></li>
 </ul>
 
-<p>preserve4dc2130f630e262f</p>
+<pre class = 'prettyprint lang-r'>transaction %&gt;% plot_ly(x = ~price_unit, y = ~interaction(use_type,city)) %&gt;% 
+  add_boxplot(color = ~use_type) %&gt;%
+  layout(yaxis = list(title = &quot;&quot;), margin = list(l = 100))</pre>
+
+<p>preserveb80633a6ecc25cda</p>
 
 </article></slide><slide class=""><hgroup><h2>scatter plot - <code>ggplotly</code></h2></hgroup><article  id="scatter-plot---ggplotly">
 
@@ -2023,10 +2085,10 @@ ggplotly(temp)</pre>
   labs(title=&quot;花萼和花瓣長度&quot;,x=&quot;花萼長度&quot;,y=&quot;花瓣長度&quot;)
 ggplotly(temp)</pre>
 
-<p>preservec3d885d5bffaf4a3</p>
+<p>preserve0f59e863dfa24f52</p>
 
 <!--
-preserve45bacd73241f2084preserved0847e0f1be32029
+preserve9f4ac1f25611f4cdpreserve8ccf0853be4429d1
 
 -->
 
@@ -2044,7 +2106,7 @@ preserve45bacd73241f2084preserved0847e0f1be32029
   type = &#39;scatter&#39;,
   mode = &#39;markers&#39;)</pre>
 
-<p>preserve8c67dff3bc64d5b1</p>
+<p>preserveb382106a2993b401</p>
 
 <!--
 
@@ -2059,15 +2121,6 @@ diamonds %>%  plot_ly(
 ```
 -->
 
-</article></slide><slide class=""><hgroup><h2>想知道更多~</h2></hgroup><article >
-
-<ul>
-<li><a href='https://plot.ly/' title=''>Plotly 官網</a></li>
-<li><a href='https://plotly-book.cpsievert.me/index.html' title=''>Plotly for R</a></li>
-<li><a href='https://plot.ly/r/#fundamentals' title=''>plotly.R Library</a></li>
-<li><a href='https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf' title=''>plotly cheat sheet</a></li>
-</ul>
-
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>highcharter</h2></hgroup><article  id="highcharter">
 
 </article></slide><slide class=""><hgroup><h2>highcharter 簡介</h2></hgroup><article  id="highcharter-">
@@ -2076,7 +2129,7 @@ diamonds %>%  plot_ly(
 <li>使用<code>data.frame</code></li>
 <li>使用<code>wide format</code> (與ggplot相反!)</li>
 <li><a href='https://www.highcharts.com/' title=''>highcharter 官方網站</a></li>
-<li><a href='http://jkunst.com/highcharter/hchart.html' title=''>更多關於highcharter</a></li>
+<li><a href='http://jkunst.com/highcharter/hchart.html' title=''>更多關於highcharter -推薦</a></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>畫圖前的準備</h2></hgroup><article  id="-2">
@@ -2202,7 +2255,7 @@ diamonds %>%  plot_ly(
 <li>ex : <strong>呈現各縣市各月份的交易量</strong></li>
 </ul>
 
-<p>preserve456c38a91fdfd03a</p>
+<p>preserve37f69c7bb6e840b8</p>
 
 </article></slide><slide class=""><hgroup><h2>長條圖</h2></hgroup><article >
 
@@ -2260,7 +2313,7 @@ diamonds %>%  plot_ly(
 
 <p>ex : <strong>各縣市的各使用分區的交易量</strong></p>
 
-<p>preserveb9e42efaf7925b7d</p>
+<p>preservec123b7c36a53ac83</p>
 
 </article></slide><slide class=""><hgroup><h2>顯示文字</h2></hgroup><article >
 
@@ -2278,11 +2331,7 @@ diamonds %>%  plot_ly(
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-14">
 
-<p>preserve32a631fa0547cbd5</p>
-
-</article></slide><slide class=""><hgroup><h2>想學更多~</h2></hgroup><article >
-
-<p><a href='http://rpubs.com/lofuyang/167269%5D' title=''>http://rpubs.com/lofuyang/167269</a></p></article></slide>
+<p>preserve327b8cdcc87da57e</p></article></slide>
 
 
   <slide class="backdrop"></slide>
