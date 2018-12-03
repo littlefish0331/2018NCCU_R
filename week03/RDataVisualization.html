@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EDA with R</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'EDA with R',
+                        subtitle: 'Data Visualization',
+                useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                      },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Pei-Rou,Lin' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="RDataVisualization_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="RDataVisualization_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="RDataVisualization_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="RDataVisualization_files/ioslides-13.5.1/js/slide-deck.js"></script>
+  <script src="RDataVisualization_files/htmlwidgets-1.2/htmlwidgets.js"></script>
+  <script src="RDataVisualization_files/plotly-binding-4.8.0/plotly.js"></script>
+  <script src="RDataVisualization_files/typedarray-0.1/typedarray.min.js"></script>
+  <script src="RDataVisualization_files/jquery-1.11.3/jquery.min.js"></script>
+  <link href="RDataVisualization_files/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+  <script src="RDataVisualization_files/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+  <link href="RDataVisualization_files/plotly-htmlwidgets-css-1.39.2/plotly-htmlwidgets.css" rel="stylesheet" />
+  <script src="RDataVisualization_files/plotly-main-1.39.2/plotly-latest.min.js"></script>
+  <script src="RDataVisualization_files/proj4js-2.3.15/proj4.js"></script>
+  <link href="RDataVisualization_files/highcharts-5.0.6/css/motion.css" rel="stylesheet" />
+  <script src="RDataVisualization_files/highcharts-5.0.6/highstock.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/highcharts-3d.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/highcharts-more.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/annotations.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/broken-axis.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/data.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/drilldown.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/exporting.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/funnel.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/heatmap.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/map.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/no-data-to-display.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/offline-exporting.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/solid-gauge.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/modules/treemap.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/plugins/annotations.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/plugins/draggable-legend.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/plugins/draggable-points.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/plugins/export-csv.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/plugins/grouped-categories.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/plugins/motion.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/plugins/pattern-fill-v2.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/plugins/tooltip-delay.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/custom/reset.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/custom/symbols-extra.js"></script>
+  <script src="RDataVisualization_files/highcharts-5.0.6/custom/text-symbols.js"></script>
+  <link href="RDataVisualization_files/fontawesome-4.5.0/font-awesome.min.css" rel="stylesheet" />
+  <link href="RDataVisualization_files/htmlwdgtgrid-1/htmlwdgtgrid.css" rel="stylesheet" />
+  <script src="RDataVisualization_files/highchart-binding-0.5.0/highchart.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="css\dsp_1.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">2018.12.3</p>
+          </hgroup>
+  </slide>
+
+<!--
+教學檔在bitbucket:
+https://bitbucket.org/yeyuting/2018nccu_r/src/master/week03/
+-->
+
+<slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>課程綱要</h2></hgroup><article >
+
+</article></slide><slide class=""><hgroup><h2>Agenda</h2></hgroup><article  id="agenda">
+
+<div style="float: left; width: 40%;">
+<ul>
+<li>EDA
+
+<ul>
+<li>基本統計量</li>
+<li>Data Visualization</li>
+</ul></li>
+<li>套件
+
+<ul>
+<li><code>ggplot2</code></li>
+<li><code>plotly</code></li>
+<li><code>highcharter</code></li>
+</ul></li>
+</ul></div>
+
+<div style="float: right; width: 60%;">
+<ul>
+<li>介紹
+
+<ul>
+<li>套件基本架構</li>
+<li>起手式(基本語法)</li>
+<li>應用(各種圖形的呈現)
+
+<ul>
+<li><code>Bar</code></li>
+<li><code>Line</code></li>
+<li><code>Histogram</code></li>
+<li><code>Boxplot</code></li>
+<li><code>Point</code></li>
+</ul></li>
+<li>進階技巧</li>
+</ul></li>
+</ul></div>
+
+</article></slide><slide class=""><hgroup><h2>EDA</h2></hgroup><article  id="eda">
+
+<div style="float: left; width: 50%;">
+<ul>
+<li>基本統計量
+
+<ul>
+<li>整體概況 : 平均數、變異數等…</li>
+<li>離群值</li>
+</ul></li>
+<li>Data Visualization
+
+<ul>
+<li>功能 :
+
+<ul>
+<li>探索瞭解資料</li>
+<li>清晰有效地傳達與溝通訊息</li>
+</ul></li>
+<li>目的 : 教學、研究、宣傳</li>
+<li>進階 : 美學、功能兼顧</li>
+<li>分析 : 統計圖形、訊息可視化</li>
+</ul></li>
+</ul></div>
+
+<div style="float: right; width: 50%; text-align:left;">
+<ul class = 'build'>
+<li><table>
+
+<tr>
+
+<td bgcolor="#ffffe6">
+
+<strong>資料視覺化</strong> </br></br>可以在不簡化資訊情況下， </br>降低複雜資料的理解門檻 </br></br>幫助我們以較簡單的方式， </br>去理解高維度
+
+</td>
+
+</tr>
+
+</table></li>
+</ul></div>
+
+<!--
+## plot type
+
+<div style="float: left; width: 50%;">
+- *備註:放各種類型的範例圖*
+<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/barplot.png' width=200 align='center'></img>
+<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/EDA_boxplot.png' width=200 align='center'></img>
+<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/EDA_histograms.png' width=200 align='center'></img>
+</div>
+
+<div style="float: right; width: 50%;">
+<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/EDA_line.png' width=200 align='center'></img>
+<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/EDA_scatterplot.jpg' width=200 align='center'></img>
+</div>
+-->
+
+<!--
+圖片參考 : 
+長條圖 https://drsimonj.svbtle.com/page/3
+折線圖 http://blog.sina.cn/dpool/blog/s/blog_632721090102v1ij.html?vt=4
+散布圖 https://blogs.bgsu.edu/statgraphicssishi/2013/04/19/r-package-ggplot2/
+直方圖 https://de.switch-case.com/32423372
+盒鬚圖 http://t-redactyl.io/blog/2016/04/creating-plots-in-r-using-ggplot2-part-10-boxplots.html
+
+進階
+地圖 http://blog.manugarri.com/making-a-beautiful-map-of-spain-in-ggplot2/
+玫瑰風向圖 https://medium.com/optima-blog/using-polar-coordinates-for-better-visualization-1d337b6c9dec
+-->
+
+<!--可以放範例 : highcharter 的圖表-->
+
+<!--
+表格訊息不多，所以先考慮不放，整理過後需要再放
+## 套件差異
+
+| Tables | ggplot |  highcharter  |  plotly |
+|:------:|:------:|:-------------:|:-------:|
+|使用時機|        | 互動          |     互動|
+| 相同   |視覺化  |   視覺化      |   視覺化|
+| 讀入的資料格式不同| 長資料| 寬資料 |長資料|
+
+-->
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>ggplot</h2></hgroup><article  id="ggplot">
+
+</article></slide><slide class=""><hgroup><h2>ggplot2簡介</h2></hgroup><article  id="ggplot2">
+
+<ul>
+<li>R環境下的繪圖套件</li>
+<li>取自&ldquo;The Grammar of Graphics&rdquo;(Leland Wilkinson, 2005)</li>
+<li><a href='https://github.com/cosname/ggplot2-translation/blob/master/preface.md' title=''>設計理念</a></li>
+<li>採用圖層系統
+
+<ul>
+<li>用抽象的概念來控制圖形，避免細節繁瑣</li>
+<li>圖形美觀</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>ggplot2基本架構</h2></hgroup><article  id="ggplot2">
+
+<div style="float: left; width: 50%;">
+<ol>
+<li>準備
+
+<ul>
+<li>資料 (data)、映射 (mapping)</li>
+</ul></li>
+<li>主要
+
+<ul>
+<li>幾何對象 (<code>geom</code>etric)</li>
+<li>美學(<code>aes</code>thetic)<br/></li>
+</ul></li>
+<li>次要
+
+<ul>
+<li>統計轉換 (<code>stat</code>istics)</li>
+<li>刻面 (<code>facet</code>)</li>
+<li>座標系統 (<code>coord</code>inante)</li>
+<li>主題 (<code>theme</code>)</li>
+</ul></li>
+</ol></div>
+
+<div style="float: right; width: 50%;">
+<p><img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/ggplot_idea.jpg' width=300 align='center'></img> </br> </br> <img src='C:/Users/ASUS/Documents/2018nccu_r/week03/plot/ggplot架構.png' width=300 align='center'></img></p></div>
+
+<!--
+3. 次要
+    - 座標尺度 (`scale`)
+    - 統計轉換 (`stat`istics)
+    - 刻面 (`facet`)
+    - 座標系統 (`coord`inante)
+    - 圖層 (layer)
+    - 主題 (`theme`)
+-->
+
+<!--參考 https://rpubs.com/skydome20/R-Note4-Plotting_System-->
+
+<!--
+主要
+- Geometric objects (幾何屬性)：包括「點、線、盒狀圖、直條圖」等…
+- Aesthetic attributes (美學表現)：包括「顏色、形狀、點的大小與線的粗細」等…
+次要
+- Facets：提供在同一張圖內做多個子圖的方法，只要使用Faceting功能設定子圖分類的依據參數即可- Stats：將資料做統計轉換。
+- Scales：修改點線的顏色、形狀、xy軸的範圍等-->
+
+<!--參考 https://molecular-service-science.com/2013/11/27/r-ggplot-tutorial-1/-->
+
+</article></slide><slide class=""><hgroup><h2>ggplot2 基本語法</h2></hgroup><article  id="ggplot2-">
+
+<pre class = 'prettyprint lang-r'>ggplot(data=..., aes(x=..., y=...)) + 
+  geom_xxx(...) +
+  stat_xxx(...) + 
+  facet_xxx(...) + ...</pre>
+
+<p>各個函數簡述 :</p>
+
+<ul>
+<li><code>ggplot</code> : 要呈現的data</li>
+<li><code>aes</code> : 圖上的元素和data之間的對應關係</li>
+<li><code>geom_xxx</code> : 圖的類型和其他相關調整參數
+
+<ul>
+<li>常見的圖類型 : <code>geom_bar</code>, <code>geom_line</code>, <code>geom_points</code>, …</li>
+</ul></li>
+<li><code>stat_xxx</code> : 調整統計參數</li>
+<li><code>facet_xxx</code> : 調整圖表呈現排列</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Various functions</h2></hgroup><article  id="various-functions">
+
+<pre class = 'prettyprint lang-r'>library(ggplot2)
+# list all geom
+ls(pattern = &#39;^geom_&#39;, env = as.environment(&#39;package:ggplot2&#39;))</pre>
+
+<pre > [1] &quot;geom_abline&quot;     &quot;geom_area&quot;       &quot;geom_bar&quot;       
+ [4] &quot;geom_bin2d&quot;      &quot;geom_blank&quot;      &quot;geom_boxplot&quot;   
+ [7] &quot;geom_col&quot;        &quot;geom_contour&quot;    &quot;geom_count&quot;     
+[10] &quot;geom_crossbar&quot;   &quot;geom_curve&quot;      &quot;geom_density&quot;   
+[13] &quot;geom_density_2d&quot; &quot;geom_density2d&quot;  &quot;geom_dotplot&quot;   
+[16] &quot;geom_errorbar&quot;   &quot;geom_errorbarh&quot;  &quot;geom_freqpoly&quot;  
+[19] &quot;geom_hex&quot;        &quot;geom_histogram&quot;  &quot;geom_hline&quot;     
+[22] &quot;geom_jitter&quot;     &quot;geom_label&quot;      &quot;geom_line&quot;      
+[25] &quot;geom_linerange&quot;  &quot;geom_map&quot;        &quot;geom_path&quot;      
+[28] &quot;geom_point&quot;      &quot;geom_pointrange&quot; &quot;geom_polygon&quot;   
+[31] &quot;geom_qq&quot;         &quot;geom_qq_line&quot;    &quot;geom_quantile&quot;  
+[34] &quot;geom_raster&quot;     &quot;geom_rect&quot;       &quot;geom_ribbon&quot;    
+[37] &quot;geom_rug&quot;        &quot;geom_segment&quot;    &quot;geom_sf&quot;        
+[40] &quot;geom_smooth&quot;     &quot;geom_spoke&quot;      &quot;geom_step&quot;      
+[43] &quot;geom_text&quot;       &quot;geom_tile&quot;       &quot;geom_violin&quot;    
+[46] &quot;geom_vline&quot;     </pre>
+
+</article></slide><slide class=""><hgroup><h2><strong>注意</strong></h2></hgroup><article >
+
+<ul>
+<li>使用 <code>data.frame</code> 儲存資料 (不可以丟 matrix 物件)</li>
+<li>使用 <code>long format</code> (利用reshape2、tidyverse將資料轉換成1 row = 1 observation)</li>
+</ul>
+
+<ul class = 'build'>
+<li>部份情況例外，可以丟入原始資料!</li>
+</ul>
+
+<p></br></p>
+
+<center>
+
+<img src='C:/Users/ASUS/Documents/2018NCCU_R/week03/plot/wide-long.png' title=''/>
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>畫圖前的準備</h2></hgroup><article >
+
+<ul>
+<li>安裝套件</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>install.packages(c(&quot;ggplot2&quot;,&quot;dplyr&quot;,&quot;tidyverse&quot;,&quot;reshape2&quot;))</pre>
+
+<!--install.packages(c("ggplot2","dplyr","tidyverse")),repos="http://cran.csie.ntu.edu.tw/")-->
+
+<p></br> - 載入套件</p>
+
+<pre class = 'prettyprint lang-r'>library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(reshape2)</pre>
+
+<p></br> - <strong>注意</strong>:</p>
+
+<pre >- 換一台裝置時，可能需要先安裝套件~
+- 下載完套件一定要記得`library`才能使用喲!</pre>
+
+</article></slide><slide class=""><hgroup><h2>從讀檔開始(.csv)</h2></hgroup><article  id=".csv">
+
+<p><a href='https://drive.google.com/open?id=1VTQfBLvhBOBFMC6r9qGnmvomQWHLkhUB' title=''>實價登錄資料下載</a>、 <a href='https://drive.google.com/open?id=1gy2PYR8SUfWIx8qsTeGIEJyIjjYyBdSS' title=''>鐵達尼號資料下載</a></p>
+
+<!--
+修改:
+- fileEncoding注意
+-->
+
+<pre class = 'prettyprint lang-r'>############### 絕對路徑 ###############
+# 請輸入完整的檔案路徑
+transaction &lt;- read.csv(&quot;/Users/ASUS/Documents/2018nccu_r/week03/data/transaction.csv&quot;) #如果你是Mac,加上fileEncoding = &quot;big5&quot;
+titanic&lt;-read.csv(&quot;C:/Users/ASUS/Documents/2018nccu_r/week03/data/train.csv&quot;)
+
+############### 相對路徑 ###############
+getwd() #知道目前自己所在的路徑
+setwd(&quot;C:/Users/ASUS/Desktop&quot;) #設定成檔案下載存放的路徑
+transaction &lt;- read.csv(&quot;transaction.csv&quot;) #不須設定絕對路徑
+
+############### 注意 ###############
+# 不論哪種讀入方法出現亂碼時，試試以下fileEncoding =
+transaction &lt;- read.csv(&quot;transaction.csv&quot;,fileEncoding = &quot;big5&quot;) #如果你是mac
+transaction &lt;- read.csv(&quot;transaction.csv&quot;,fileEncoding = &quot;utf-8&quot;) #如果你是windows</pre>
+
+</article></slide><slide class=""><hgroup><h2>資料欄位說明-實價登錄</h2></hgroup><article  id="-">
+
+<div style="float:left;width:40%;">
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">英文欄位名稱</th>
+<th align="left">中文欄位名稱</th>
+</tr>
+<tr class="odd">
+<td align="left">city</td>
+<td align="left">縣市</td>
+</tr>
+<tr class="even">
+<td align="left">district</td>
+<td align="left">鄉鎮市區</td>
+</tr>
+<tr class="odd">
+<td align="left">trac_year</td>
+<td align="left">交易年份</td>
+</tr>
+<tr class="even">
+<td align="left">trac_month</td>
+<td align="left">交易月份</td>
+</tr>
+<tr class="odd">
+<td align="left">trac_type</td>
+<td align="left">交易標的</td>
+</tr>
+<tr class="even">
+<td align="left">trac_content</td>
+<td align="left">交易筆棟數</td>
+</tr>
+<tr class="odd">
+<td align="left">use_type</td>
+<td align="left">使用分區或編定</td>
+</tr>
+</table></div>
+
+<div style="float:right;width:60%;">
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">英文欄位名稱</th>
+<th align="left">中文欄位名稱</th>
+</tr>
+<tr class="odd">
+<td align="left">build_type</td>
+<td align="left">建物型態</td>
+</tr>
+<tr class="even">
+<td align="left">build_ymd</td>
+<td align="left">建築完成年月</td>
+</tr>
+<tr class="odd">
+<td align="left">area_land</td>
+<td align="left">土地移轉總面積.平方公尺.</td>
+</tr>
+<tr class="even">
+<td align="left">area_build</td>
+<td align="left">建物移轉總面積.平方公尺.</td>
+</tr>
+<tr class="odd">
+<td align="left">area_park</td>
+<td align="left">車位移轉總面積.平方公尺.</td>
+</tr>
+<tr class="even">
+<td align="left">price_total</td>
+<td align="left">總價.元.</td>
+</tr>
+<tr class="odd">
+<td align="left">price_unit</td>
+<td align="left">單價.元.平方公尺.</td>
+</tr>
+</table></div>
+
+</article></slide><slide class=""><hgroup><h2>資料欄位說明-鐵達尼號</h2></hgroup><article  id="-">
+
+<div style="float:left;width:40%;">
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">英文欄位名稱</th>
+<th align="left">中文欄位名稱</th>
+</tr>
+<tr class="odd">
+<td align="left">PassengerId</td>
+<td align="left">編號</td>
+</tr>
+<tr class="even">
+<td align="left">Survived</td>
+<td align="left">是否生存</td>
+</tr>
+<tr class="odd">
+<td align="left">Pclass</td>
+<td align="left">艙等</td>
+</tr>
+<tr class="even">
+<td align="left">Name</td>
+<td align="left">姓名</td>
+</tr>
+<tr class="odd">
+<td align="left">Sex</td>
+<td align="left">性別</td>
+</tr>
+<tr class="even">
+<td align="left">Age</td>
+<td align="left">年齡</td>
+</tr>
+</table></div>
+
+<div style="float:right;width:60%;">
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">英文欄位名稱</th>
+<th align="left">中文欄位名稱</th>
+</tr>
+<tr class="odd">
+<td align="left">SibSp</td>
+<td align="left">在船上的兄弟姊妹及配偶總數</td>
+</tr>
+<tr class="even">
+<td align="left">Parch</td>
+<td align="left">在船上的父母家長及子女總數</td>
+</tr>
+<tr class="odd">
+<td align="left">Ticket</td>
+<td align="left">船票編號</td>
+</tr>
+<tr class="even">
+<td align="left">Fare</td>
+<td align="left">票價</td>
+</tr>
+<tr class="odd">
+<td align="left">Cabin</td>
+<td align="left">座艙編號</td>
+</tr>
+<tr class="even">
+<td align="left">Embarked</td>
+<td align="left">登船港口</td>
+</tr>
+</table></div>
+
+<p>備註 : </br></p>
+
+<ul>
+<li><p>Survived(是否生存) : 1:是、0:否</p></li>
+<li><p>登船港口 : C:瑟堡-法國城鎮、Q:皇后鎮-紐西蘭城市、S:南安普敦-英格蘭城市</p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>檢視資料 - 實價登錄</h2></hgroup><article  id="---">
+
+<pre class = 'prettyprint lang-r'>head(transaction,5)
+View(transaction)</pre>
+
+<pre >    city district trac_year trac_month            trac_type
+1 臺北市   士林區       102          1      房地(土地+建物)
+2 臺北市   中山區       102          1      房地(土地+建物)
+3 臺北市   中山區       102          1 房地(土地+建物)+車位
+4 臺北市   北投區       102          1      房地(土地+建物)
+5 臺北市   中山區       102          1      房地(土地+建物)
+     trac_content use_type                 build_type build_ymd area_land
+1 土地1建物1車位0       住      公寓(5樓含以下無電梯)    701109      35.0
+2 土地1建物1車位0       商 住宅大樓(11層含以上有電梯)    701228      10.7
+3 土地1建物1車位1       商            套房(1房1廳1衛)    970114       8.5
+4 土地1建物1車位0       商 住宅大樓(11層含以上有電梯)    851218       4.7
+5 土地1建物1車位0       住     華廈(10層含以下有電梯)    970624      31.0
+  area_build area_park price_total price_unit age
+1         61       0.0     6380000     105263  32
+2        104       0.0    12010000     114928  32
+3         52       8.6    10080000     194070   5
+4         39       0.0     4600000     116900  17
+5        185       0.0    23800000     128510   5</pre>
+
+</article></slide><slide class=""><hgroup><h2>以為開始了嗎？</h2></hgroup><article >
+
+<ul>
+<li>進行分析前，先去了解資料的型態與特性</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>str(transaction)</pre>
+
+<pre >&#39;data.frame&#39;:   153598 obs. of  15 variables:
+ $ city        : Factor w/ 4 levels &quot;高雄市&quot;,&quot;新北市&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
+ $ district    : Factor w/ 99 levels &quot;八里區&quot;,&quot;三民區&quot;,..: 7 18 18 29 18 29 29 59 59 24 ...
+ $ trac_year   : int  102 102 102 102 102 102 102 102 102 102 ...
+ $ trac_month  : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ trac_type   : Factor w/ 2 levels &quot;房地(土地+建物)&quot;,..: 1 1 2 1 1 2 2 2 2 2 ...
+ $ trac_content: Factor w/ 327 levels &quot;土地0建物0車位0&quot;,..: 57 57 58 57 57 62 62 58 64 167 ...
+ $ use_type    : Factor w/ 5 levels &quot;工&quot;,&quot;住&quot;,&quot;其他&quot;,..: 2 4 4 4 2 2 2 2 1 2 ...
+ $ build_type  : Factor w/ 12 levels &quot;工廠&quot;,&quot;公寓(5樓含以下無電梯)&quot;,..: 2 3 7 3 9 9 9 3 12 3 ...
+ $ build_ymd   : int  701109 701228 970114 851218 970624 1010724 1010724 1000414 1010531 870910 ...
+ $ area_land   : num  34.96 10.71 8.51 4.7 30.97 ...
+ $ area_build  : num  60.6 104.5 51.9 39.4 185.2 ...
+ $ area_park   : num  0 0 8.55 0 0 ...
+ $ price_total : num  6380000 12010000 10080000 4600000 23800000 ...
+ $ price_unit  : int  105263 114928 194070 116900 128510 218147 204716 174613 133648 27658 ...
+ $ age         : int  32 32 5 17 5 1 1 2 1 15 ...</pre>
+
+</article></slide><slide class=""><hgroup><h2>身為資料分析師，一定要有的好習慣！</h2></hgroup><article >
+
+<ul>
+<li>暸解基本的各變數統計量值</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>summary(transaction)</pre>
+
+<pre >     city          district        trac_year     trac_month  
+ 高雄市:34460   淡水區 :  7172   Min.   :102   Min.   : 1.0  
+ 新北市:57418   西屯區 :  5974   1st Qu.:102   1st Qu.: 4.0  
+ 臺中市:37482   新莊區 :  5955   Median :102   Median : 7.0  
+ 臺北市:24238   北屯區 :  5881   Mean   :102   Mean   : 6.7  
+                新店區 :  5873   3rd Qu.:102   3rd Qu.:10.0  
+                中和區 :  5719   Max.   :102   Max.   :12.0  
+                (Other):117024                               
+                trac_type              trac_content   use_type     
+ 房地(土地+建物)     :91613   土地1建物1車位0:66792   工  :  3233  
+ 房地(土地+建物)+車位:61985   土地1建物1車位1:41031   住  :115377  
+                              土地2建物1車位0:14537   其他:  8206  
+                              土地1建物1車位2: 7195   商  : 26205  
+                              土地2建物1車位1: 4787   農  :   577  
+                              土地3建物1車位0: 4691                
+                              (Other)        :14565                
+                      build_type      build_ymd         area_land     
+ 住宅大樓(11層含以上有電梯):70725   Min.   : 100602   Min.   :     0  
+ 公寓(5樓含以下無電梯)     :23211   1st Qu.: 780326   1st Qu.:    13  
+ 透天厝                    :21954   Median : 870506   Median :    22  
+ 華廈(10層含以下有電梯)    :20365   Mean   : 868754   Mean   :    42  
+ 套房(1房1廳1衛)           : 9709   3rd Qu.: 991201   3rd Qu.:    36  
+ 店面(店鋪)                : 2888   Max.   :1030313   Max.   :127088  
+ (Other)                   : 4746                                     
+   area_build      area_park        price_total           price_unit     
+ Min.   :    0   Min.   :      0   Min.   :         0   Min.   :      0  
+ 1st Qu.:   85   1st Qu.:      0   1st Qu.:   4900000   1st Qu.:  42685  
+ Median :  124   Median :      0   Median :   8400000   Median :  67880  
+ Mean   :  153   Mean   :     25   Mean   :  12879632   Mean   :  86176  
+ 3rd Qu.:  179   3rd Qu.:      9   3rd Qu.:  14580000   3rd Qu.: 111173  
+ Max.   :79669   Max.   :2400000   Max.   :8800000000   Max.   :4284119  
+                                                        NA&#39;s   :461      
+      age    
+ Min.   :-1  
+ 1st Qu.: 3  
+ Median :15  
+ Mean   :15  
+ 3rd Qu.:24  
+ Max.   :92  
+             </pre>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Bar chart</h2></hgroup><article  id="bar-chart">
+
+</article></slide><slide class=""><hgroup><h2>Bar chart</h2></hgroup><article  id="bar-chart-1">
+
+<ul>
+<li><code>geom_bar</code></li>
+<li>判斷資料類型 : 原始</li>
+</ul>
+
+<pre >    city district trac_year trac_month            trac_type
+1 臺北市   士林區       102          1      房地(土地+建物)
+2 臺北市   中山區       102          1      房地(土地+建物)
+3 臺北市   中山區       102          1 房地(土地+建物)+車位
+4 臺北市   北投區       102          1      房地(土地+建物)
+5 臺北市   中山區       102          1      房地(土地+建物)
+6 臺北市   北投區       102          1 房地(土地+建物)+車位
+     trac_content use_type                 build_type build_ymd area_land
+1 土地1建物1車位0       住      公寓(5樓含以下無電梯)    701109      35.0
+2 土地1建物1車位0       商 住宅大樓(11層含以上有電梯)    701228      10.7
+3 土地1建物1車位1       商            套房(1房1廳1衛)    970114       8.5
+4 土地1建物1車位0       商 住宅大樓(11層含以上有電梯)    851218       4.7
+5 土地1建物1車位0       住     華廈(10層含以下有電梯)    970624      31.0
+6 土地1建物1車位2       住     華廈(10層含以下有電梯)   1010724     141.2
+  area_build area_park price_total price_unit age
+1         61       0.0     6380000     105263  32
+2        104       0.0    12010000     114928  32
+3         52       8.6    10080000     194070   5
+4         39       0.0     4600000     116900  17
+5        185       0.0    23800000     128510   5
+6        287      14.1    62000000     218147   1</pre>
+
+</article></slide><slide class=""><hgroup><h2>Bar chart</h2></hgroup><article  id="bar-chart-2">
+
+<ul>
+<li><code>geom_bar</code></li>
+<li>判斷資料類型 : 長資料(整理過的資料)</li>
+</ul>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">city</th>
+<th align="right">n</th>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="right">34460</td>
+</tr>
+<tr class="even">
+<td align="left">新北市</td>
+<td align="right">57418</td>
+</tr>
+<tr class="odd">
+<td align="left">臺中市</td>
+<td align="right">37482</td>
+</tr>
+<tr class="even">
+<td align="left">臺北市</td>
+<td align="right">24238</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>基本架構</h2></hgroup><article >
+
+<pre class = 'prettyprint lang-r'># 第一種:data為原始資料
+ggplot(data,aes(x=...)) +  #只放x
+  geom_bar(fill=&quot;...&quot;,color = &quot;...&quot;,stat = &quot;count&quot;) + # fill:長條顏色、color:長條邊框顏色、stat = &quot;count&quot;可加可不加
+  labs(title=&quot;...&quot;,x=&quot;...&quot;,y=&quot;...&quot;) # title:圖形標題,x:x軸名稱,y:y軸名稱
+
+# 第二種 : data為長資料
+ggplot(data, aes(x = reorder(...,-...),y = ...)) + #x和y的條件都有且x依y的值降冪排序
+  geom_bar(fill=&quot;...&quot;,color = &quot;...&quot;,stat = &quot;identity&quot;) + # fill:長條顏色、color:長條邊框顏色、加stat = &quot;identity&quot;
+  labs(title=&quot;...&quot;,x=&quot;...&quot;,y=&quot;...&quot;) # title:圖形標題,x:x軸名稱,y:y軸名稱
+
+# 提醒 : Mac要在圖上顯示中文
+thm &lt;- function() theme(text=element_text(size = 15, family = &quot;STHeiti&quot;)) # 控制字體與大小
+    # STHeiti是只有Mac才有的字體, 用來解決Mac系統中文顯示錯誤的問題
+    # Windows系統使用者請忽略 `+ thm()` 指令</pre>
+
+</article></slide><slide class=""><hgroup><h2>基本 : 資料是<strong>原始資料</strong></h2></hgroup><article  id="-">
+
+<ul>
+<li>ex : <strong>計算各縣市交易筆數</strong></li>
+<li><code>aes()</code>中<font color="red">只輸入x條件</font>時，ggplot會自動以x的分類條件計算個數count(*)</li>
+</ul>
+
+<!-- 
+
+-->
+
+<pre class = 'prettyprint lang-r'>ggplot(transaction,aes(x=city)) +  #只輸入x條件
+  geom_bar() # stat = &quot;count&quot;預設(所以可加可不加)</pre>
+
+<p><img src="Figs/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>基本 : 資料是<strong>長資料</strong>或<strong>整理過的資料</strong></h2></hgroup><article  id="-">
+
+<ul>
+<li>ex : <strong>計算各縣市交易筆數</strong></li>
+<li><code>aes()</code>中<font color="red">輸入x,y條件</font></li>
+<li>在<code>geom_bar()</code>中加<font color="red"><code>stat = &quot;identity&quot;</code></font> ，依給的x和y作圖</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># ---- 方法二----
+# 先轉成長資料
+count_city &lt;- transaction %&gt;% group_by(city) %&gt;% summarise(n= n()) %&gt;% as.data.frame()
+# transaction %&gt;% group_by(city) %&gt;% tally() %&gt;% as.data.frame()
+# 檢視資料格式
+count_city
+# 匯出基本長條圖
+ggplot(count_city, aes(x = city,y = n))+ #輸入x,y條件
+  geom_bar(stat = &quot;identity&quot;)# stat = &quot;identity&quot;</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section">
+
+<div style="float:left;width:48%;">
+<p></br> 檢視資料格式 </br></p>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">city</th>
+<th align="right">n</th>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="right">34460</td>
+</tr>
+<tr class="even">
+<td align="left">新北市</td>
+<td align="right">57418</td>
+</tr>
+<tr class="odd">
+<td align="left">臺中市</td>
+<td align="right">37482</td>
+</tr>
+<tr class="even">
+<td align="left">臺北市</td>
+<td align="right">24238</td>
+</tr>
+</table></div>
+
+<div style="float:right;width:50%;">
+<p></br> 匯出基本長條圖 </br> </br> <img src="Figs/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;" /></p></div>
+
+</article></slide><slide class=""><hgroup><h2>Change labels!</h2></hgroup><article  id="change-labels">
+
+<ul>
+<li><code>+labs(title = &quot;...&quot;, x = &quot;...&quot;, y = &quot;...&quot;)</code> :
+
+<ul>
+<li>圖形標題、x,y座標軸名稱</li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>ggplot(transaction,aes(x=city)) +
+  geom_bar(stat = &quot;count&quot;) +
+  labs(title=&quot;各縣市交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;)</pre>
+
+<p><img src="Figs/unnamed-chunk-25-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Change colors!</h2></hgroup><article  id="change-colors">
+
+<ul>
+<li>顏色調整：<code>color</code> vs <code>fill</code>?
+
+<ul>
+<li><code>geom_bar(fill=&quot;長條顏色&quot;, color=&quot;長條邊框顏色&quot;)</code></li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>ggplot(transaction,aes(x=city)) +
+  geom_bar(fill=&quot;snow&quot;, color=&quot;black&quot;,stat = &quot;count&quot;) +
+  labs(title=&quot;各縣市交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;)</pre>
+
+<p><img src="Figs/unnamed-chunk-26-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Reoder x</h2></hgroup><article  id="reoder-x">
+
+<ul>
+<li><code>aes(x = reorder(x變數,-y變數),...)</code> : x可依y的值降冪排序</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>ggplot(count_city, aes(x = reorder(city,-n),y = n))+ #x = reorder(city,-n)
+  geom_bar(fill=&quot;snow&quot;, color=&quot;black&quot;,stat = &quot;identity&quot;) + 
+  labs(title=&quot;各縣市交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;)</pre>
+
+<p><img src="Figs/unnamed-chunk-27-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+<!-- x可依特定排序
+## Reoder x
+- `aes(x = reorder(x變數,c("...",...,"...")),...)` : x可依特定排序
+
+```r
+ggplot(count_city, aes(x=reorder(city,c("臺北市","新北市","臺中市","高雄市")),y = n))+ #x = reorder(city,-n)
+  geom_bar(fill="snow", color="black",stat = "identity") + 
+  labs(title="各縣市交易量",x="縣市",y="交易量")
+```
+
+<img src="Figs/unnamed-chunk-28-1.png" width="624" style="display: block; margin: auto;" />
+-->
+
+<!--
+## 小挑戰
+- ex : 看臺北市各行政區的交易量
+    - 標題、x,y座標軸名稱
+    - 行政區由多至少排列
+    - 更改顏色
+
+>- hint : 資料處理
+
+>- 先抓出臺北市資料，計算數量
+
+>- `filter`、`group_by`、 `summarise`
+
+>- 整理成**長資料**
+
+-->
+
+</article></slide><slide class=""><hgroup><h2>小挑戰</h2></hgroup><article >
+
+<ul>
+<li>ex : 看鐵達尼號的資料生存者中各艙等的人數
+
+<ul>
+<li>標題、x,y座標軸名稱</li>
+<li>各艙等依人數由多至少排列</li>
+<li>更改顏色</li>
+</ul></li>
+</ul>
+
+<ul class = 'build'>
+<li>hint : 檢視原始資料</li>
+</ul>
+
+<ul class = 'build'>
+<li><code>View()</code>、<code>str()</code>、<code>summary()</code></li>
+</ul>
+
+<ul class = 'build'>
+<li>hint : 資料處理</li>
+</ul>
+
+<ul class = 'build'>
+<li>先抓出生存者資料，再計算各艙等數量</li>
+</ul>
+
+<ul class = 'build'>
+<li><code>filter</code>、<code>group_by</code>、 <code>summarise</code></li>
+</ul>
+
+<ul class = 'build'>
+<li>整理成<strong>長資料</strong></li>
+</ul>
+
+<!--
+## 參考解答
+
+第一步 : 
+
+- 整理資料
+
+- 檢視資料格式
+
+
+```r
+# 資料整理
+count_taipei <- transaction %>% 
+  filter(city=="臺北市") %>% 
+  group_by(district) %>% 
+  summarise(n= n())
+```
+-->
+
+<!--問題!!!:表格呈現不出來，不知道原因-->
+
+<!--
+<div style='float:right;width:50%;'>
+</br>
+
+district       n
+---------  -----
+士林區      1859
+大同區      1092
+大安區      1755
+中山區      4410
+中正區      1197
+內湖區      3598
+文山區      2197
+北投區      2416
+松山區      1556
+信義區      1585
+南港區       989
+萬華區      1584
+</div>
+-->
+
+</article></slide><slide class=""><hgroup><h2>參考解答</h2></hgroup><article >
+
+<p>第一步 :</p>
+
+<ul>
+<li><p>整理資料</p></li>
+<li><p>檢視資料格式</p></li>
+</ul>
+
+<div style="float: left; width: 50%;">
+<pre class = 'prettyprint lang-r'>count_class &lt;- titanic %&gt;% 
+  filter(Survived==&quot;1&quot;) %&gt;% 
+  group_by(Pclass) %&gt;% 
+  summarise(n= n()) %&gt;% 
+  as.data.frame()</pre></div>
+
+<div style="float: right; width: 50%;">
+<p>Pclass n 1 1 136 2 2 87 3 3 119</p></div>
+
+<!--
+##
+
+
+district       n
+---------  -----
+士林區      1859
+大同區      1092
+大安區      1755
+中山區      4410
+中正區      1197
+內湖區      3598
+文山區      2197
+北投區      2416
+松山區      1556
+信義區      1585
+南港區       989
+萬華區      1584
+-->
+
+<!--
+## 參考解答
+
+
+
+```r
+ggplot(count_taipei, aes(x = reorder(district,-n),y = n))+ 
+  geom_bar(fill="snow", color="black",stat = "identity") + 
+  labs(title="台北市各行政區交易量",x="行政區",y="交易量")
+```
+
+<img src="Figs/unnamed-chunk-34-1.png" width="576" style="display: block; margin: auto;" />
+-->
+
+</article></slide><slide class=""><hgroup><h2>參考解答</h2></hgroup><article  id="-1">
+
+<pre class = 'prettyprint lang-r'>count_class %&gt;% ggplot(aes(x = reorder(Pclass,-n),y = n))+ 
+  geom_bar(fill=&quot;snow&quot;, color=&quot;black&quot;,stat = &quot;identity&quot;) + 
+  labs(title=&quot;各艙等中生存人數&quot;,x=&quot;艙等&quot;,y=&quot;人數&quot;)</pre>
+
+<p><img src="Figs/unnamed-chunk-35-1.png" width="576" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Group Data</h2></hgroup><article  id="group-data">
+
+<ul>
+<li>類別位置調整
+
+<ul>
+<li>類別堆疊、類別並排</li>
+</ul></li>
+</ul>
+
+<div style="float: left; width: 50%;">
+<ul>
+<li>類別堆疊</li>
+</ul>
+
+<p><img src="Figs/unnamed-chunk-37-1.png" width="480" style="display: block; margin: auto;" /></p></div>
+
+<div style="float: right; width: 50%;">
+<ul>
+<li>類別並排</li>
+</ul>
+
+<p><img src="Figs/unnamed-chunk-38-1.png" width="480" style="display: block; margin: auto;" /></p></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-1">
+
+<ul>
+<li>基本架構</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># 第一種 : 類別堆疊
+ggplot(data, aes(x = reorder(...,-...),y = ...,fill = reorder(...,...)) + 
+  geom_bar(position = &quot;stack&quot;) + #位置調整
+  labs(title=&quot;...&quot;,x=&quot;...&quot;,y=&quot;...&quot;)+
+  scale_fill_manual(name = &quot;...&quot;,values = c(&quot;...&quot;,..., &quot;...&quot;))# 調整圖例名稱、顏色
+
+# 第二種 : 類別並排
+ggplot(data, aes(x = reorder(...,-...),y = ...),fill = reorder(...,...)) +
+  geom_bar(position = &quot;dodge&quot;) + #位置調整
+  labs(title=&quot;...&quot;,x=&quot;...&quot;,y=&quot;...&quot;)+
+  scale_fill_manual(name = &quot;...&quot;,values = c(&quot;...&quot;,..., &quot;...&quot;)) # 調整圖例名稱、顏色</pre>
+
+</article></slide><slide class=""><hgroup><h2>檢視資料格式</h2></hgroup><article >
+
+<ul>
+<li><strong>ex : 計算各縣市依使用分區的交易量比例</strong>
+
+<ul>
+<li>x : 縣市、y : 交易比例、<strong>分組 : 使用分區</strong></li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>count_city_use &lt;- 
+  transaction %&gt;% group_by(city,use_type) %&gt;% summarise(n_use= n()) %&gt;% as.data.frame()
+count_city_use &lt;- 
+  merge(count_city_use,count_city,all.x = T) %&gt;% 
+  mutate(rate = round((n_use/n),3)) %&gt;% 
+  arrange(city,-rate)</pre>
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">city</th>
+<th align="left">use_type</th>
+<th align="right">n_use</th>
+<th align="right">n</th>
+<th align="right">rate</th>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">住</td>
+<td align="right">26027</td>
+<td align="right">34460</td>
+<td align="right">0.76</td>
+</tr>
+<tr class="even">
+<td align="left">高雄市</td>
+<td align="left">商</td>
+<td align="right">7582</td>
+<td align="right">34460</td>
+<td align="right">0.22</td>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">其他</td>
+<td align="right">532</td>
+<td align="right">34460</td>
+<td align="right">0.02</td>
+</tr>
+<tr class="even">
+<td align="left">高雄市</td>
+<td align="left">工</td>
+<td align="right">196</td>
+<td align="right">34460</td>
+<td align="right">0.01</td>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">農</td>
+<td align="right">123</td>
+<td align="right">34460</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">新北市</td>
+<td align="left">住</td>
+<td align="right">44129</td>
+<td align="right">57418</td>
+<td align="right">0.77</td>
+</tr>
+<tr class="odd">
+<td align="left">新北市</td>
+<td align="left">商</td>
+<td align="right">6533</td>
+<td align="right">57418</td>
+<td align="right">0.11</td>
+</tr>
+<tr class="even">
+<td align="left">新北市</td>
+<td align="left">其他</td>
+<td align="right">4326</td>
+<td align="right">57418</td>
+<td align="right">0.08</td>
+</tr>
+<tr class="odd">
+<td align="left">新北市</td>
+<td align="left">工</td>
+<td align="right">2361</td>
+<td align="right">57418</td>
+<td align="right">0.04</td>
+</tr>
+<tr class="even">
+<td align="left">新北市</td>
+<td align="left">農</td>
+<td align="right">69</td>
+<td align="right">57418</td>
+<td align="right">0.00</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>Grouping：<code>stack</code></h2></hgroup><article  id="groupingstack">
+
+<ul>
+<li><code>aes(...,fill=分組的變數)</code></li>
+<li><code>geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;)</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># stack類別堆疊(標準)
+ggplot(count_city_use ,aes(x = city, y = rate, fill = use_type)) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;)+
+  labs(title=&quot;各縣市各別使用分區的交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;)</pre>
+
+<p><img src="Figs/unnamed-chunk-42-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Grouping：<code>dodge</code></h2></hgroup><article  id="groupingdodge">
+
+<ul>
+<li><code>aes(...,fill=分組的變數)</code></li>
+<li><code>geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;)</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># dodge類別並排
+ggplot(count_city_use , aes(x = city, y = rate, fill = use_type)) +
+  geom_bar(stat = &#39;identity&#39;, position = &quot;dodge&quot;)+
+  labs(title=&quot;各縣市各別使用分區交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;) </pre>
+
+<p><img src="Figs/unnamed-chunk-43-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Grouping：reorder (類別堆疊)</h2></hgroup><article  id="groupingreorder-">
+
+<ul>
+<li>stack類別堆疊(標準)</li>
+<li><code>aes(...,fill = reorder(分組變數,y變數))</code> : 分組顏色可依y的值排序</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># stack類別堆疊(標準)
+ggplot(count_city_use ,aes(x = city, y = rate, fill = reorder(use_type,rate))) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;)+
+  labs(title=&quot;各縣市各別使用分區的交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;)</pre>
+
+<p><img src="Figs/unnamed-chunk-44-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Grouping：reorder (類別並排)</h2></hgroup><article  id="groupingreorder-">
+
+<ul>
+<li>dodge類別並排</li>
+<li><code>aes(...,fill = reorder(分組變數,y變數))</code> : 分組顏色可依y的值排序</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># dodge類別並排
+ggplot(count_city_use , aes(x = city, y = rate, fill = reorder(use_type,rate))) +
+  geom_bar(stat = &#39;identity&#39;, position = &quot;dodge&quot;)+
+  labs(title=&quot;各縣市各別使用分區交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;) </pre>
+
+<p><img src="Figs/unnamed-chunk-45-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Grouping：Change colors! (類別堆疊)</h2></hgroup><article  id="groupingchange-colors-">
+
+<ul>
+<li><code>scale_fill_manual(name = &quot;...&quot;, values = c(&quot;...&quot;, ...,&quot;...&quot;))</code> : 設定圖例名稱、圖例顏色</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>ggplot(count_city_use ,aes(x = city, y = rate, fill = reorder(use_type,rate))) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;stack&quot;)+
+  labs(title=&quot;各縣市各別使用分區的交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;) +
+  scale_fill_manual(name = &quot;使用分區或編定&quot;, values = c(&quot;#FFCDB2&quot;, &quot;#FFB4A2&quot;, &quot;#E5989B&quot;,&quot;#B5838D&quot;,&quot;#6D6875&quot;)) #設定圖例名稱,圖例顏色</pre>
+
+<p><img src="Figs/unnamed-chunk-46-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Grouping：Change colors! (類別並排)</h2></hgroup><article  id="groupingchange-colors-">
+
+<ul>
+<li><code>scale_fill_manual(name = &quot;...&quot;, values = c(&quot;...&quot;, ...,&quot;...&quot;))</code> : 設定圖例名稱、圖例顏色</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>ggplot(count_city_use , aes(x = city, y = rate, fill = reorder(use_type,rate))) +
+  geom_bar(stat = &#39;identity&#39;, position = &quot;dodge&quot;)+
+  labs(title=&quot;各縣市各別使用分區交易量&quot;,x=&quot;縣市&quot;,y=&quot;交易量&quot;)+
+  scale_fill_manual(name = &quot;使用分區或編定&quot;,values = c(&quot;#FFCDB2&quot;, &quot;#FFB4A2&quot;, &quot;#E5989B&quot;,&quot;#B5838D&quot;,&quot;#6D6875&quot;))#設定圖例名稱顏色 </pre>
+
+<p><img src="Figs/unnamed-chunk-47-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>小挑戰</h2></hgroup><article  id="-1">
+
+<ul>
+<li><strong>ex : 看鐵達尼號的資料各艙等生存和非生存的人數</strong>
+
+<ul>
+<li>標題、x,y座標軸名稱</br> x : 艙等、y:人數、分組:生存(1:是、0:否)</li>
+<li>並排方式</li>
+</ul></li>
+</ul>
+
+<ul class = 'build'>
+<li>hint : 資料處理</li>
+</ul>
+
+<ul class = 'build'>
+<li><code>group_by</code>、 <code>summarise</code> <!--
+- **ex : 看鐵達尼號的資料不同性別的生存和非生存的人數**
+- 標題、x,y座標軸名稱</br>
+x : 性別、y:比例、分組:生存(1:是、0:否)
+- 堆疊方式
+--></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>參考解答</h2></hgroup><article  id="-2">
+
+<div style="float: left; width: 50%;">
+<pre class = 'prettyprint lang-r'>table&lt;- titanic %&gt;% 
+  group_by(Pclass,Survived) %&gt;% 
+  summarise(n=n()) %&gt;% 
+  as.data.frame()</pre></div>
+
+<div style="float: right; width: 50%;">
+<pre >  Pclass Survived   n
+1      1        0  80
+2      1        1 136
+3      2        0  97
+4      2        1  87
+5      3        0 372
+6      3        1 119</pre></div>
+
+</article></slide><slide class=""><hgroup><h2>參考解答</h2></hgroup><article  id="-3">
+
+<pre class = 'prettyprint lang-r'>table %&gt;% ggplot(aes(x = Pclass, y = n, fill = factor(Survived))) + #注意Survived本身數值,要轉成factor
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
+  labs(title=&quot;各艙等生存和非生存人數&quot;,x=&quot;艙等&quot;,y=&quot;人數&quot;) +
+  scale_fill_manual(name = &quot;是否生存&quot;, values = c(&quot;#5A76A2&quot;, &quot;#619D70&quot;)) </pre>
+
+<p><img src="Figs/unnamed-chunk-50-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>How to choose colors?</h2></hgroup><article  id="how-to-choose-colors">
+
+<ul>
+<li><a href='http://colorbrewer2.org/' title=''>http://colorbrewer2.org/</a></li>
+<li><a href='http://colorsupplyyy.com/app/' title=''>http://colorsupplyyy.com/app/</a></li>
+<li><a href='https://coolors.co/' title=''>https://coolors.co/</a></li>
+</ul>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Line chart</h2></hgroup><article  id="line-chart">
+
+</article></slide><slide class=""><hgroup><h2>Line chart</h2></hgroup><article  id="line-chart-1">
+
+<ul>
+<li><p>data : 長資料</p></li>
+<li><p><code>geom_line</code></p></li>
+<li>參數調整
+
+<ul>
+<li><strong><code>group</code></strong>、<strong>顏色</strong>、座標軸範圍</li>
+</ul></li>
+<li><p>注意 :</p>
+
+<p>x座標上的都是<strong>類別變數</strong>非連續變數，例如:月份、年份…</p>
+
+<p>所以如果x要放置的為數字要改成<font color="red"><code>factor()</code></font></p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>基本架構</h2></hgroup><article  id="-1">
+
+<pre class = 'prettyprint lang-r'># 第一種:單條線
+ggplot(data,aes(x=...,y=...,group=1)) + #aes(...,group=1)
+  geom_line(color = &quot;...&quot;) + #只有一條線時的顏色更改
+  labs(title = &quot;...&quot;,x = &quot;...&quot; , y = &quot;...&quot;)+ 
+  coord_cartesian(ylim = c(...,...))) #座標軸範圍
+
+# 第二種 : 多條線
+  ggplot(data,aes(x=...,y=...,group=...,color=...)) +
+  geom_line() + 
+  geom_point() + #加點
+  labs(title = &quot;...&quot;,x = &quot;...&quot; , y = &quot;...&quot;)+
+  coord_cartesian(ylim = c(...,...))) #座標軸範圍
+  scale_colour_manual(values = c(&quot;...&quot;,...,&quot;...&quot;)) #改變顏色</pre>
+
+</article></slide><slide class=""><hgroup><h2>基本 : Single Line</h2></hgroup><article  id="-single-line">
+
+<ul>
+<li><p>ex : 計算臺北市各月分的交易量</p></li>
+<li><p>檢視資料 :</p></li>
+</ul>
+
+<div style="float: left; width: 50%;">
+<pre class = 'prettyprint lang-r'>transaction$trac_month &lt;- 
+  factor(transaction$trac_month)
+
+count_month_taipei &lt;- 
+  transaction %&gt;% 
+  filter(city == &quot;臺北市&quot; ) %&gt;% 
+  group_by(trac_month) %&gt;% 
+  summarise(n = n()) %&gt;% 
+  as.data.frame()</pre></div>
+
+<div style="float: right; width: 50%;">
+<pre >   trac_month    n
+1           1 1458
+2           2 1198
+3           3 2176
+4           4 2360
+5           5 2500
+6           6 2159
+7           7 1964
+8           8 1816
+9           9 1938
+10         10 2004
+11         11 2012
+12         12 2653</pre></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-2">
+
+<ul>
+<li><p>注意 :</p>
+
+<ul>
+<li><p>只有一條線的情形 :</p>
+
+<ul>
+<li><p>在<code>aes()</code>中要加<font color="red"><code>group=1</code></font>，不然不會顯示線</p></li>
+<li><p>顏色更改 : 在<code>geom_line()</code>中加<code>color = &quot;...&quot;</code></p></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>count_month_taipei %&gt;% 
+  ggplot(aes(x=trac_month,y=n,group=1)) + #aes(...,group=1)
+  geom_line(color = &quot;#006BA6&quot;) + #顏色更改
+  labs(x = &quot;交易月份&quot; , y = &quot;交易數量&quot;,title = &quot;臺北市各月份的交易量&quot;)+ 
+  coord_cartesian(ylim = c(min(count_month_taipei$n), max(count_month_taipei$n))) #座標軸範圍</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-3">
+
+<p></br> - ex : 計算臺北市各月分的交易量 </br> </br> </br> <img src="Figs/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>基本 : <code>Multiple</code> Line</h2></hgroup><article  id="-multiple-line">
+
+<ul>
+<li>ex : 呈現各縣市各月份的交易量</li>
+</ul>
+
+<p>檢視資料:</p>
+
+<pre class = 'prettyprint lang-r'>count_month &lt;- transaction %&gt;% group_by(city,trac_month) %&gt;% summarise(n = n()) %&gt;% as.data.frame()</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-4">
+
+<div style="float: left; width: 50%;">
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left">city</th>
+<th align="left">trac_month</th>
+<th align="right">n</th>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">1</td>
+<td align="right">2511</td>
+</tr>
+<tr class="even">
+<td align="left">高雄市</td>
+<td align="left">2</td>
+<td align="right">1897</td>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">3</td>
+<td align="right">3355</td>
+</tr>
+<tr class="even">
+<td align="left">高雄市</td>
+<td align="left">4</td>
+<td align="right">3524</td>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">5</td>
+<td align="right">3378</td>
+</tr>
+<tr class="even">
+<td align="left">高雄市</td>
+<td align="left">6</td>
+<td align="right">3097</td>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">7</td>
+<td align="right">3063</td>
+</tr>
+<tr class="even">
+<td align="left">高雄市</td>
+<td align="left">8</td>
+<td align="right">2573</td>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">9</td>
+<td align="right">2354</td>
+</tr>
+<tr class="even">
+<td align="left">高雄市</td>
+<td align="left">10</td>
+<td align="right">2590</td>
+</tr>
+<tr class="odd">
+<td align="left">高雄市</td>
+<td align="left">11</td>
+<td align="right">2454</td>
+</tr>
+<tr class="even">
+<td align="left">高雄市</td>
+<td align="left">12</td>
+<td align="right">3664</td>
+</tr>
+</table></div>
+
+<div style="float: right; width: 50%;">
+
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left"></th>
+<th align="left">city</th>
+<th align="left">trac_month</th>
+<th align="right">n</th>
+</tr>
+<tr class="odd">
+<td align="left">13</td>
+<td align="left">新北市</td>
+<td align="left">1</td>
+<td align="right">3664</td>
+</tr>
+<tr class="even">
+<td align="left">14</td>
+<td align="left">新北市</td>
+<td align="left">2</td>
+<td align="right">2714</td>
+</tr>
+<tr class="odd">
+<td align="left">15</td>
+<td align="left">新北市</td>
+<td align="left">3</td>
+<td align="right">5328</td>
+</tr>
+<tr class="even">
+<td align="left">16</td>
+<td align="left">新北市</td>
+<td align="left">4</td>
+<td align="right">5350</td>
+</tr>
+<tr class="odd">
+<td align="left">17</td>
+<td align="left">新北市</td>
+<td align="left">5</td>
+<td align="right">5656</td>
+</tr>
+<tr class="even">
+<td align="left">18</td>
+<td align="left">新北市</td>
+<td align="left">6</td>
+<td align="right">4999</td>
+</tr>
+<tr class="odd">
+<td align="left">19</td>
+<td align="left">新北市</td>
+<td align="left">7</td>
+<td align="right">5636</td>
+</tr>
+<tr class="even">
+<td align="left">20</td>
+<td align="left">新北市</td>
+<td align="left">8</td>
+<td align="right">4149</td>
+</tr>
+<tr class="odd">
+<td align="left">21</td>
+<td align="left">新北市</td>
+<td align="left">9</td>
+<td align="right">3951</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="left">新北市</td>
+<td align="left">10</td>
+<td align="right">5346</td>
+</tr>
+<tr class="odd">
+<td align="left">23</td>
+<td align="left">新北市</td>
+<td align="left">11</td>
+<td align="right">5401</td>
+</tr>
+<tr class="even">
+<td align="left">24</td>
+<td align="left">新北市</td>
+<td align="left">12</td>
+<td align="right">5224</td>
+</tr>
+<tr class="odd">
+<td align="left">&lt;/div</td>
+<td align="left">&gt;</td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-5">
+
+<p>注意 :</p>
+
+<ul>
+<li><p>很多條線的情形 :</p>
+
+<ul>
+<li><p>顏色依變數區分:<code>aes(...,group=分組的變數,color=分組的變數)</code></p></li>
+<li><p>顏色的選擇 : <code>scale_colour_manual(values =c(...))</code></p></li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>count_month %&gt;% 
+  ggplot(aes(x=trac_month,y=n,group=city,color=city)) + #group=分組的變數,color=分組的變數
+  geom_line() + 
+  geom_point() + #加點
+  labs(x = &quot;交易月份&quot; , y = &quot;交易數量&quot;,title = &quot;各縣市各月份的交易量&quot;)+
+  coord_cartesian(ylim = c(min(count_month$n), max(count_month$n)))+
+  scale_colour_manual(values = c(&quot;#006BA6&quot;, &quot;#FFBC42&quot;, &quot;#D81159&quot;,&quot;#8F2D56&quot;))#顏色的選擇
+  </pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-6">
+
+<p></br> - ex : 呈現各縣市各月份的交易量 </br> </br> </br> <img src="Figs/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /> <!--
+## 小挑戰
+
+## 參考解答
+--></p>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Histogram</h2></hgroup><article  id="histogram">
+
+</article></slide><slide class=""><hgroup><h2>基本架構</h2></hgroup><article  id="-2">
+
+<ul>
+<li><p>資料:原始資料</p></li>
+<li><p><code>aes(y=..count..)</code> vs. <code>aes(y=..density..)</code></p>
+
+<pre >前後點點皆不可省略，為了區隔資料中的變數</pre></li>
+<li><p><code>geom_histogram</code> v.s. <code>geom_density</code></p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>基本 : Histogram</h2></hgroup><article  id="-histogram">
+
+<ul>
+<li><p>ex : <strong>交易房屋的屋齡狀況</strong></p></li>
+<li><p><code>aes(...,y = ..count..)</code></p></li>
+<li><p><code>geom_histogram(color=&quot;...&quot;,fill = &quot;...&quot;,binwidth = ...)</code></p></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>transaction %&gt;% ggplot(aes(x=age, y =..count..)) + 
+  geom_histogram(color=&quot;grey&quot;,fill = &quot;steelblue&quot;,binwidth = 5) #長條邊框顏色,長條顏色、長條寬度</pre>
+
+<p><img src="Figs/unnamed-chunk-61-1.png" width="576" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>基本 : 機率密度圖</h2></hgroup><article  id="-">
+
+<ul>
+<li><p>ex : <strong>交易房屋的屋齡狀況</strong></p></li>
+<li><p><code>aes(...,y = ..density..)</code></p></li>
+<li><p><code>geom_density(color=&quot;...&quot;,fill = &quot;...&quot;,alpha = ...)</code></p></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># 機率密度圖
+transaction %&gt;% ggplot(aes(x=age, y =..density..)) + 
+  geom_density(fill = &quot;steelblue&quot;,alpha = 0.2,color=&quot;darkgrey&quot;) # alpha設定透明度</pre>
+
+<p><img src="Figs/unnamed-chunk-62-1.png" width="576" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Histogram + density</h2></hgroup><article  id="histogram-density">
+
+<ul>
+<li><p><code>geom_histogram()</code> + <code>geom_density()</code></p></li>
+<li><p>疊圖的時候，注意 <code>aes(...,y=..density..)</code></p></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>transaction %&gt;% ggplot(aes(x=age,y=..density..)) + 
+  geom_histogram(color=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_density(alpha=.2, fill=&quot;#FF6666&quot;) </pre>
+
+<p><img src="Figs/unnamed-chunk-63-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>小挑戰</h2></hgroup><article  id="-2">
+
+<ul>
+<li><strong>ex : 鐵達尼號資料生存者的年齡概況</strong></li>
+</ul>
+
+<ul class = 'build'>
+<li>hint : 資料處理</li>
+</ul>
+
+<ul class = 'build'>
+<li><code>filter</code></li>
+</ul>
+
+<ul class = 'build'>
+<li>hint : 直方圖、密度圖</li>
+</ul>
+
+<ul class = 'build'>
+<li><code>geom_histogram</code>、<code>geom_density</code></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>參考解答</h2></hgroup><article  id="-4">
+
+<pre class = 'prettyprint lang-r'>titanic %&gt;% filter(Survived==1) %&gt;% 
+  ggplot(aes(x=Age,y=..density..)) + 
+  geom_histogram(color=&quot;black&quot;, fill=&quot;white&quot;) +
+  geom_density(alpha=.2, fill=&quot;#FF6666&quot;) </pre>
+
+<p><img src="Figs/unnamed-chunk-64-1.png" width="624" style="display: block; margin: auto;" /> <!--
+## 補充 - 依group畫直方圖或密度圖
+http://www.cookbook-r.com/Graphs/Plotting_distributions_(ggplot2)/
+<img src="Figs/unnamed-chunk-65-1.png" width="1152" style="display: block; margin: auto;" />
+--></p>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Boxplot</h2></hgroup><article  id="boxplot">
+
+</article></slide><slide class=""><hgroup><h2>Boxplot</h2></hgroup><article  id="boxplot-1">
+
+<ul>
+<li><p><code>geom_boxplot</code></p></li>
+<li><p>資料 : 原始資料</p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-7">
+
+<ul>
+<li><p>ex:<strong>呈現各縣市每平方公尺價格</strong></p></li>
+<li><p>基本盒鬚圖</p></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>transaction %&gt;% ggplot(aes(x=city,y=price_unit)) + 
+  geom_boxplot() + 
+  labs(title=&quot;各縣市每平方公尺價格&quot;,x = &quot;縣市&quot; , y = &quot;每平方公尺價格(元)&quot;)</pre>
+
+<p><img src="Figs/unnamed-chunk-66-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>離群值</h2></hgroup><article >
+
+<p>注意 :</p>
+
+<ul>
+<li><p><code>outlier.shape=NA</code>只是隱藏離群值但不會刪去離群值</p>
+
+<p>但座標軸範圍仍維持原本，<font color = "red">建議更改座標軸範圍</font></p></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>na.exclude(transaction) %&gt;% ggplot(aes(x=city,y= price_unit)) + 
+  geom_boxplot(outlier.shape=NA) + #outlier不顯示
+  labs(x = &quot;縣市&quot; , y = &quot;每平方公尺價格(元)&quot;)+
+  coord_cartesian(ylim=c(0,400000)) #座標軸範圍</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-8">
+
+<div style="float: left; width: 50%;">
+<p></br> </br> <img src="Figs/unnamed-chunk-68-1.png" width="480" style="display: block; margin: auto;" /></p></div>
+
+<div style="float: right; width: 50%;">
+<p></br> </br> <img src="Figs/unnamed-chunk-69-1.png" width="480" style="display: block; margin: auto;" /></p></div>
+
+</article></slide><slide class=""><hgroup><h2>小挑戰</h2></hgroup><article  id="-3">
+
+<ul>
+<li><strong>ex: 檢視各船艙和各登船港口票價關係</strong>
+
+<ul>
+<li>隱藏離群值</li>
+<li>改變y座標</li>
+</ul></li>
+</ul>
+
+<ul class = 'build'>
+<li>hint :</li>
+</ul>
+
+<ul class = 'build'>
+<li>x:登船港口、y:票價、分組:船艙</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>參考解答</h2></hgroup><article  id="-5">
+
+<p><img src="Figs/unnamed-chunk-70-1.png" width="480" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Scatter plot</h2></hgroup><article  id="scatter-plot">
+
+</article></slide><slide class=""><hgroup><h2>Scatter plot</h2></hgroup><article  id="scatter-plot-1">
+
+<ul>
+<li><p><code>geom_point(shape,size)</code></p></li>
+<li><p>基本散佈圖</p></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>ggplot(iris , aes(x=Sepal.Length, y=Petal.Length)) + 
+  geom_point(shape=2, size=2) # shape控制圖示；size控制點的大小</pre>
+
+<p><img src="Figs/unnamed-chunk-71-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>point shape types</h2></hgroup><article  id="point-shape-types">
+
+<!--
+<center><img src='/Users/yangpeiwen/Documents/GitHub/2017NCCU_R/img/point_shape_types.png' style='height: 500px' align="middle"></img></center>
+-->
+
+<ul>
+<li>可以更改點的形狀 </br> </br> </br> <img src="Figs/unnamed-chunk-72-1.png" width="960" style="display: block; margin: auto;" /></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>依變數改變顏色和形狀</h2></hgroup><article >
+
+<ul>
+<li><p>顏色、形狀、大小依指定變數:<code>aes(...,color = 變數,shape = 變數,size = 變數)</code></p></li>
+<li><p>顏色的選擇 : <code>scale_color_manual(values =c(...))</code></p></li>
+<li><p>形狀的選擇 : <code>scale_shape_manual(values =c(...))</code></p></li>
+<li><p>大小的選擇 : <code>scale_size_manual(values =c(...))</code></p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-9">
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% 
+  ggplot(aes(x=Sepal.Length, y=Petal.Length, 
+             color=Species, shape = Species, size = Species)) + 
+  geom_point() +
+  scale_color_manual(values=c(&quot;#006BA6&quot;, &quot;#FFBC42&quot;, &quot;#D81159&quot;))+ #控制顏色
+  scale_shape_manual(values=c(1,5,7)) +  # 控制 shape 
+  scale_size_manual(values=c(1,2,3))   # 控制圖示 size </pre>
+
+<p><img src="Figs/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /> <!--
+## 小挑戰
+
+## 參考解答
+--></p>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>進階技巧</h2></hgroup><article >
+
+</article></slide><slide class=""><hgroup><h2>輔助線</h2></hgroup><article >
+
+<ul>
+<li><p>加上輔助線</p>
+
+<ul>
+<li><p><code>geom_abline(slope,intercept = y截距)</code></p></li>
+<li><p><code>geom_vline(yintercept = y截距)</code></p></li>
+<li><p><code>geom_hline(xintercept = x截距)</code></p></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>輔助線</h2></hgroup><article  id="-1">
+
+<pre class = 'prettyprint lang-r'>norm&lt;-data.frame(x = seq(-3,3,0.01),y = pnorm(seq(-3,3,0.01)))
+norm %&gt;% 
+  ggplot(aes(x,y)) + 
+  geom_point() + 
+  geom_hline(yintercept = c(0,1),color = &quot;grey&quot;,linetype = &quot;dashed&quot;, size = 1)+
+  #geom_vline(xintercept = c(0),color = &quot;darkgrey&quot;,linetype = &quot;dashed&quot;, size = 1)+
+  labs(title=&quot;N(0,1) CDF &quot;)</pre>
+
+<p><img src="Figs/unnamed-chunk-74-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2><code>stat</code>istics- 畫迴歸線</h2></hgroup><article  id="statistics--">
+
+<pre class = 'prettyprint lang-r'>ggplot(iris , aes(x = Sepal.Length, y = Petal.Length)) + 
+  geom_point() +
+  stat_smooth(method=lm, level=.95) # add se=FALSE to disable CI</pre>
+
+<p><img src="Figs/unnamed-chunk-75-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2><code>facet</code></h2></hgroup><article  id="facet">
+
+<ul>
+<li><p><code>facet_wrap( ~ 指定變數 , nrow)</code></p></li>
+<li><p>比較各縣市在各月份下的交易量</p></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>count_month %&gt;% ggplot(aes(x = trac_month, y = n ,fill = city))+
+  geom_bar(stat=&#39;identity&#39;) + 
+  labs(x = &quot;交易月份&quot; ,y=&quot;交易量&quot;)+
+  facet_wrap( ~ city , nrow = 2)</pre>
+
+<p><img src="Figs/unnamed-chunk-76-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2><code>coord</code>_flip()</h2></hgroup><article  id="coord_flip">
+
+<ul>
+<li>座標軸翻轉</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>count_month %&gt;%  ggplot(aes(x = trac_month, y = n ,fill = city))+
+  geom_bar(stat=&#39;identity&#39;)  +
+  facet_wrap( ~ city , nrow = 2) +
+  labs(x = &quot;交易月份&quot; ,y=&quot;交易量&quot;) +
+  coord_flip() </pre>
+
+<p><img src="Figs/unnamed-chunk-77-1.png" width="624" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>圖形輸出</h2></hgroup><article >
+
+<ul>
+<li>利用RStudio UI介面存擋</li>
+<li>畫完圖之後，再存檔~~</li>
+</ul>
+
+<ul class = 'build'>
+<li>記得確認目前路徑</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>
+ggsave(&#39;檔案名稱&#39;)
+ggsave(&#39;路徑/檔案名稱&#39;)
+
+ggsave(&quot;plot.pdf&quot;, width = 4, height = 4) #pdf,png,jpeg</pre>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>plotly</h2></hgroup><article  id="plotly">
+
+</article></slide><slide class=""><hgroup><h2>plotly 簡介</h2></hgroup><article  id="plotly-">
+
+<ul>
+<li>Plotly是一個資料視覺化的R套件，以簡單的方式，讓資料能夠產生互動的效果。</li>
+<li>提供一個合作平台，使用者能夠將自己在R中繪製的圖存上屬於自己的Plotly平台上。</li>
+<li><a href='https://plot.ly/' title=''>Plotly官方網站</a></li>
+<li>結合了各式各樣的API，包裝<code>Python</code>、<code>R</code>、<code>Matlab</code>、…等等</li>
+</ul>
+
+<ul class = 'build'>
+<li>當然~ggplot2也能夠輕易地使用plotly轉換成互動式的圖表!! &lt;!– ## 基本架構</li>
+</ul>
+
+<p>–&gt;</p>
+
+</article></slide><slide class=""><hgroup><h2>畫圖前的準備</h2></hgroup><article  id="-1">
+
+<ul>
+<li>安裝套件</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>install.packages(c(&quot;plotly&quot;))</pre>
+
+<!--install.packages(c("ggplot2","dplyr","tidyverse")),repos="http://cran.csie.ntu.edu.tw/")-->
+
+<p></br></p>
+
+<ul>
+<li>載入套件</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>library(plotly)</pre>
+
+<p></br></p>
+
+</article></slide><slide class=""><hgroup><h2>基本架構</h2></hgroup><article  id="-3">
+
+<ul>
+<li><p><code>plot_ly()</code></p></li>
+<li><p>注意:</p>
+
+<ul>
+<li><p>以<strong><code>%&gt;%</code></strong>連接</p></li>
+<li><p>指定變數前須加<strong><code>~</code></strong></p></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2><code>ggplotly()</code></h2></hgroup><article  id="ggplotly">
+
+<ul>
+<li>ggplot可以使用plotly換成互動式的圖表</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>temp ##ggplot的圖 
+ggplotly(temp)</pre>
+
+</article></slide><slide class=""><hgroup><h2>histogram - <code>ggplotly</code></h2></hgroup><article  id="histogram---ggplotly">
+
+<ul>
+<li>ex : <strong>交易房屋的屋齡狀況</strong></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>temp&lt;-transaction %&gt;% ggplot(aes(x=age, y =..count..)) + 
+  geom_histogram(colour=&quot;grey&quot;,fill = &quot;steelblue&quot;,binwidth = 5)+
+  labs(title=&quot;交易房屋的屋齡狀況&quot;,x=&quot;屋齡&quot;,y=&quot;數量&quot;)
+ggplotly(temp)</pre>
+
+<p>preserve04e440d43392b75c</p>
+
+</article></slide><slide class=""><hgroup><h2>histogram - <code>plot_ly</code></h2></hgroup><article  id="histogram---plot_ly">
+
+<ul>
+<li>ex : <strong>交易房屋的屋齡狀況</strong></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>transaction %&gt;% plot_ly(x = ~age, type = &quot;histogram&quot;)</pre>
+
+<p>preserve460c90e303cf2476</p>
+
+</article></slide><slide class=""><hgroup><h2>boxplot - <code>ggplotly</code></h2></hgroup><article  id="boxplot---ggplotly">
+
+<ul>
+<li>ex:<strong>呈現各縣市每平方公尺價格</strong></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>temp&lt;-transaction %&gt;% ggplot(aes(x=city,y=price_unit)) + 
+  geom_boxplot() + 
+  labs(title=&quot;各縣市每平方公尺價格&quot;,x = &quot;縣市&quot; , y = &quot;每平方公尺價格(元)&quot;)
+ggplotly(temp)</pre>
+
+<p>preserve45dbccecb4d05cf4</p>
+
+</article></slide><slide class=""><hgroup><h2>boxplot - <code>plot_ly</code></h2></hgroup><article  id="boxplot---plot_ly">
+
+<ul>
+<li>ex:<strong>呈現各縣市每平方公尺價格</strong></li>
+</ul>
+
+<p>preserveddb21d32c29afbf2</p>
+
+</article></slide><slide class=""><hgroup><h2>boxplot - <code>plot_ly</code></h2></hgroup><article  id="boxplot---plot_ly-1">
+
+<ul>
+<li><p>ex:<strong>呈現各縣市各使用分區每平方公尺價格</strong></p></li>
+<li><p><code>y = ~interaction(use_type,city)</code></p></li>
+</ul>
+
+<p>preserve4dc2130f630e262f</p>
+
+</article></slide><slide class=""><hgroup><h2>scatter plot - <code>ggplotly</code></h2></hgroup><article  id="scatter-plot---ggplotly">
+
+<ul>
+<li><strong>ex : iris花瓣長度(Petal.Length)和花萼長度(Sepal.Length)關係</strong></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>temp&lt;-ggplot(iris , aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
+  geom_point(shape=1, size=2)+# shape控制圖示；size控制點的大小
+  labs(title=&quot;花萼和花瓣長度&quot;,x=&quot;花萼長度&quot;,y=&quot;花瓣長度&quot;)
+ggplotly(temp)</pre>
+
+<p>preservec3d885d5bffaf4a3</p>
+
+<!--
+preserve45bacd73241f2084preserved0847e0f1be32029
+
+-->
+
+</article></slide><slide class=""><hgroup><h2>scatter plot - <code>plot_ly</code></h2></hgroup><article  id="scatter-plot---plot_ly">
+
+<ul>
+<li><strong>ex : iris花瓣長度(Petal.Length)和花萼長度(Sepal.Length)關係</strong></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>iris %&gt;% 
+  plot_ly (
+  x = ~Sepal.Length ,
+  y = ~Petal.Length ,
+  color = ~Species,
+  type = &#39;scatter&#39;,
+  mode = &#39;markers&#39;)</pre>
+
+<p>preserve8c67dff3bc64d5b1</p>
+
+<!--
+
+```r
+diamonds %>%  plot_ly(
+    x = ~carat ,
+    y = ~price ,
+    frame = ~cut,
+    type = 'scatter',
+    mode = 'markers'
+  )
+```
+-->
+
+</article></slide><slide class=""><hgroup><h2>想知道更多~</h2></hgroup><article >
+
+<ul>
+<li><a href='https://plot.ly/' title=''>Plotly 官網</a></li>
+<li><a href='https://plotly-book.cpsievert.me/index.html' title=''>Plotly for R</a></li>
+<li><a href='https://plot.ly/r/#fundamentals' title=''>plotly.R Library</a></li>
+<li><a href='https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf' title=''>plotly cheat sheet</a></li>
+</ul>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>highcharter</h2></hgroup><article  id="highcharter">
+
+</article></slide><slide class=""><hgroup><h2>highcharter 簡介</h2></hgroup><article  id="highcharter-">
+
+<ul>
+<li>使用<code>data.frame</code></li>
+<li>使用<code>wide format</code> (與ggplot相反!)</li>
+<li><a href='https://www.highcharts.com/' title=''>highcharter 官方網站</a></li>
+<li><a href='http://jkunst.com/highcharter/hchart.html' title=''>更多關於highcharter</a></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>畫圖前的準備</h2></hgroup><article  id="-2">
+
+<ul>
+<li>安裝套件</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>install.packages(c(&quot;highcharter&quot;))</pre>
+
+<p></br></p>
+
+<ul>
+<li>載入套件</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>library(highcharter)</pre>
+
+<p></br></p>
+
+</article></slide><slide class=""><hgroup><h2>基本語法</h2></hgroup><article >
+
+<p>注意 :</p>
+
+<ul>
+<li><p>使用<font color = "red">寬資料</font></p></li>
+<li><p>指定變數需放置<code>data$變數</code></p></li>
+<li><p>以<strong><code>%&gt;%</code></strong>連接</p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>折線圖</h2></hgroup><article >
+
+<p>ex : 各縣市的各月份的交易量</p>
+
+<p>檢視資料:</p>
+
+<pre class = 'prettyprint lang-r'>count_month_wide&lt;-spread(count_month, key = city, value = n)</pre>
+
+<div style="float: left; width: 50%;">
+<pre >     city trac_month    n
+1  高雄市          1 2511
+2  高雄市          2 1897
+3  高雄市          3 3355
+4  高雄市          4 3524
+5  高雄市          5 3378
+6  高雄市          6 3097
+7  高雄市          7 3063
+8  高雄市          8 2573
+9  高雄市          9 2354
+10 高雄市         10 2590
+11 高雄市         11 2454
+12 高雄市         12 3664
+13 新北市          1 3664
+14 新北市          2 2714
+15 新北市          3 5328
+16 新北市          4 5350
+17 新北市          5 5656
+18 新北市          6 4999
+19 新北市          7 5636
+20 新北市          8 4149
+21 新北市          9 3951
+22 新北市         10 5346
+23 新北市         11 5401
+24 新北市         12 5224
+25 臺中市          1 2734
+26 臺中市          2 2062
+27 臺中市          3 3664
+28 臺中市          4 3448
+29 臺中市          5 3545
+30 臺中市          6 3137
+31 臺中市          7 3142
+32 臺中市          8 3176
+33 臺中市          9 2571
+34 臺中市         10 3226
+35 臺中市         11 3112
+36 臺中市         12 3665
+37 臺北市          1 1458
+38 臺北市          2 1198
+39 臺北市          3 2176
+40 臺北市          4 2360
+41 臺北市          5 2500
+42 臺北市          6 2159
+43 臺北市          7 1964
+44 臺北市          8 1816
+45 臺北市          9 1938
+46 臺北市         10 2004
+47 臺北市         11 2012
+48 臺北市         12 2653</pre></div>
+
+<div style="float: right; width: 50%;">
+<pre >   trac_month 高雄市 新北市 臺中市 臺北市
+1           1   2511   3664   2734   1458
+2           2   1897   2714   2062   1198
+3           3   3355   5328   3664   2176
+4           4   3524   5350   3448   2360
+5           5   3378   5656   3545   2500
+6           6   3097   4999   3137   2159
+7           7   3063   5636   3142   1964
+8           8   2573   4149   3176   1816
+9           9   2354   3951   2571   1938
+10         10   2590   5346   3226   2004
+11         11   2454   5401   3112   2012
+12         12   3664   5224   3665   2653</pre></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-10">
+
+<ul>
+<li>ex : <strong>呈現各縣市各月份的交易量</strong></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>highchart() %&gt;% 
+  hc_title(text = &quot;各縣市的各月份的交易量&quot;) %&gt;% 
+  hc_xAxis(categories = count_month$trac_month) %&gt;% #以month當x軸
+  hc_add_series(name = &quot;臺北市&quot;, data =count_month_wide$`臺北市`,color=&quot;#006BA6&quot;) %&gt;% #第一條線
+  hc_add_series(name = &quot;新北市&quot;, data =count_month_wide$`新北市`,color=&quot;#FFBC42&quot;) %&gt;% #第二條線
+  hc_add_series(name = &quot;高雄市&quot;, data =count_month_wide$`高雄市`,color=&quot;#D81159&quot;) %&gt;% #第三條線
+  hc_add_series(name = &quot;臺中市&quot;, data =count_month_wide$`臺中市`,color=&quot;#8F2D56&quot;) #第四條線
+</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-11">
+
+<ul>
+<li>ex : <strong>呈現各縣市各月份的交易量</strong></li>
+</ul>
+
+<p>preserve456c38a91fdfd03a</p>
+
+</article></slide><slide class=""><hgroup><h2>長條圖</h2></hgroup><article >
+
+<ul>
+<li>加 <code>,type = &quot;column&quot;</code> : 圖形由折線圖改為長條圖</li>
+</ul>
+
+<p>ex : <strong>各縣市的各使用分區的交易量</strong></p>
+
+<pre class = 'prettyprint lang-r'>count_city_use_wide&lt;-spread(data = count_city_use[,c(1:3)], key = use_type, value = n_use)</pre>
+
+<div style="float: left; width: 50%;">
+<pre >     city use_type n_use     n  rate
+1  高雄市       住 26027 34460 0.755
+2  高雄市       商  7582 34460 0.220
+3  高雄市     其他   532 34460 0.015
+4  高雄市       工   196 34460 0.006
+5  高雄市       農   123 34460 0.004
+6  新北市       住 44129 57418 0.769
+7  新北市       商  6533 57418 0.114
+8  新北市     其他  4326 57418 0.075
+9  新北市       工  2361 57418 0.041
+10 新北市       農    69 57418 0.001
+11 臺中市       住 30460 37482 0.813
+12 臺中市       商  4767 37482 0.127
+13 臺中市     其他  1639 37482 0.044
+14 臺中市       農   382 37482 0.010
+15 臺中市       工   234 37482 0.006
+16 臺北市       住 14761 24238 0.609
+17 臺北市       商  7323 24238 0.302
+18 臺北市     其他  1709 24238 0.071
+19 臺北市       工   442 24238 0.018
+20 臺北市       農     3 24238 0.000</pre></div>
+
+<div style="float: right; width: 50%;">
+<pre >    city   工    住 其他   商  農
+1 高雄市  196 26027  532 7582 123
+2 新北市 2361 44129 4326 6533  69
+3 臺中市  234 30460 1639 4767 382
+4 臺北市  442 14761 1709 7323   3</pre></div>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-12">
+
+<p>ex : <strong>各縣市的各使用分區的交易量</strong></p>
+
+<pre class = 'prettyprint lang-r'>highchart() %&gt;% 
+  hc_title(text = &quot;各縣市的各使用分區的交易量&quot;) %&gt;% 
+  hc_xAxis(categories = factor(count_city_use_wide$city)) %&gt;% #以city當x軸
+  hc_add_series(name = &quot;工&quot;, data =count_city_use_wide$`工`,color=&quot;#006BA6&quot;,type = &quot;column&quot;) %&gt;% #第一條線
+  hc_add_series(name = &quot;住&quot;, data =count_city_use_wide$`住`,color=&quot;#FFBC42&quot;,type = &quot;column&quot;) %&gt;% #第二條線
+  hc_add_series(name = &quot;其他&quot;, data =count_city_use_wide$`農`,color=&quot;#D81159&quot;,type = &quot;column&quot;) %&gt;% #第三條線
+  hc_add_series(name = &quot;商&quot;, data =count_city_use_wide$`商`,color=&quot;#8F2D56&quot;,type = &quot;column&quot;) #第四條線</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-13">
+
+<p>ex : <strong>各縣市的各使用分區的交易量</strong></p>
+
+<p>preserveb9e42efaf7925b7d</p>
+
+</article></slide><slide class=""><hgroup><h2>顯示文字</h2></hgroup><article >
+
+<ul>
+<li>加 <code>,dataLabels = list(enabled = T)</code> : 顯示數字</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>highchart() %&gt;% 
+  hc_title(text = &quot;各縣市的各使用分區的交易量&quot;) %&gt;% 
+  hc_xAxis(categories = count_city_use_wide$city) %&gt;% #以month當x軸
+  hc_add_series(name = &quot;工&quot;, data =count_city_use_wide$`工`,color=&quot;#006BA6&quot;,type = &quot;column&quot;, dataLabels = list(enabled = T)) %&gt;% #第一條線
+  hc_add_series(name = &quot;住&quot;, data =count_city_use_wide$`住`,color=&quot;#FFBC42&quot;,type = &quot;column&quot;, dataLabels = list(enabled = T)) %&gt;% #第二條線
+  hc_add_series(name = &quot;其他&quot;, data =count_city_use_wide$`農`,color=&quot;#D81159&quot;,type = &quot;column&quot;, dataLabels = list(enabled = T)) %&gt;% #第三條線
+  hc_add_series(name = &quot;商&quot;, data =count_city_use_wide$`商`,color=&quot;#8F2D56&quot;,type = &quot;column&quot;, dataLabels = list(enabled = T)) #第四條線</pre>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-14">
+
+<p>preserve32a631fa0547cbd5</p>
+
+</article></slide><slide class=""><hgroup><h2>想學更多~</h2></hgroup><article >
+
+<p><a href='http://rpubs.com/lofuyang/167269%5D' title=''>http://rpubs.com/lofuyang/167269</a></p></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
