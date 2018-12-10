@@ -1,0 +1,85 @@
+---
+title: "你Rmarkdown的名稱"
+author: "名字"
+date: "2018/12/10"
+output:
+  html_document:
+    theme: united
+    fig_width: 10
+    fig_height: 7.5
+    toc : true
+    toc_depth: 4
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# 大標題一
+
+內文
+
+## 小標題一
+
+```{r iris}
+summary(iris)
+```
+
+### rlist
+
+```{r }
+library(rlist)
+```
+
+### dplyr
+
+```{r }
+library(dplyr)
+```
+
+#### magrittr
+
+```{r }
+library(magrittr)
+```
+
+#### tidyr
+
+```{r }
+library(tidyr)
+```
+
+## 小標題二
+
+### plotly
+
+```{r }
+library(plotly)
+```
+
+### highcharter
+
+```{r }
+library(highcharter)
+```
+
+### ggplot2
+
+```{r }
+library(ggplot2)
+```
+
+# Rmd
+
+## cars
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
