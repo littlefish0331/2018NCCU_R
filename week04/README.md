@@ -4,4 +4,4 @@
 
 [weather資料下載](https://reurl.cc/bkL5X)
 
-[R集訓班問卷](http://goo.gl/dXYH7o)
+[R集訓班問卷](https://docs.google.com/forms/d/e/1FAIpQLScbtAlS7G0QzLSk8Yr4FjiECgbsPEV7n2InGQyv63vU0T1kzw/viewform)
